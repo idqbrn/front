@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Img } from 'react-image';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -9,9 +10,9 @@ import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
-import AuthFooter from 'ui-component/cards/AuthFooter';
 
 // assets
+import BackgroundImage from '../../../../assets/images/login/dqbrn_em_forma.jpg';
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
@@ -21,9 +22,14 @@ const Login = () => {
 
     return (
         <AuthWrapper1>
+            <img source="../../../../assets/images/login/dqbrn_em_forma.jpg" alt="dqbrn" widht="50%" height="50%" />
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
-                    <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
+                    <Grid container justifyContent="left" alignItems="center" sx={{ minHeight: '100px' }}>
+                        <img source="../../../../assets/images/login/dqbrn_em_forma.jpg" alt="dqbrn" widht="50%" height="50%" />
+                    </Grid>
+                    <Grid item xs={false} sm={4} md={7} sx={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: 'cover' }} />
+                    <Grid container justifyContent="right" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
@@ -67,12 +73,7 @@ const Login = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid item container direction="column" alignItems="center" xs={12}>
-                                            <Typography
-                                                component={Link}
-                                                to="/pages/register/register3"
-                                                variant="subtitle1"
-                                                sx={{ textDecoration: 'none' }}
-                                            >
+                                            <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
                                                 Don&apos;t have an account?
                                             </Typography>
                                         </Grid>
@@ -81,9 +82,6 @@ const Login = () => {
                             </AuthCardWrapper>
                         </Grid>
                     </Grid>
-                </Grid>
-                <Grid item xs={12} sx={{ m: 3, mt: 1 }}>
-                    <AuthFooter />
                 </Grid>
             </Grid>
         </AuthWrapper1>
