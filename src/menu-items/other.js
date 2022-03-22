@@ -26,6 +26,12 @@ const other = {
             icon: icons.IconHelp,
             external: true,
             target: true
+        },
+        {
+            id: 'map',
+            title: 'Map',
+            type: 'item',
+            url: '/map'
         }
     ]
 };
