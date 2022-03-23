@@ -3,62 +3,106 @@ import { Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
-import { GoogleMap, HeatmapLayer, useJsApiLoader, google } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import Select from 'react-select';
 import React, { useState } from 'react';
+import brStates from './brStates';
 
-// ==============================|| SAMPLE PAGE ||============================== //
+// ==============================|| MAP PAGE ||============================== //
 
 function Map() {
-    const options = [
-        { value: 'rj', label: 'Rio de Janeiro', center: { lat: -22.906847, lng: -43.172897 } },
-        { value: 'sp', label: 'São Paulo', center: { lat: -23.55052, lng: -46.633308 } },
-        { value: 'am', label: 'Amazonas', center: { lat: -3.416843, lng: -65.856064 } }
-    ];
-
     const containerStyle = {
-        width: '80%',
+        width: '500px',
         height: '500px'
     };
 
-    const [centerOption, setCenter] = useState(options[0].center);
+    const [centerOption, setCenter] = useState(brStates[0].center);
 
-    const [zoomMap, setZoom] = useState(3);
+    const [zoomMap] = useState(1);
 
-    const { isLoaded } = useJsApiLoader({
-        id: 'google-map-script',
-        googleMapsApiKey: 'AIzaSyASHNbe6Qnit7i2NowcVkyaYF89flBmNbw'
-    });
+    const { isLoaded } = useJsApiLoader(
+        {
+            id: 'google-map-script',
+            googleMapsApiKey: 'AIzaSyASHNbe6Qnit7i2NowcVkyaYF89flBmNbw',
+            libraries: ['visualization']
+        },
+        []
+    );
+
+    const fakeData = [];
 
     const [map, setMap] = React.useState(null);
 
-    const [heatmap, setHeatmap] = useState(null);
+    const [heatmap, setHeatmap] = React.useState(null);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const onLoad = React.useCallback((map, heatmap) => {
         const bounds = new window.google.maps.LatLngBounds();
         map.fitBounds(bounds);
+        map.panTo(brStates[0].center);
+        map.setMapTypeId('hybrid');
+        map.setZoom(zoomMap);
         setMap(map);
-        map.setCenter(centerOption);
-    }, []);
 
-    const onUnmount = React.useCallback((map) => {
+        heatmap = new window.google.maps.visualization.HeatmapLayer();
+        heatmap.setMap(map);
+
+        fakeData.push(new window.google.maps.LatLng(-19.0, -41.0));
+        for (let i = 0; i < 100; i += 1) {
+            fakeData?.push(new window.google.maps.LatLng(-20.0 + i * 0.1, -40 - i * 0.1));
+        }
+        console.log(fakeData[0]);
+
+        heatmap.setData(fakeData);
+        heatmap.setOptions({ radius: 20, map, data: fakeData });
+        setHeatmap(heatmap);
+    });
+
+    const onUnmount = React.useCallback(() => {
         setMap(null);
     }, []);
 
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    console.log(isLoaded);
+
     return isLoaded ? (
         <MainCard title="Map">
-            <Typography variant="body2">
-                Centro {centerOption.lat} e {centerOption.lng}
-            </Typography>
-
-            <Select
-                name="center_select"
-                options={options}
-                value={options.find((item) => item.value === centerOption)}
-                onChange={(option) => setCenter(option.center)}
-            />
-
-            <GoogleMap mapContainerStyle={containerStyle} center={centerOption} zoom={zoomMap} onLoad={onLoad} onUnmount={onUnmount} />
+            <div style={{ flexDirection: 'row', display: 'flex' }}>
+                <div style={{ display: 'flex' }}>
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={centerOption}
+                        zoom={zoomMap}
+                        onLoad={onLoad}
+                        onUnmount={onUnmount}
+                    />
+                </div>
+                <div style={{ flexDirection: 'column', display: 'flex' }}>
+                    <div style={{ display: 'flex' }}>
+                        <Typography variant="body2">
+                            Centro {centerOption.lat} e {centerOption.lng}
+                        </Typography>
+                    </div>
+                    <div style={{ display: 'flex' }}>
+                        <Select
+                            name="center_select"
+                            options={brStates}
+                            value={brStates.find((option) => option.value === centerOption)}
+                            onChange={async (option) => {
+                                console.log('brStates');
+                                map.setZoom(brStates[0].zoom);
+                                await sleep(1000);
+                                setCenter(option.center);
+                                map.panTo(option.center);
+                                if (option.zoom > brStates[0].zoom) map.setZoom(option.zoom);
+                                console.log('heatmap.getData()=');
+                                console.log(heatmap.getData());
+                            }}
+                        />
+                    </div>
+                </div>
+            </div>
         </MainCard>
     ) : (
         <></>
