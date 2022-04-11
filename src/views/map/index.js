@@ -7,6 +7,7 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import Select from 'react-select';
 import React, { useState } from 'react';
 import brStates from './brStates';
+import { deseases, desease1 } from './deseases/desease1';
 
 // ==============================|| MAP PAGE ||============================== //
 
@@ -17,6 +18,8 @@ function Map() {
     };
 
     const [centerOption, setCenter] = useState(brStates[0].center);
+
+    const [deseaseOption, setDesease] = useState(deseases[0].value);
 
     const [zoomMap] = useState(1);
 
@@ -47,14 +50,13 @@ function Map() {
         heatmap = new window.google.maps.visualization.HeatmapLayer();
         heatmap.setMap(map);
 
-        fakeData.push(new window.google.maps.LatLng(-19.0, -41.0));
         for (let i = 0; i < 100; i += 1) {
-            fakeData?.push(new window.google.maps.LatLng(-20.0 + i * 0.1, -40 - i * 0.1));
+            fakeData?.push(new window.google.maps.LatLng(desease1[deseaseOption][i].lat, desease1[deseaseOption][i].lng));
         }
         console.log(fakeData[0]);
 
         heatmap.setData(fakeData);
-        heatmap.setOptions({ radius: 20, map, data: fakeData });
+        heatmap.setOptions({ radius: 8, map, data: fakeData });
         setHeatmap(heatmap);
     });
 
@@ -96,10 +98,45 @@ function Map() {
                                 setCenter(option.center);
                                 map.panTo(option.center);
                                 if (option.zoom > brStates[0].zoom) map.setZoom(option.zoom);
-                                console.log('heatmap.getData()=');
-                                console.log(heatmap.getData());
+                                // console.log('heatmap.getData()=');
+                                // console.log(heatmap.getData());
                             }}
                         />
+                    </div>
+                    <div style={{ display: 'flex' }}>
+                        <Select
+                            name="desease_select"
+                            options={deseases}
+                            value={deseases.find((option) => option.value === deseaseOption)}
+                            onChange={async (option) => {
+                                console.log('deseases');
+                                console.log('option: ', option.value);
+
+                                if (option.value !== deseaseOption) {
+                                    setDesease(option.value);
+                                    console.log('deseaseOption: ', deseaseOption);
+                                    heatmap.setMap(null);
+
+                                    if (typeof heatmap === 'object') heatmap.setData([]);
+
+                                    heatmap.setMap(map);
+
+                                    for (let i = 0; i < 100; i += 1) {
+                                        fakeData?.push(
+                                            new window.google.maps.LatLng(desease1[option.value][i].lat, desease1[option.value][i].lng)
+                                        );
+                                    }
+
+                                    heatmap.setData(fakeData);
+                                    heatmap.setOptions({ radius: 8, map, data: fakeData });
+                                    setHeatmap(heatmap);
+                                }
+                            }}
+                        />
+                    </div>
+                    <div id="floating-panel" style={{ display: 'flex' }}>
+                        <input id="latlng" type="text" value="40.714224,-73.961452" />
+                        <input id="submit" type="button" value="Reverse Geocode" />
                     </div>
                 </div>
             </div>
