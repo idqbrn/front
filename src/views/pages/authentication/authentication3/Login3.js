@@ -8,35 +8,29 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 import AuthWrapper1 from '../AuthWrapper1';
 import AuthCardWrapper from '../AuthCardWrapper';
 import AuthLogin from '../auth-forms/AuthLogin';
-import Logo from 'ui-component/Logo';
+// import Logo from 'ui-component/Logo';
 
-// assets
-import BackgroundImage from '../../../../assets/images/login/dqbrn_em_forma.jpg';
+// // assets
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
 const Login = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
     return (
         <AuthWrapper1>
-            <img source="../../../../assets/images/login/dqbrn_em_forma.jpg" alt="dqbrn" widht="50%" height="50%" />
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
-                    <Grid container justifyContent="left" alignItems="center" sx={{ minHeight: '100px' }}>
-                        <img source="../../../../assets/images/login/dqbrn_em_forma.jpg" alt="dqbrn" widht="50%" height="50%" />
-                    </Grid>
-                    <Grid item xs={false} sm={4} md={7} sx={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: 'cover' }} />
                     <Grid container justifyContent="right" alignItems="center" sx={{ minHeight: 'calc(100vh - 68px)' }}>
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                    <Grid item sx={{ mb: 3 }}>
+                                    {/* Inserir logo idqbrn */}
+                                    {/* <Grid item sx={{ mb: 3 }}>
                                         <Link to="#">
                                             <Logo />
                                         </Link>
-                                    </Grid>
+                                    </Grid> */}
                                     <Grid item xs={12}>
                                         <Grid
                                             container
@@ -51,15 +45,15 @@ const Login = () => {
                                                         gutterBottom
                                                         variant={matchDownSM ? 'h3' : 'h2'}
                                                     >
-                                                        Hi, Welcome Back
+                                                        Login
                                                     </Typography>
-                                                    <Typography
+                                                    {/* <Typography
                                                         variant="caption"
                                                         fontSize="16px"
                                                         textAlign={matchDownSM ? 'center' : 'inherit'}
                                                     >
                                                         Enter your credentials to continue
-                                                    </Typography>
+                                                    </Typography> */}
                                                 </Stack>
                                             </Grid>
                                         </Grid>
