@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { Img } from 'react-image';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';

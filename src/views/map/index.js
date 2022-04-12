@@ -134,10 +134,6 @@ function Map() {
                             }}
                         />
                     </div>
-                    <div id="floating-panel" style={{ display: 'flex' }}>
-                        <input id="latlng" type="text" value="40.714224,-73.961452" />
-                        <input id="submit" type="button" value="Reverse Geocode" />
-                    </div>
                 </div>
             </div>
         </MainCard>
