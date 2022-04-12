@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
+import Button from '@mui/material/Button';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
@@ -14,6 +15,9 @@ const Admin = () => (
             reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa
             qui officiate descent molls anim id est labours.
         </Typography>
+        <Button variant="contained" color="primary">
+            Buscar
+        </Button>
     </MainCard>
 );
 

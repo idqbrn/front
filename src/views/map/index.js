@@ -1,10 +1,11 @@
 // material-ui
 import { Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import Select from 'react-select';
 import React, { useState } from 'react';
 import brStates from './brStates';
 import { deseases, desease1 } from './deseases/desease1';
@@ -23,11 +24,13 @@ function Map() {
 
     const [zoomMap] = useState(1);
 
+    const [libraries] = useState(['visualization']);
+
     const { isLoaded } = useJsApiLoader(
         {
             id: 'google-map-script',
             googleMapsApiKey: 'AIzaSyASHNbe6Qnit7i2NowcVkyaYF89flBmNbw',
-            libraries: ['visualization']
+            libraries
         },
         []
     );
@@ -81,39 +84,54 @@ function Map() {
                     />
                 </div>
                 <div style={{ flexDirection: 'column', display: 'flex' }}>
-                    <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex', padding: 10 }}>
                         <Typography variant="body2">
                             Centro {centerOption.lat} e {centerOption.lng}
                         </Typography>
                     </div>
-                    <div style={{ display: 'flex' }}>
-                        <Select
-                            name="center_select"
+                    <div style={{ display: 'flex', padding: 10 }}>
+                        <Autocomplete
+                            id="center_select"
                             options={brStates}
-                            value={brStates.find((option) => option.value === centerOption)}
+                            autoComplete
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Local" />}
+                            sx={{ width: 300 }}
+                            value={brStates.find(
+                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === centerOption
+                            )}
                             onChange={async (option) => {
+                                console.log('option: ', option);
+                                const op = option.nativeEvent.path[0].getAttribute('data-option-index');
+                                const local = brStates[op];
+                                console.log('op: ', op);
                                 console.log('brStates');
                                 map.setZoom(brStates[0].zoom);
                                 await sleep(1000);
-                                setCenter(option.center);
-                                map.panTo(option.center);
-                                if (option.zoom > brStates[0].zoom) map.setZoom(option.zoom);
+                                setCenter(local.center);
+                                map.panTo(local.center);
+                                if (local.zoom > brStates[0].zoom) map.setZoom(local.zoom);
                                 // console.log('heatmap.getData()=');
                                 // console.log(heatmap.getData());
                             }}
                         />
                     </div>
-                    <div style={{ display: 'flex' }}>
-                        <Select
-                            name="desease_select"
+                    <div style={{ display: 'flex', padding: 10 }}>
+                        <Autocomplete
+                            id="desease_select"
                             options={deseases}
-                            value={deseases.find((option) => option.value === deseaseOption)}
+                            autoComplete
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Doença" />}
+                            sx={{ width: 300 }}
+                            value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption)}
                             onChange={async (option) => {
                                 console.log('deseases');
-                                console.log('option: ', option.value);
+                                const op = option.currentTarget.getAttribute('data-option-index');
+                                console.log('option: ', op);
 
-                                if (option.value !== deseaseOption) {
-                                    setDesease(option.value);
+                                if (op !== deseaseOption) {
+                                    setDesease(op);
                                     console.log('deseaseOption: ', deseaseOption);
                                     heatmap.setMap(null);
 
@@ -122,9 +140,7 @@ function Map() {
                                     heatmap.setMap(map);
 
                                     for (let i = 0; i < 100; i += 1) {
-                                        fakeData?.push(
-                                            new window.google.maps.LatLng(desease1[option.value][i].lat, desease1[option.value][i].lng)
-                                        );
+                                        fakeData?.push(new window.google.maps.LatLng(desease1[op][i].lat, desease1[op][i].lng));
                                     }
 
                                     heatmap.setData(fakeData);
