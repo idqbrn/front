@@ -164,11 +164,15 @@ function Map() {
                                 console.log('JsonLatLng.UF: ', local.UF);
                                 console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
 
-                                map.setZoom(8);
+                                map.setZoom(brStates[stateOption].zoom);
+
                                 await sleep(1000);
+
                                 const localCenter = LatLngToCenter(local);
                                 setCenter(localCenter);
                                 map.panTo(localCenter);
+
+                                map.setZoom(8);
                                 // if (brStates[stateOption].zoom > brStates[0].zoom) map.setZoom(local.zoom);
                                 // console.log('heatmap.getData()=');
                                 // console.log(heatmap.getData());
