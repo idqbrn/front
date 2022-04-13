@@ -1,5 +1,4 @@
 // material-ui
-import { Typography } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
@@ -15,7 +14,7 @@ import { /* vecNumCityState, */ vecPosCityState } from './LocalLatLng/vecCitySta
 // ==============================|| MAP PAGE ||============================== //
 
 function LatLngToCenter(local) {
-    return { lat: local.latitude, lng: local.longitude };
+    return { lat: local?.latitude, lng: local?.longitude };
 }
 
 function Map() {
@@ -63,12 +62,11 @@ function Map() {
         setMap(map);
 
         heatmap = new window.google.maps.visualization.HeatmapLayer();
-        heatmap.setMap(map);
+        // heatmap.setMap(map);
 
-        for (let i = 0; i < 100; i += 1) {
+        /* for (let i = 0; i < 100; i += 1) {
             fakeData?.push(new window.google.maps.LatLng(desease1[deseaseOption][i].lat, desease1[deseaseOption][i].lng));
-        }
-        // console.log(fakeData[0]);
+        } */
 
         heatmap.setData(fakeData);
         heatmap.setOptions({ radius: 8, map, data: fakeData });
@@ -95,11 +93,6 @@ function Map() {
                 </div>
                 <div style={{ flexDirection: 'column', display: 'flex' }}>
                     <div style={{ display: 'flex', padding: 10 }}>
-                        <Typography variant="body2">
-                            Centro {centerOption.lat} e {centerOption.lng}
-                        </Typography>
-                    </div>
-                    <div style={{ display: 'flex', padding: 10 }}>
                         <Autocomplete
                             id="center_select"
                             options={brStates}
@@ -112,25 +105,26 @@ function Map() {
                             )}
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+
                                 setState(op);
-                                const local = brStates[op];
-                                console.log('op: ', op);
+                                if (op >= 0) {
+                                    const local = brStates[op];
 
-                                map.setZoom(brStates[0].zoom);
+                                    map.setZoom(brStates[0].zoom);
 
-                                await sleep(1000);
-                                setCenter(local.center);
-                                map.panTo(local.center);
+                                    await sleep(1000);
+                                    setCenter(local.center);
+                                    map.panTo(local.center);
 
-                                if (local.zoom > brStates[0].zoom) map.setZoom(local.zoom);
+                                    if (local.zoom > brStates[0].zoom) map.setZoom(local.zoom);
 
-                                const cities = [];
+                                    const cities = [];
 
-                                // eslint-disable-next-line no-plusplus
-                                for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++) cities.push(JsonLatLng[i].nome);
+                                    // eslint-disable-next-line no-plusplus
+                                    for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++) cities.push(JsonLatLng[i].nome);
 
-                                console.log('cities: ', cities);
-                                setCities(cities);
+                                    setCities(cities);
+                                }
                             }}
                         />
                     </div>
@@ -146,36 +140,24 @@ function Map() {
                                 (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
                             )}
                             onChange={async (option) => {
-                                console.log('CITYoption: ', option);
-                                const op = option.nativeEvent.path[0].getAttribute('data-option-index');
-                                console.log('value: ', document.getElementById('city_select').option);
-                                console.log('op: ', op);
-                                console.log('stateOption: ', stateOption);
-                                console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
+                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+                                if (op >= 0) {
+                                    const cityNum = op + vecPosCityState[stateOption];
 
-                                const cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
+                                    setCity(cityNum);
 
-                                console.log('cityNum: ', cityNum);
+                                    const local = JsonLatLng[cityNum];
 
-                                setCity(cityNum);
+                                    map.setZoom(brStates[stateOption].zoom);
 
-                                const local = JsonLatLng[cityNum];
+                                    await sleep(1000);
 
-                                console.log('JsonLatLng.UF: ', local.UF);
-                                console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
+                                    const localCenter = LatLngToCenter(local);
+                                    setCenter(localCenter);
+                                    map.panTo(localCenter);
 
-                                map.setZoom(brStates[stateOption].zoom);
-
-                                await sleep(1000);
-
-                                const localCenter = LatLngToCenter(local);
-                                setCenter(localCenter);
-                                map.panTo(localCenter);
-
-                                map.setZoom(8);
-                                // if (brStates[stateOption].zoom > brStates[0].zoom) map.setZoom(local.zoom);
-                                // console.log('heatmap.getData()=');
-                                // console.log(heatmap.getData());
+                                    map.setZoom(8);
+                                }
                             }}
                         />
                     </div>
@@ -189,27 +171,21 @@ function Map() {
                             sx={{ width: 300 }}
                             value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption)}
                             onChange={async (option) => {
-                                console.log('deseases');
-                                const op = option.currentTarget.getAttribute('data-option-index');
-                                console.log('option: ', op);
+                                const op = parseInt(option.currentTarget.getAttribute('data-option-index'), 10);
+                                setDesease(op);
+                                heatmap.setMap(null);
 
-                                if (op !== deseaseOption) {
-                                    setDesease(op);
-                                    console.log('deseaseOption: ', deseaseOption);
-                                    heatmap.setMap(null);
+                                if (typeof heatmap === 'object') heatmap.setData([]);
 
-                                    if (typeof heatmap === 'object') heatmap.setData([]);
+                                heatmap.setMap(map);
 
-                                    heatmap.setMap(map);
-
-                                    for (let i = 0; i < 100; i += 1) {
-                                        fakeData?.push(new window.google.maps.LatLng(desease1[op][i].lat, desease1[op][i].lng));
-                                    }
-
-                                    heatmap.setData(fakeData);
-                                    heatmap.setOptions({ radius: 9, map, data: fakeData });
-                                    setHeatmap(heatmap);
+                                for (let i = 0; i < 100; i += 1) {
+                                    fakeData?.push(new window.google.maps.LatLng(desease1[op][i].lat, desease1[op][i].lng));
                                 }
+
+                                heatmap.setData(fakeData);
+                                heatmap.setOptions({ radius: 10, map, data: fakeData });
+                                setHeatmap(heatmap);
                             }}
                         />
                     </div>
