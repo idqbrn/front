@@ -21,7 +21,7 @@ import chartData from './chart-data/total-growth-bar-chart';
 const status = [
     {
         value: 'today',
-        label: 'Today'
+        label: 'Hoje'
     },
     {
         value: 'month',
@@ -100,10 +100,10 @@ const TotalGrowthBarChart = ({ isLoading }) => {
                                 <Grid item>
                                     <Grid container direction="column" spacing={1}>
                                         <Grid item>
-                                            <Typography variant="subtitle2">Total Growth</Typography>
+                                            <Typography variant="subtitle2">Crescimento Total</Typography>
                                         </Grid>
                                         <Grid item>
-                                            <Typography variant="h3">$2,324.00</Typography>
+                                            <Typography variant="h3">99999</Typography>
                                         </Grid>
                                     </Grid>
                                 </Grid>
