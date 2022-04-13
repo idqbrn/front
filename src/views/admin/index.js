@@ -18,7 +18,7 @@ function Admin() {
     const [deseaseOption] = useState(deseases[0]);
     const [stateOption] = useState(brStates[0]);
     return (
-        <MainCard title="Admin">
+        <MainCard title="DADOS SANITÁRIOS">
             <div style={{ display: 'flex', paddingBottom: 10 }}>
                 <div style={{ display: 'flex' }}>
                     <Autocomplete

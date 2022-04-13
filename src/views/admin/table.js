@@ -32,11 +32,11 @@ function createData([desease, state, city, cases]) {
 }
 
 const rows = [
-    createData(['Frozen yoghurt', 159, 6.0, 24]),
-    createData(['Ice cream sandwich', 237, 9.0, 37]),
-    createData(['Eclair', 262, 16.0, 24]),
-    createData(['Cupcake', 305, 3.7, 67]),
-    createData(['Gingerbread', 356, 16.0, 49])
+    createData(['Covid', 'RJ', 'Rio de Janeiro', 156]),
+    createData(['Covid', 'RJ', 'Niterói', 95]),
+    createData(['Covid', 'SP', 'São Paulo', 223]),
+    createData(['Dengue', 'MG', 'Juiz de Fora', 67]),
+    createData(['Dengue', 'AM', 'Manaus', 49])
 ];
 
 export default function SearchTable() {
@@ -48,7 +48,7 @@ export default function SearchTable() {
                         <StyledTableCell>Doença</StyledTableCell>
                         <StyledTableCell align="right">Estado</StyledTableCell>
                         <StyledTableCell align="right">Cidade</StyledTableCell>
-                        <StyledTableCell align="right">Número de casos</StyledTableCell>
+                        <StyledTableCell align="right">Total de casos</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
