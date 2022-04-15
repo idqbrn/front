@@ -119,7 +119,8 @@ function Map() {
 
                                     if (typeof heatmap === 'object') heatmap.setData([]);
 
-                                    heatmap.setMap(map);
+                                    // if (typeof heatmap === 'object')
+                                    heatmap.setData([]);
 
                                     for (let i = 0; i < 100; i += 1) {
                                         fakeData?.push(

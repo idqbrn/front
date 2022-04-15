@@ -6,15 +6,78 @@ import MainCard from 'ui-component/cards/MainCard';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
-const Admin = () => (
-    <MainCard title="Admin">
-        <Typography variant="body2">
-            Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie magna alissa. Ut enif
-            ad minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in
-            reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa
-            qui officiate descent molls anim id est labours.
-        </Typography>
-    </MainCard>
-);
+function Admin() {
+    /* const [deseaseOption, setDesease] = useState(deseases[0]);
+    const [stateOption, setState] = useState(brStates[0]); */
+    const [deseaseOption] = useState(deseases[0]);
+    const [stateOption] = useState(brStates[0]);
+    return (
+        <MainCard title="DADOS SANITÁRIOS">
+            <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex' }}>
+                        <Autocomplete
+                            id="desease_select"
+                            options={deseases}
+                            autoComplete
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Doença" />}
+                            sx={{ width: 150 }}
+                            value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption)}
+                            /* onChange={async (option) => {
+                                console.log('deseases');
+                                const op = option.currentTarget.getAttribute('data-option-index');
+                                console.log('option: ', op);
+
+                                if (op !== deseaseOption) {
+                                    setDesease(op);
+                                    console.log('deseaseOption: ', deseaseOption);
+                                }
+                            }} */
+                        />
+                    </div>
+                    <div style={{ display: 'flex' }}>
+                        <Autocomplete
+                            id="state_select"
+                            options={brStates}
+                            autoComplete
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Estado" />}
+                            sx={{ width: 150 }}
+                            value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
+                            /* onChange={async (option) => {
+                                console.log('states');
+                                const op = option.currentTarget.getAttribute('data-option-index');
+                                console.log('option: ', op);
+
+                                if (op !== stateOption) {
+                                    setState(op);
+                                    console.log('stateOption: ', stateOption);
+                                }
+                            }} */
+                        />
+                    </div>
+                    <Button variant="contained" color="primary">
+                        Buscar
+                    </Button>
+                </div>
+                <div style={{ display: 'flex' }}>
+                    <Button variant="contained" color="primary">
+                        Criar
+                    </Button>
+                    <Button variant="contained" color="primary">
+                        Atualizar
+                    </Button>
+                    <Button variant="contained" color="primary">
+                        Deletar
+                    </Button>
+                </div>
+            </div>
+            <div style={{ display: 'flex' }}>
+                <SearchTable />
+            </div>
+        </MainCard>
+    );
+}
 
 export default Admin;
