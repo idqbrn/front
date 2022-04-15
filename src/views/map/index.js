@@ -5,11 +5,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import brStates from './brStates';
 import { deseases, desease1 } from './deseases/desease1';
 import JsonLatLng from './LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from './LocalLatLng/vecCityState';
+import brazilBorders from './LocalLatLng/brazil_borders.json';
 
 // ==============================|| MAP PAGE ||============================== //
 
@@ -46,6 +47,50 @@ function Map() {
         []
     );
 
+    const [brazilBordersLatLng, setBrazilBorders] = useState([]);
+
+    useEffect(() => {
+        // Should not ever set state during rendering, so do this in useEffect instead.
+        let i = 0;
+        let lat = 0;
+        let lng = 0;
+        let coord = 0;
+        let count = 0;
+        console.log('entrando');
+        for (coord = brazilBorders[0].coordinates.length - 1; coord < brazilBorders[0].coordinates.length; coord += 1) {
+            for (i = 0; i < brazilBorders[0].coordinates[coord][0].length; i += 1, count += 1) {
+                lat = brazilBorders[0].coordinates[coord][0][i][1];
+                lng = brazilBorders[0].coordinates[coord][0][i][0];
+                /* setBrazilBorders((oldArray) => [
+                    ...oldArray,
+                    {
+                        lat,
+                        lng
+                    }
+                ]); */
+
+                brazilBordersLatLng.push({ lat, lng });
+            }
+            console.log('length ', count);
+            // if (count >= 100) { break; }
+        }
+        /*
+        brazilBordersLatLng.push({ lat: 89.9999, lng: 89.9999 });
+        brazilBordersLatLng.push({ lat: 89.9999, lng: -89.9999 });
+        brazilBordersLatLng.push({ lat: -89.9999, lng: -89.9999 });
+        brazilBordersLatLng.push({ lat: -89.9999, lng: 89.9999 });
+
+        brazilBordersLatLng.push({ lat: 89.9999, lng: 90.0001 });
+        brazilBordersLatLng.push({ lat: 89.9999, lng: -90.0001 });
+        brazilBordersLatLng.push({ lat: -89.9999, lng: -90.0001 });
+        brazilBordersLatLng.push({ lat: -89.9999, lng: 90.0001 }); */
+
+        console.log('saí');
+    }, [brazilBordersLatLng]);
+
+    let brazilBorderPolygon = [];
+    let worldBorderPolygon = [];
+
     const fakeData = [];
 
     const [map, setMap] = React.useState(null);
@@ -62,15 +107,44 @@ function Map() {
         setMap(map);
 
         heatmap = new window.google.maps.visualization.HeatmapLayer();
-        // heatmap.setMap(map);
-
-        /* for (let i = 0; i < 100; i += 1) {
-            fakeData?.push(new window.google.maps.LatLng(desease1[deseaseOption][i].lat, desease1[deseaseOption][i].lng));
-        } */
 
         heatmap.setData(fakeData);
         heatmap.setOptions({ radius: 8, map, data: fakeData });
         setHeatmap(heatmap);
+
+        brazilBorderPolygon = new window.google.maps.Polygon({
+            paths: brazilBordersLatLng,
+            strokeColor: '#000000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FFFFFF',
+            fillOpacity: 0.1,
+            map
+        });
+
+        worldBorderPolygon = new window.google.maps.Polygon({
+            paths: [
+                [
+                    { lat: 89.9999, lng: 89.9999 },
+                    { lat: 89.9999, lng: -89.9999 },
+                    { lat: -89.9999, lng: -89.9999 },
+                    { lat: -89.9999, lng: 89.9999 }
+                ],
+                [
+                    { lat: 89.9999, lng: 90.0001 },
+                    { lat: 89.9999, lng: -90.0001 },
+                    { lat: -89.9999, lng: -90.0001 },
+                    { lat: -89.9999, lng: 90.0001 }
+                ],
+                brazilBordersLatLng
+            ],
+            strokeColor: '#000000',
+            strokeOpacity: 0,
+            strokeWeight: 2,
+            fillColor: '#000000',
+            fillOpacity: 0.35,
+            map
+        });
     });
 
     const onUnmount = React.useCallback(() => {
