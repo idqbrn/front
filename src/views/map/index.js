@@ -5,11 +5,12 @@ import Autocomplete from '@mui/material/Autocomplete';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import brStates from './brStates';
 import { deseases, desease1 } from './deseases/desease1';
 import JsonLatLng from './LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from './LocalLatLng/vecCityState';
+import brazilBorders from './LocalLatLng/brazil_borders.json';
 
 // ==============================|| MAP PAGE ||============================== //
 
@@ -19,9 +20,22 @@ function LatLngToCenter(local) {
 
 function Map() {
     const containerStyle = {
-        width: '500px',
+        /* width: '500px',
+        height: '500px' */
+        width: '100%',
         height: '500px'
     };
+
+    /* const brazilBounds = [
+        {
+            lat: -70.0,
+            lng: -100.0
+        },
+        {
+            lat: 70.0,
+            lng: 100.0
+        }
+    ]; */
 
     const [centerOption, setCenter] = useState(brStates[0].center);
 
@@ -46,6 +60,23 @@ function Map() {
         []
     );
 
+    const [brazilBordersLatLng] = useState([]);
+
+    useEffect(() => {
+        // Should not ever set state during rendering, so do this in useEffect instead.
+        let i = 0;
+        let coord = 0;
+        for (coord = brazilBorders[0].coordinates.length - 1; coord < brazilBorders[0].coordinates.length; coord += 1) {
+            for (i = 0; i < brazilBorders[0].coordinates[coord][0].length; i += 1) {
+                /* setBrazilBorders((oldArray) => [ ...oldArray, { lat, lng } ]); */
+                brazilBordersLatLng.push({
+                    lat: brazilBorders[0].coordinates[coord][0][i][1],
+                    lng: brazilBorders[0].coordinates[coord][0][i][0]
+                });
+            }
+        }
+    }, [brazilBordersLatLng]);
+
     const fakeData = [];
 
     const [map, setMap] = React.useState(null);
@@ -62,15 +93,33 @@ function Map() {
         setMap(map);
 
         heatmap = new window.google.maps.visualization.HeatmapLayer();
-        // heatmap.setMap(map);
-
-        /* for (let i = 0; i < 100; i += 1) {
-            fakeData?.push(new window.google.maps.LatLng(desease1[deseaseOption][i].lat, desease1[deseaseOption][i].lng));
-        } */
 
         heatmap.setData(fakeData);
         heatmap.setOptions({ radius: 8, map, data: fakeData });
         setHeatmap(heatmap);
+
+        const worldBorderPolygon = new window.google.maps.Polygon({
+            paths: [
+                [
+                    { lat: -89.9999, lng: 179.9999 },
+                    { lat: -89.9999, lng: 89.9999 },
+                    { lat: -89.9999, lng: -89.9999 },
+                    { lat: -89.9999, lng: -179.9999 },
+                    { lat: 89.9999, lng: -179.9999 },
+                    { lat: 89.9999, lng: -89.9999 },
+                    { lat: 89.9999, lng: 89.9999 },
+                    { lat: 89.9999, lng: 179.9999 }
+                ],
+                brazilBordersLatLng
+            ],
+            strokeColor: '#000000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#000000',
+            fillOpacity: 0.5,
+            map
+        });
+        worldBorderPolygon.setMap(map);
     });
 
     const onUnmount = React.useCallback(() => {
@@ -81,7 +130,7 @@ function Map() {
 
     return isLoaded ? (
         <MainCard title="Map">
-            <div style={{ flexDirection: 'row', display: 'flex' }}>
+            <div>
                 <div style={{ display: 'flex' }}>
                     <GoogleMap
                         mapContainerStyle={containerStyle}
@@ -89,106 +138,112 @@ function Map() {
                         zoom={zoomMap}
                         onLoad={onLoad}
                         onUnmount={onUnmount}
-                    />
-                </div>
-                <div style={{ flexDirection: 'column', display: 'flex' }}>
-                    <div style={{ display: 'flex', padding: 10 }}>
-                        <Autocomplete
-                            id="center_select"
-                            options={brStates}
-                            autoComplete
-                            includeInputInList
-                            renderInput={(params) => <TextField {...params} label="Local" />}
-                            sx={{ width: 300 }}
-                            value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === centerOption
-                            )}
-                            onChange={async (option) => {
-                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+                    >
+                        <div style={{ flexDirection: 'column', display: 'flex' }}>
+                            <div style={{ display: 'flex', padding: 8, paddingTop: 12 }}>
+                                <Autocomplete
+                                    id="center_select"
+                                    options={brStates}
+                                    autoComplete
+                                    includeInputInList
+                                    renderInput={(params) => <TextField {...params} label="Local" />}
+                                    sx={{ width: 300 }}
+                                    value={brStates.find(
+                                        (option) =>
+                                            brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === centerOption
+                                    )}
+                                    onChange={async (option) => {
+                                        const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
 
-                                setState(op);
-                                if (op >= 0) {
-                                    const local = brStates[op];
+                                        setState(op);
+                                        if (op >= 0) {
+                                            const local = brStates[op];
 
-                                    map.setZoom(brStates[0].zoom);
+                                            map.setZoom(brStates[0].zoom);
 
-                                    await sleep(1000);
-                                    setCenter(local.center);
-                                    map.panTo(local.center);
+                                            await sleep(1000);
+                                            setCenter(local.center);
+                                            map.panTo(local.center);
 
-                                    if (local.zoom > brStates[0].zoom) map.setZoom(local.zoom);
+                                            if (local.zoom > brStates[0].zoom) map.setZoom(local.zoom);
 
-                                    const cities = [];
+                                            const cities = [];
 
-                                    // eslint-disable-next-line no-plusplus
-                                    for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++) cities.push(JsonLatLng[i].nome);
+                                            // eslint-disable-next-line no-plusplus
+                                            for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++)
+                                                cities.push(JsonLatLng[i].nome);
 
-                                    setCities(cities);
-                                }
-                            }}
-                        />
-                    </div>
-                    <div style={{ display: 'flex', padding: 10 }}>
-                        <Autocomplete
-                            id="city_select"
-                            options={citiesState}
-                            autoComplete
-                            includeInputInList
-                            renderInput={(params) => <TextField {...params} label="Cidade" />}
-                            sx={{ width: 300 }}
-                            value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
-                            )}
-                            onChange={async (option) => {
-                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
-                                if (op >= 0) {
-                                    const cityNum = op + vecPosCityState[stateOption];
+                                            setCities(cities);
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', padding: 8 }}>
+                                <Autocomplete
+                                    id="city_select"
+                                    options={citiesState}
+                                    autoComplete
+                                    includeInputInList
+                                    renderInput={(params) => <TextField {...params} label="Cidade" />}
+                                    sx={{ width: 300 }}
+                                    value={brStates.find(
+                                        (option) =>
+                                            brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
+                                    )}
+                                    onChange={async (option) => {
+                                        const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+                                        if (op >= 0) {
+                                            const cityNum = op + vecPosCityState[stateOption];
 
-                                    setCity(cityNum);
+                                            setCity(cityNum);
 
-                                    const local = JsonLatLng[cityNum];
+                                            const local = JsonLatLng[cityNum];
 
-                                    map.setZoom(brStates[stateOption].zoom);
+                                            map.setZoom(brStates[stateOption].zoom);
 
-                                    await sleep(1000);
+                                            await sleep(1000);
 
-                                    const localCenter = LatLngToCenter(local);
-                                    setCenter(localCenter);
-                                    map.panTo(localCenter);
+                                            const localCenter = LatLngToCenter(local);
+                                            setCenter(localCenter);
+                                            map.panTo(localCenter);
 
-                                    map.setZoom(8);
-                                }
-                            }}
-                        />
-                    </div>
-                    <div style={{ display: 'flex', padding: 10 }}>
-                        <Autocomplete
-                            id="desease_select"
-                            options={deseases}
-                            autoComplete
-                            includeInputInList
-                            renderInput={(params) => <TextField {...params} label="Doença" />}
-                            sx={{ width: 300 }}
-                            value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption)}
-                            onChange={async (option) => {
-                                const op = parseInt(option.currentTarget.getAttribute('data-option-index'), 10);
-                                setDesease(op);
-                                heatmap.setMap(null);
+                                            map.setZoom(8);
+                                        }
+                                    }}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', padding: 8 }}>
+                                <Autocomplete
+                                    id="desease_select"
+                                    options={deseases}
+                                    autoComplete
+                                    includeInputInList
+                                    renderInput={(params) => <TextField {...params} label="Doença" />}
+                                    sx={{ width: 300 }}
+                                    value={deseases.find(
+                                        (option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption
+                                    )}
+                                    onChange={async (option) => {
+                                        const op = parseInt(option.currentTarget.getAttribute('data-option-index'), 10);
+                                        setDesease(op);
+                                        heatmap.setMap(null);
 
-                                if (typeof heatmap === 'object') heatmap.setData([]);
+                                        if (typeof heatmap === 'object') heatmap.setData([]);
 
-                                heatmap.setMap(map);
+                                        heatmap.setMap(map);
 
-                                for (let i = 0; i < 100; i += 1) {
-                                    fakeData?.push(new window.google.maps.LatLng(desease1[op][i].lat, desease1[op][i].lng));
-                                }
+                                        for (let i = 0; i < 100; i += 1) {
+                                            fakeData?.push(new window.google.maps.LatLng(desease1[op][i].lat, desease1[op][i].lng));
+                                        }
 
-                                heatmap.setData(fakeData);
-                                heatmap.setOptions({ radius: 10, map, data: fakeData });
-                                setHeatmap(heatmap);
-                            }}
-                        />
-                    </div>
+                                        heatmap.setData(fakeData);
+                                        heatmap.setOptions({ radius: 10, map, data: fakeData });
+                                        setHeatmap(heatmap);
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </GoogleMap>
                 </div>
             </div>
         </MainCard>
