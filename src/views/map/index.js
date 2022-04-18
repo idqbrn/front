@@ -47,7 +47,7 @@ function Map() {
         []
     );
 
-    const [brazilBordersLatLng, setBrazilBorders] = useState([]);
+    const [brazilBordersLatLng] = useState([]);
 
     useEffect(() => {
         // Should not ever set state during rendering, so do this in useEffect instead.
@@ -88,9 +88,6 @@ function Map() {
         console.log('saí');
     }, [brazilBordersLatLng]);
 
-    let brazilBorderPolygon = [];
-    let worldBorderPolygon = [];
-
     const fakeData = [];
 
     const [map, setMap] = React.useState(null);
@@ -112,39 +109,37 @@ function Map() {
         heatmap.setOptions({ radius: 8, map, data: fakeData });
         setHeatmap(heatmap);
 
-        brazilBorderPolygon = new window.google.maps.Polygon({
+        /* const brazilBorderPolygon = new window.google.maps.Polygon({
             paths: brazilBordersLatLng,
             strokeColor: '#000000',
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: '#FFFFFF',
-            fillOpacity: 0.1,
-            map
-        });
+            fillOpacity: 0.1
+        }); */
 
-        worldBorderPolygon = new window.google.maps.Polygon({
+        const worldBorderPolygon = new window.google.maps.Polygon({
             paths: [
                 [
-                    { lat: 89.9999, lng: 89.9999 },
-                    { lat: 89.9999, lng: -89.9999 },
+                    { lat: -89.9999, lng: 179.9999 },
+                    { lat: -89.9999, lng: 89.9999 },
                     { lat: -89.9999, lng: -89.9999 },
-                    { lat: -89.9999, lng: 89.9999 }
-                ],
-                [
-                    { lat: 89.9999, lng: 90.0001 },
-                    { lat: 89.9999, lng: -90.0001 },
-                    { lat: -89.9999, lng: -90.0001 },
-                    { lat: -89.9999, lng: 90.0001 }
+                    { lat: -89.9999, lng: -179.9999 },
+                    { lat: 89.9999, lng: -179.9999 },
+                    { lat: 89.9999, lng: -89.9999 },
+                    { lat: 89.9999, lng: 89.9999 },
+                    { lat: 89.9999, lng: 179.9999 }
                 ],
                 brazilBordersLatLng
             ],
             strokeColor: '#000000',
-            strokeOpacity: 0,
+            strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: '#000000',
-            fillOpacity: 0.35,
+            fillOpacity: 0.5,
             map
         });
+        worldBorderPolygon.setMap(map);
     });
 
     const onUnmount = React.useCallback(() => {
