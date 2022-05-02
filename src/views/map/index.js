@@ -54,7 +54,7 @@ function Map() {
     const { isLoaded } = useJsApiLoader(
         {
             id: 'google-map-script',
-            googleMapsApiKey: 'AIzaSyASHNbe6Qnit7i2NowcVkyaYF89flBmNbw',
+            googleMapsApiKey: 'AIzaSyDgcpo50Ah0iKbSA2CfE7ExdaBHh1hBDUM',
             libraries
         },
         []
