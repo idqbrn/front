@@ -124,19 +124,24 @@ function Map() {
             componentRestrictions: { country: 'br' }
         };
 
+        // This code gets the Search Input Text and rearrange the map to it's location
         const input = document.getElementById('searchTextField');
         const autocomplete = new window.google.maps.places.Autocomplete(input, autocompleteOptions);
+
         window.google.maps.event.addListener(autocomplete, 'place_changed', () => {
             const place = autocomplete.getPlace();
-            document.getElementById('local').value = place.name;
-            const lat = place.geometry.location.lat();
-            document.getElementById('localLat').value = lat;
-            const lng = place.geometry.location.lng();
-            document.getElementById('localLng').value = lng;
-            setCenter({ lat, lng });
-            document.getElementById('viewport').value = place.geometry.viewport;
-            console.log('place.geometry.viewport: ', place.geometry.viewport);
-            map.fitBounds(place.geometry.viewport);
+            // Checks if it's a valid location
+            if (place.geometry) {
+                document.getElementById('local').value = place.name;
+                const lat = place.geometry.location.lat();
+                document.getElementById('localLat').value = lat;
+                const lng = place.geometry.location.lng();
+                document.getElementById('localLng').value = lng;
+                setCenter({ lat, lng });
+                document.getElementById('viewport').value = place.geometry.viewport;
+                console.log('place.geometry.viewport: ', place.geometry.viewport);
+                map.fitBounds(place.geometry.viewport);
+            }
         });
     });
 
