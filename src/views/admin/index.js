@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { deseases } from '../map/deseases/desease1';
 import brStates from '../map/brStates';
 import SearchTable from './table';
-import ModalCreate from './ModalCreate';
+import OpenModal from './modals/OpenModal';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
@@ -23,10 +23,10 @@ function Admin() {
     return (
         <MainCard title="DADOS SANITÁRIOS">
             <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
-                <ModalCreate value="Criar" />
-                <ModalCreate value="Atualizar" />
-                <ModalCreate value="Deletar" />
-                <ModalCreate value="Upload CSV" />
+                <OpenModal value="Criar" />
+                <OpenModal value="Atualizar" />
+                <OpenModal value="Deletar" />
+                <OpenModal value="Upload CSV" />
                 <div style={{ display: 'flex' }}>
                     <div style={{ display: 'flex' }}>
                         <Autocomplete

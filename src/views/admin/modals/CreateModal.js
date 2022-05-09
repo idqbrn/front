@@ -3,6 +3,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 
+import { useForm } from 'react-hook-form';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -46,7 +48,7 @@ function ChildModal() {
     );
 }
 
-export default function NestedModal(text) {
+export default function NestedModal() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
         setOpen(true);
@@ -55,18 +57,16 @@ export default function NestedModal(text) {
         setOpen(false);
     };
 
-    const { value } = text;
-
-    console.log('value:', value);
+    console.log('Create');
 
     return (
         <div style={{ display: 'flex' }}>
             <Button variant="contained" color="primary" onClick={handleOpen}>
-                {value}
+                Create
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
                 <Box sx={{ ...style, width: 400 }}>
-                    <h2 id="parent-modal-title">Text in a modal</h2>
+                    <h2 id="parent-modal-title">Create - Text in a modal</h2>
                     <p id="parent-modal-description">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
                     <ChildModal />
                 </Box>
