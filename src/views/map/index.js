@@ -7,9 +7,9 @@ import MainCard from 'ui-component/cards/MainCard';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import React, { useState, useEffect } from 'react';
 import brStates from './brStates';
-import { deseases, desease1 } from './deseases/desease1';
+import { diseases, disease1 } from './diseases/disease1';
 import JsonLatLng from './LocalLatLng/states_latitudes_flat_name.json';
-import { /* vecNumCityState, */ vecPosCityState } from './LocalLatLng/vecCityState';
+import { /* vecNumCityState, */ vecPosCityState, CitiesFromState } from './LocalLatLng/vecCityState';
 import brazilBorders from './LocalLatLng/brazil_borders.json';
 
 // ==============================|| MAP PAGE ||============================== //
@@ -20,22 +20,9 @@ function LatLngToCenter(local) {
 
 function Map() {
     const containerStyle = {
-        /* width: '500px',
-        height: '500px' */
         width: '100%',
         height: '500px'
     };
-
-    /* const brazilBounds = [
-        {
-            lat: -70.0,
-            lng: -100.0
-        },
-        {
-            lat: 70.0,
-            lng: 100.0
-        }
-    ]; */
 
     const [centerOption, setCenter] = useState(brStates[0].center);
 
@@ -45,7 +32,7 @@ function Map() {
 
     const [citiesState, setCities] = useState([]);
 
-    const [deseaseOption, setDesease] = useState(deseases[0].value);
+    const [diseaseOption, setDesease] = useState(diseases[0].value);
 
     const [zoomMap] = useState(1);
 
@@ -83,44 +70,46 @@ function Map() {
 
     const [heatmap, setHeatmap] = React.useState(null);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const onLoad = React.useCallback((map, heatmap) => {
-        const bounds = new window.google.maps.LatLngBounds();
-        map.fitBounds(bounds);
-        map.panTo(brStates[0].center);
-        map.setMapTypeId('hybrid');
-        map.setZoom(zoomMap);
-        setMap(map);
+    const onLoad = React.useCallback(
+        (map, heatmap) => {
+            const bounds = new window.google.maps.LatLngBounds();
+            map.fitBounds(bounds);
+            map.panTo(brStates[0].center);
+            map.setMapTypeId('hybrid');
+            map.setZoom(zoomMap);
+            setMap(map);
 
-        heatmap = new window.google.maps.visualization.HeatmapLayer();
+            heatmap = new window.google.maps.visualization.HeatmapLayer();
 
-        heatmap.setData(fakeData);
-        heatmap.setOptions({ radius: 8, map, data: fakeData });
-        setHeatmap(heatmap);
+            heatmap.setData(fakeData);
+            heatmap.setOptions({ radius: 8, map, data: fakeData });
+            setHeatmap(heatmap);
 
-        const worldBorderPolygon = new window.google.maps.Polygon({
-            paths: [
-                [
-                    { lat: -89.9999, lng: 179.9999 },
-                    { lat: -89.9999, lng: 89.9999 },
-                    { lat: -89.9999, lng: -89.9999 },
-                    { lat: -89.9999, lng: -179.9999 },
-                    { lat: 89.9999, lng: -179.9999 },
-                    { lat: 89.9999, lng: -89.9999 },
-                    { lat: 89.9999, lng: 89.9999 },
-                    { lat: 89.9999, lng: 179.9999 }
+            const worldBorderPolygon = new window.google.maps.Polygon({
+                paths: [
+                    [
+                        { lat: -89.9999, lng: 179.9999 },
+                        { lat: -89.9999, lng: 89.9999 },
+                        { lat: -89.9999, lng: -89.9999 },
+                        { lat: -89.9999, lng: -179.9999 },
+                        { lat: 89.9999, lng: -179.9999 },
+                        { lat: 89.9999, lng: -89.9999 },
+                        { lat: 89.9999, lng: 89.9999 },
+                        { lat: 89.9999, lng: 179.9999 }
+                    ],
+                    brazilBordersLatLng
                 ],
-                brazilBordersLatLng
-            ],
-            strokeColor: '#000000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#000000',
-            fillOpacity: 0.5,
-            map
-        });
-        worldBorderPolygon.setMap(map);
-    });
+                strokeColor: '#000000',
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: '#000000',
+                fillOpacity: 0.5,
+                map
+            });
+            worldBorderPolygon.setMap(map);
+        },
+        [brazilBordersLatLng, fakeData, zoomMap]
+    );
 
     const onUnmount = React.useCallback(() => {
         setMap(null);
@@ -167,11 +156,7 @@ function Map() {
 
                                             if (local.zoom > brStates[0].zoom) map.setZoom(local.zoom);
 
-                                            const cities = [];
-
-                                            // eslint-disable-next-line no-plusplus
-                                            for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++)
-                                                cities.push(JsonLatLng[i].nome);
+                                            const cities = CitiesFromState(op);
 
                                             setCities(cities);
                                         }
@@ -214,14 +199,14 @@ function Map() {
                             </div>
                             <div style={{ display: 'flex', padding: 8 }}>
                                 <Autocomplete
-                                    id="desease_select"
-                                    options={deseases}
+                                    id="disease_select"
+                                    options={diseases}
                                     autoComplete
                                     includeInputInList
                                     renderInput={(params) => <TextField {...params} label="Doença" />}
                                     sx={{ width: 300 }}
-                                    value={deseases.find(
-                                        (option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption
+                                    value={diseases.find(
+                                        (option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption
                                     )}
                                     onChange={async (option) => {
                                         const op = parseInt(option.currentTarget.getAttribute('data-option-index'), 10);
@@ -233,7 +218,7 @@ function Map() {
                                         heatmap.setMap(map);
 
                                         for (let i = 0; i < 100; i += 1) {
-                                            fakeData?.push(new window.google.maps.LatLng(desease1[op][i].lat, desease1[op][i].lng));
+                                            fakeData?.push(new window.google.maps.LatLng(disease1[op][i].lat, disease1[op][i].lng));
                                         }
 
                                         heatmap.setData(fakeData);

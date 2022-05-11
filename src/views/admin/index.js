@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 
 // other imports
-import { deseases } from '../map/deseases/desease1';
+import { diseases } from '../map/diseases/disease1';
 import brStates from '../map/brStates';
 import SearchTable from './table';
 import OpenModal from './modals/OpenModal';
@@ -16,9 +16,9 @@ import OpenModal from './modals/OpenModal';
 // ==============================|| SAMPLE PAGE ||============================== //
 
 function Admin() {
-    /* const [deseaseOption, setDesease] = useState(deseases[0]);
+    /* const [diseaseOption, setDesease] = useState(diseases[0]);
     const [stateOption, setState] = useState(brStates[0]); */
-    const [deseaseOption] = useState(deseases[0]);
+    const [diseaseOption] = useState(diseases[0]);
     const [stateOption] = useState(brStates[0]);
     return (
         <MainCard title="DADOS SANITÁRIOS">
@@ -30,21 +30,21 @@ function Admin() {
                 <div style={{ display: 'flex' }}>
                     <div style={{ display: 'flex' }}>
                         <Autocomplete
-                            id="desease_select"
-                            options={deseases}
+                            id="disease_select"
+                            options={diseases}
                             autoComplete
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Doença" />}
                             sx={{ width: 150 }}
-                            value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === deseaseOption)}
+                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
                             /* onChange={async (option) => {
-                                console.log('deseases');
+                                console.log('diseases');
                                 const op = option.currentTarget.getAttribute('data-option-index');
                                 console.log('option: ', op);
 
-                                if (op !== deseaseOption) {
+                                if (op !== diseaseOption) {
                                     setDesease(op);
-                                    console.log('deseaseOption: ', deseaseOption);
+                                    console.log('diseaseOption: ', diseaseOption);
                                 }
                             }} */
                         />
@@ -57,7 +57,7 @@ function Admin() {
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Estado" />}
                             sx={{ width: 150 }}
-                            value={deseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
+                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
                             /* onChange={async (option) => {
                                 console.log('states');
                                 const op = option.currentTarget.getAttribute('data-option-index');

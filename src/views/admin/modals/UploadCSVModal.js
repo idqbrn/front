@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
-import FileUploader from './secondary-functions/FileUploader';
-import { useState } from 'react';
 
 const style = {
     position: 'absolute',
@@ -57,7 +55,6 @@ export default function NestedModal() {
     const handleClose = () => {
         setOpen(false);
     };
-    const [selectedFile, setSelectedFile] = useState(null);
 
     console.log('UploadCSVModal');
 
@@ -70,7 +67,12 @@ export default function NestedModal() {
                 <Box sx={{ ...style, width: 400 }}>
                     <h2 id="parent-modal-title">UploadCSVModal - Text in a modal</h2>
                     <p id="parent-modal-description">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                    <FileUploader onFileSelectSuccess={(file) => setSelectedFile(file)} onFileSelectError={({ error }) => alert(error)} />
+                    <label htmlFor="contained-button-file">
+                        <Input accept=".csv" id="contained-button-file" type="file" />
+                        <Button variant="contained" component="span">
+                            Upload
+                        </Button>
+                    </label>
                     <ChildModal />
                 </Box>
             </Modal>

@@ -2,8 +2,13 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import { useState } from 'react';
 
-import { useForm } from 'react-hook-form';
+import { diseases } from '../../map/diseases/disease1';
+import brStates from '../../map/brStates';
+import { vecPosCityState, CitiesFromState } from '../../map/LocalLatLng/vecCityState';
 
 const style = {
     position: 'absolute',
@@ -57,6 +62,14 @@ export default function NestedModal() {
         setOpen(false);
     };
 
+    const [stateOption, setState] = useState(0);
+
+    const [cityOption, setCity] = useState(0);
+
+    const [citiesState, setCities] = useState([]);
+
+    const [diseaseOption, setDisease] = useState(diseases[0].value);
+
     console.log('Create');
 
     return (
@@ -65,9 +78,72 @@ export default function NestedModal() {
                 Create
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
-                <Box sx={{ ...style, width: 400 }}>
-                    <h2 id="parent-modal-title">Create - Text in a modal</h2>
-                    <p id="parent-modal-description">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+                <Box sx={{ ...style, width: '80%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
+                    <h2 id="parent-modal-title">Create</h2>
+                    <p id="parent-modal-description">Insira os dados para a inserção dos casos no banco de dados:</p>
+                    <div style={{ flexDirection: 'column', display: 'flex' }}>
+                        <Autocomplete
+                            disablePortal
+                            id="autocomplete-diseases"
+                            autoComplete
+                            options={diseases}
+                            sx={{ width: '100%' }}
+                            renderInput={(params) => <TextField {...params} label="Nome da Doença" />}
+                            value={brStates.find((option) => option === diseaseOption)}
+                            onChange={async (option) => {
+                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+                                if (op > 0) {
+                                    setDisease(op);
+                                }
+                            }}
+                        />
+                        <Autocomplete
+                            disablePortal
+                            id="autocomplete-states"
+                            autoComplete
+                            includeInputInList
+                            options={brStates}
+                            sx={{ width: '100%' }}
+                            renderInput={(params) => <TextField {...params} label="Estado" />}
+                            value={brStates.find(
+                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === stateOption
+                            )}
+                            onChange={async (option) => {
+                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+                                setState(op);
+                                if (op > 0) {
+                                    const cities = CitiesFromState(stateOption);
+                                    setCities(cities);
+                                }
+                            }}
+                        />
+                        <Autocomplete
+                            disablePortal
+                            id="autocomplete-cities"
+                            autoComplete
+                            includeInputInList
+                            options={citiesState}
+                            sx={{ width: '100%' }}
+                            renderInput={(params) => <TextField {...params} label="Cidade" />}
+                            value={brStates.find(
+                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
+                            )}
+                            onChange={async (option) => {
+                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
+                                if (op >= 0) {
+                                    const cityNum = op + vecPosCityState[stateOption];
+
+                                    setCity(cityNum);
+                                }
+                            }}
+                        />
+                        <TextField id="input-quantidade" label="Quantidade" type="number" />
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" component="span">
+                                Adicionar
+                            </Button>
+                        </label>
+                    </div>
                     <ChildModal />
                 </Box>
             </Modal>

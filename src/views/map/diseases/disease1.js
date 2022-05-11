@@ -1,9 +1,9 @@
-const deseases = [
+const diseases = [
     { value: 0, label: 'Covid' },
     { value: 1, label: 'Dengue' }
 ];
 
-const desease1 = [
+const disease1 = [
     [
         { lat: -10.0, lng: -58.0 },
         { lat: -10.1, lng: -57.95 },
@@ -211,4 +211,4 @@ const desease1 = [
     ]
 ];
 
-export { deseases, desease1 };
+export { diseases, disease1 };
