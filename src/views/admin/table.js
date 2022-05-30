@@ -53,7 +53,7 @@ export default function SearchTable() {
                 </TableHead>
                 <TableBody>
                     {rows.map((row) => (
-                        <StyledTableRow key={row.desease}>
+                        <StyledTableRow key={(row.desease, row.state, row.city)}>
                             <StyledTableCell component="th" scope="row">
                                 {row.desease}
                             </StyledTableCell>
