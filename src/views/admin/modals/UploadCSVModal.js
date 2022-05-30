@@ -67,12 +67,10 @@ export default function NestedModal() {
                 <Box sx={{ ...style, width: 400 }}>
                     <h2 id="parent-modal-title">UploadCSVModal - Text in a modal</h2>
                     <p id="parent-modal-description">Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
-                    <label htmlFor="contained-button-file">
-                        <Input accept=".csv" id="contained-button-file" type="file" />
-                        <Button variant="contained" component="span">
-                            Upload
-                        </Button>
-                    </label>
+                    <Input accept=".csv" id="contained-button-file" type="file" />
+                    <Button variant="contained" component="span">
+                        Upload
+                    </Button>
                     <ChildModal />
                 </Box>
             </Modal>

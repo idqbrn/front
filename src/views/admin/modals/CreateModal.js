@@ -138,11 +138,10 @@ export default function NestedModal() {
                             }}
                         />
                         <TextField id="input-quantidade" label="Quantidade" type="number" />
-                        <label htmlFor="contained-button-file">
-                            <Button variant="contained" component="span">
-                                Adicionar
-                            </Button>
-                        </label>
+
+                        <Button variant="contained" component="span">
+                            Adicionar
+                        </Button>
                     </div>
                     <ChildModal />
                 </Box>
