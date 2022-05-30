@@ -21,12 +21,33 @@ import brazilBorders from './LocalLatLng/brazil_borders.json';
 } */
 
 function Map() {
+    /* class K extends Component {
+        UNSAFE_componentWillMount() {
+            getData();
+        };
+
+        this.getData() {
+            // create a new XMLHttpRequest
+            const xhr = new XMLHttpRequest();
+
+            // get a callback when the server responds
+            xhr.addEventListener('load', () => {
+                // update the state of the component with the result here
+                console.log(xhr.responseText);
+            });
+            // open the request with the verb and the url
+            xhr.open('GET', 'https://dog.ceo/api/breeds/list/all');
+            // send the request
+            xhr.send();
+        }
+    } */
+
     const containerStyle = {
         width: '100%',
         height: '500px'
     };
 
-    const brazilBounds = [
+    /* const brazilBounds = [
         {
             lat: -70.0,
             lng: -100.0
@@ -35,7 +56,7 @@ function Map() {
             lat: 70.0,
             lng: 100.0
         }
-    ];
+    ]; */
 
     const [centerOption, setCenter] = useState(brStates[0].center);
 
@@ -90,7 +111,7 @@ function Map() {
         map.panTo(brStates[0].center);
         map.setMapTypeId('hybrid');
         map.setZoom(zoomMap);
-        map.setOptions({ streetViewControl: false, zoom: 1, bounds: brazilBounds });
+        map.setOptions({ streetViewControl: false, zoom: 1 });
         setMap(map);
 
         heatmap = new window.google.maps.visualization.HeatmapLayer();
@@ -145,6 +166,8 @@ function Map() {
                 map.fitBounds(place.geometry.viewport);
             }
         });
+
+        // Set the diseases options
     });
 
     const onUnmount = React.useCallback(() => {
