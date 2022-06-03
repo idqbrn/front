@@ -14,6 +14,7 @@ import SearchTable from './table';
 import OpenModal from './modals/OpenModal';
 import JsonLatLng from '../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../map/LocalLatLng/vecCityState';
+import response from './response-test';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
@@ -27,6 +28,25 @@ function Admin() {
 
     // const [deseaseOption, setDesease] = useState(diseases[0].value);
     // const [stateOption] = useState(brStates[0]);
+
+    const requestTableData = (disease, state, city) => {
+        console.log(disease.value);
+        console.log(state.value);
+        console.log(city.value);
+        const x = {};
+        x.disease = 'Covid';
+        x.state = 'São Paulo';
+        x.city = `São Paulo${response.resposta.length}`;
+        x.cases = 100;
+        response.resposta.push(x);
+        console.log(response.resposta);
+        /* const updateDisease = document.getElementById('disease-select');
+        const diseaseValue = updateDisease?.value;
+        if (updateDisease) {
+            updateDisease.value = '';
+            // updateDisease.value = diseaseValue;
+        } */
+    };
 
     return (
         <MainCard title="DADOS SANITÁRIOS">
@@ -166,13 +186,22 @@ function Admin() {
                         />
                     </div>
 
-                    <Button variant="contained" color="primary">
+                    <Button
+                        onClick={() => {
+                            const disease = document.getElementById('disease_select');
+                            const state = document.getElementById('state_select');
+                            const city = document.getElementById('city_select');
+                            requestTableData(disease, state, city);
+                        }}
+                        variant="contained"
+                        color="primary"
+                    >
                         Buscar
                     </Button>
                 </div>
             </div>
             <div style={{ display: 'flex' }}>
-                <SearchTable />
+                <SearchTable onChange={console.log('\nSearchTable CHANGED\n')} />
             </div>
         </MainCard>
     );

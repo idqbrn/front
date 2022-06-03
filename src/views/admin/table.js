@@ -7,6 +7,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import response from './response-test';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -27,7 +29,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }
 }));
 
-function createData([desease, state, city, cases]) {
+/* function createData([desease, state, city, cases]) {
     return { desease, state, city, cases };
 }
 
@@ -37,7 +39,7 @@ const rows = [
     createData(['Covid', 'SP', 'São Paulo', 223]),
     createData(['Dengue', 'MG', 'Juiz de Fora', 67]),
     createData(['Dengue', 'AM', 'Manaus', 49])
-];
+]; */
 
 export default function SearchTable() {
     return (
@@ -52,10 +54,10 @@ export default function SearchTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
-                        <StyledTableRow key={(row.desease, row.state, row.city)}>
+                    {response.resposta.map((row) => (
+                        <StyledTableRow key={(row.disease, row.state, row.city)}>
                             <StyledTableCell component="th" scope="row">
-                                {row.desease}
+                                {row.disease}
                             </StyledTableCell>
                             <StyledTableCell align="right">{row.state}</StyledTableCell>
                             <StyledTableCell align="right">{row.city}</StyledTableCell>
