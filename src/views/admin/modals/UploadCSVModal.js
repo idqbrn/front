@@ -235,12 +235,9 @@ export default function NestedModal() {
             quero = quero.concat(child['diseases_result']);
             lugares = lugares.concat(child['place']);
         }
-        console.log(quero);
-        // send quero and lugares to backend
+        console.log(lugares);
     };
-
     console.log('UploadCSVModal');
-
     return (
         <div style={{ display: 'flex' }}>
             <Button variant="contained" color="primary" onClick={handleOpen}>

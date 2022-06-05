@@ -56,7 +56,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = ({ isLoading }) => {
+const EarningCard = (props) => {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -71,7 +71,7 @@ const EarningCard = ({ isLoading }) => {
 
     return (
         <>
-            {isLoading ? (
+            {props.isLoading ? (
                 <SkeletonEarningCard />
             ) : (
                 <CardWrapper border={false} content={false}>
@@ -144,7 +144,7 @@ const EarningCard = ({ isLoading }) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            99999
+                                            {props.values.total}
                                         </Typography>
                                     </Grid>
                                     <Grid item>
