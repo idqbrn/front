@@ -55,7 +55,7 @@ export default function NestedModal() {
         setOpen(false);
     };
 
-    console.log('Delete');
+    // console.log('Delete');
 
     return (
         <div style={{ display: 'flex' }}>

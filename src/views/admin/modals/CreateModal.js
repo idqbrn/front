@@ -70,7 +70,7 @@ export default function NestedModal() {
 
     const [diseaseOption, setDisease] = useState(diseases[0].value);
 
-    console.log('Create');
+    // console.log('Create');
 
     return (
         <div style={{ display: 'flex' }}>

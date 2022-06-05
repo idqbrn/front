@@ -6,6 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MainCard from 'ui-component/cards/MainCard';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 // other imports
 import { diseases } from '../map/diseases/disease1';
@@ -45,7 +46,24 @@ function Admin() {
         if (updateDisease) {
             updateDisease.value = '';
             // updateDisease.value = diseaseValue;
-        } */
+        } 
+        const updateTable = () => {
+            console.log('updateTable');
+            SearchTable();
+        };
+        document.getElementById('search-button')?.addEventListener('click', updateTable);
+        const diseaseSelect = document.getElementById('disease_select');
+        diseaseSelect.value = diseases[1].label;
+        diseaseSelect.value = diseases[0].label;
+
+         const ev = new Event('change');
+        console.log(diseaseSelect.value);
+        // this.SearchTable.addEventListener("")
+        console.log(diseaseSelect.tdData); */
+    };
+
+    SearchTable.propTypes = {
+        resposta: PropTypes.array.isRequired
     };
 
     return (
@@ -60,6 +78,7 @@ function Admin() {
                         <Autocomplete
                             id="disease_select"
                             options={diseases}
+                            getOptionLabel={(option) => option.label}
                             autoComplete
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Doença" />}
@@ -67,6 +86,7 @@ function Admin() {
                             value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
                             onChange={async (option) => {
                                 console.log('diseases');
+                                console.log(option);
                                 const op = option.currentTarget.getAttribute('data-option-index');
                                 console.log('option: ', op);
 
@@ -134,18 +154,36 @@ function Admin() {
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
                                 setState(op);
+                                setCity(null);
+                                const citySelect = document.getElementById('city_select');
+                                console.log(citySelect);
+                                citySelect.value = 'coe';
+                                console.log(`\ncitySelect.value: ${cityOption}`);
+                                /* if (!cityOption) {
+                                    const ev = new Event('input', { bubbles: true, cancelable: false });
+                                    ev.simulated = true;
+                                    const searchTable = document.getElementById('search-table');
+                                    // searchTable.value = 'Something new';
+                                    searchTable?.dispatchEvent(ev);
+                                } */
                                 const local = brStates[op];
                                 console.log('op: ', op);
+                                if (local) {
+                                    setState(local.center);
 
-                                setState(local.center);
+                                    const cities = [];
 
-                                const cities = [];
+                                    // eslint-disable-next-line no-plusplus
+                                    for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++) cities.push(JsonLatLng[i].nome);
 
-                                // eslint-disable-next-line no-plusplus
-                                for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++) cities.push(JsonLatLng[i].nome);
-
-                                console.log('cities: ', cities);
-                                setCities(cities);
+                                    // console.log('cities: ', cities);
+                                    setCities(cities);
+                                } else {
+                                    setState(null);
+                                    setCities([]);
+                                    citiesState.push('');
+                                    citiesState.pull('');
+                                }
                             }}
                         />
                     </div>
@@ -156,13 +194,15 @@ function Admin() {
                             autoComplete
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Cidade" />}
+                            isOptionEqualToValue={(option, value) => option === value}
                             sx={{ width: 200 }}
                             value={brStates.find(
                                 (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
                             )}
                             onChange={async (option) => {
-                                console.log('CITYoption: ', option);
                                 const op = option.nativeEvent.path[0].getAttribute('data-option-index');
+
+                                // console.log('CITYoption: ', option);
                                 console.log('value: ', document.getElementById('city_select').option);
                                 console.log('op: ', op);
                                 console.log('stateOption: ', stateOption);
@@ -175,9 +215,12 @@ function Admin() {
                                 setCity(cityNum);
 
                                 const local = JsonLatLng[cityNum];
-
-                                console.log('JsonLatLng.UF: ', local.UF);
-                                console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
+                                if (local) {
+                                    console.log('JsonLatLng.UF: ', local.UF);
+                                    console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
+                                } else {
+                                    setCity(NaN);
+                                }
 
                                 // if (brStates[stateOption].zoom > brStates[0].zoom) map.setZoom(local.zoom);
                                 // console.log('heatmap.getData()=');
@@ -195,13 +238,14 @@ function Admin() {
                         }}
                         variant="contained"
                         color="primary"
+                        id="search-button"
                     >
                         Buscar
                     </Button>
                 </div>
             </div>
             <div style={{ display: 'flex' }}>
-                <SearchTable onChange={console.log('\nSearchTable CHANGED\n')} />
+                <SearchTable id="search-table" resposta={response.resposta} />
             </div>
         </MainCard>
     );
