@@ -23,7 +23,8 @@ const Dashboard = () => {
             name: 'febreamarela',
             total: 20,
             variacao: 10,
-            percentual: 5
+            percentual: 5,
+            estado: 'SP'
         });
     }, []);
 
@@ -35,7 +36,7 @@ const Dashboard = () => {
                         <EarningCard isLoading={isLoading} values={values} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <TotalOrderLineChartCard isLoading={isLoading} />
+                        <TotalOrderLineChartCard isLoading={isLoading} values={values} />
                     </Grid>
                     <Grid item lg={4} md={12} sm={12} xs={12}>
                         <Grid container spacing={gridSpacing}>

@@ -79,35 +79,8 @@ const EarningCard = (props) => {
                         <Grid container direction="column">
                             <Grid item>
                                 <Grid container justifyContent="space-between">
+                                    <Grid item></Grid>
                                     <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.commonAvatar,
-                                                ...theme.typography.largeAvatar,
-                                                backgroundColor: theme.palette.secondary[800],
-                                                mt: 1
-                                            }}
-                                        >
-                                            <img src={EarningIcon} alt="Notification" />
-                                        </Avatar>
-                                    </Grid>
-                                    <Grid item>
-                                        <Avatar
-                                            variant="rounded"
-                                            sx={{
-                                                ...theme.typography.commonAvatar,
-                                                ...theme.typography.mediumAvatar,
-                                                backgroundColor: theme.palette.secondary.dark,
-                                                color: theme.palette.secondary[200],
-                                                zIndex: 1
-                                            }}
-                                            aria-controls="menu-earning-card"
-                                            aria-haspopup="true"
-                                            onClick={handleClick}
-                                        >
-                                            <MoreHorizIcon fontSize="inherit" />
-                                        </Avatar>
                                         <Menu
                                             id="menu-earning-card"
                                             anchorEl={anchorEl}
@@ -147,18 +120,7 @@ const EarningCard = (props) => {
                                             {props.values.total}
                                         </Typography>
                                     </Grid>
-                                    <Grid item>
-                                        <Avatar
-                                            sx={{
-                                                cursor: 'pointer',
-                                                ...theme.typography.smallAvatar,
-                                                backgroundColor: theme.palette.secondary[200],
-                                                color: theme.palette.secondary.dark
-                                            }}
-                                        >
-                                            <ArrowUpwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
-                                        </Avatar>
-                                    </Grid>
+                                    <Grid item></Grid>
                                 </Grid>
                             </Grid>
                             <Grid item sx={{ mb: 1.25 }}>
@@ -169,7 +131,7 @@ const EarningCard = (props) => {
                                         color: theme.palette.secondary[200]
                                     }}
                                 >
-                                    Total de casos
+                                    Total de casos no Brasil
                                 </Typography>
                             </Grid>
                         </Grid>

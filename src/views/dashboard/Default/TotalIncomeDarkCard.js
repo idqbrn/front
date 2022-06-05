@@ -80,7 +80,7 @@ const TotalIncomeDarkCard = (props) => {
                                     }
                                     secondary={
                                         <Typography variant="subtitle2" sx={{ color: 'primary.light', mt: 0.25 }}>
-                                            Variação desde a última medida
+                                            Crescimento desde última medida
                                         </Typography>
                                     }
                                 />
