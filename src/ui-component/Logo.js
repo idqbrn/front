@@ -13,8 +13,8 @@ import { Typography } from '@mui/material';
 
 // ==============================|| LOGO SVG ||============================== //
 
-const Logo = () => {
-    const theme = useTheme();
+const Logo = () => (
+    // const theme = useTheme();
 
     return (
         <>
