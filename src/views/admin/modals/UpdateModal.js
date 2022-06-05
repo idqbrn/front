@@ -55,7 +55,7 @@ export default function NestedModal() {
         setOpen(false);
     };
 
-    console.log('Update');
+    // console.log('Update');
 
     return (
         <div style={{ display: 'flex' }}>

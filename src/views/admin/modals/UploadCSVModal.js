@@ -239,7 +239,7 @@ export default function NestedModal() {
         // send quero and lugares to backend
     };
 
-    console.log('UploadCSVModal');
+    // console.log('UploadCSVModal');
 
     return (
         <div style={{ display: 'flex' }}>
