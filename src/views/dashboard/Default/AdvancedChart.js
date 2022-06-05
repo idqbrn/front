@@ -132,9 +132,9 @@ export default function AdvancedChart() {
     // const chart2 = new ApexCharts(document.querySelector('#chart-bar'), options2);
 
     return (
-        <div>
-            <Chart options={options1} series={options1.series} />
-            <Chart options={options2} series={options2.series} />
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <Chart options={options1} series={options1.series} height={200} width="100%" type="area" />
+            <Chart options={options2} series={options2.series} height={100} width="100%" />
         </div>
     );
 }

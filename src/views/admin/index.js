@@ -182,7 +182,6 @@ function Admin() {
                                     setState(null);
                                     setCities([]);
                                     citiesState.push('');
-                                    citiesState.pull('');
                                 }
                             }}
                         />
