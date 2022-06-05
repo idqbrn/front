@@ -109,12 +109,12 @@ const Dashboard = () => {
             </Grid>
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={8}>
+                    {/* <Grid item xs={12} md={8}>
                         <TotalGrowthBarChart isLoading={isLoading} values={values} />
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <PopularCard isLoading={isLoading} values={values} />
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Grid>
             {/* <CoreUIChart /> */}

@@ -237,13 +237,7 @@ export default function NestedModal() {
         }
         console.log(lugares);
     };
-<<<<<<< HEAD
-    console.log('UploadCSVModal');
-=======
-
     // console.log('UploadCSVModal');
-
->>>>>>> develop
     return (
         <div style={{ display: 'flex' }}>
             <Button variant="contained" color="primary" onClick={handleOpen}>
