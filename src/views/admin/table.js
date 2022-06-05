@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,6 +7,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+// import PropTypes from 'prop-types';
+
+import response from './response-test';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -27,35 +31,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }
 }));
 
-function createData([desease, state, city, cases]) {
-    return { desease, state, city, cases };
-}
-
-const rows = [
-    createData(['Covid', 'RJ', 'Rio de Janeiro', 156]),
-    createData(['Covid', 'RJ', 'Niterói', 95]),
-    createData(['Covid', 'SP', 'São Paulo', 223]),
-    createData(['Dengue', 'MG', 'Juiz de Fora', 67]),
-    createData(['Dengue', 'AM', 'Manaus', 49])
-];
-
 export default function SearchTable() {
+    /* SearchTable.propTypes = {
+        // resposta: PropTypes.array.isRequired
+    }; */
+    // get table heading data
+    const ThData = () => (
+        <TableHead>
+            <TableRow>
+                <StyledTableCell>Doença</StyledTableCell>
+                <StyledTableCell align="right">Estado</StyledTableCell>
+                <StyledTableCell align="right">Cidade</StyledTableCell>
+                <StyledTableCell align="right">Total de casos</StyledTableCell>
+            </TableRow>
+        </TableHead>
+    );
+    // get table row data
+    /* const tdData = () => {
+        // console.log(props?.resposta);
+        <TableBody>
+            {response.resposta.map((row) => (
+                <StyledTableRow key={(row.disease, row.state, row.city)}>
+                    <StyledTableCell component="th" scope="row">
+                        {row.disease}
+                    </StyledTableCell>
+                    <StyledTableCell align="right">{row.state}</StyledTableCell>
+                    <StyledTableCell align="right">{row.city}</StyledTableCell>
+                    <StyledTableCell align="right">{row.cases}</StyledTableCell>
+                </StyledTableRow>
+            ))}
+        </TableBody>;
+    }; */
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>Doença</StyledTableCell>
-                        <StyledTableCell align="right">Estado</StyledTableCell>
-                        <StyledTableCell align="right">Cidade</StyledTableCell>
-                        <StyledTableCell align="right">Total de casos</StyledTableCell>
-                    </TableRow>
-                </TableHead>
+                <ThData />
                 <TableBody>
-                    {rows.map((row) => (
-                        <StyledTableRow key={(row.desease, row.state, row.city)}>
+                    {response.resposta.map((row) => (
+                        <StyledTableRow key={(row.disease, row.state, row.city)}>
                             <StyledTableCell component="th" scope="row">
-                                {row.desease}
+                                {row.disease}
                             </StyledTableCell>
                             <StyledTableCell align="right">{row.state}</StyledTableCell>
                             <StyledTableCell align="right">{row.city}</StyledTableCell>
