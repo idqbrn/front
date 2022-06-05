@@ -4,7 +4,7 @@
         "browser": true,
         "es2021": true
     },
-    "extends": ["airbnb", "prettier", "plugin:react/jsx-runtime", "plugin:jsx-a11y/recommended", "plugin:react-hooks/recommended"],
+    "extends": [ "plugin:react/jsx-runtime", "plugin:jsx-a11y/recommended", "plugin:react-hooks/recommended"],
     "settings": {
         "import/resolver": {
             "node": {
@@ -21,6 +21,7 @@
         "ecmaVersion": 12
     },
     "plugins": ["prettier", "react", "react-hooks"],
+    
     "rules": {
         // "import/no-unresolved": "off", hide import error
         "react/jsx-filename-extension": 0,
@@ -51,6 +52,12 @@
                 "tabWidth": 4,
                 "useTabs": false,
                 "endOfLine": "auto"
+            }
+        ],
+        "jsx-a11y/label-has-associated-control": [
+            2,
+            {
+              "assert": "nesting" // either check for `htmlFor` or `nesting`
             }
         ]
     }

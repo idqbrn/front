@@ -1,20 +1,85 @@
 // material-ui
-import { Typography } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
+import Button from '@mui/material/Button';
+import { useState } from 'react';
+
+// other imports
+import { diseases } from '../map/diseases/disease1';
+import brStates from '../map/brStates';
+import SearchTable from './table';
+import OpenModal from './modals/OpenModal';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
-const Admin = () => (
-    <MainCard title="Admin">
-        <Typography variant="body2">
-            Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie magna alissa. Ut enif
-            ad minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in
-            reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa
-            qui officiate descent molls anim id est labours.
-        </Typography>
-    </MainCard>
-);
+function Admin() {
+    /* const [diseaseOption, setDesease] = useState(diseases[0]);
+    const [stateOption, setState] = useState(brStates[0]); */
+    const [diseaseOption] = useState(diseases[0]);
+    const [stateOption] = useState(brStates[0]);
+    return (
+        <MainCard title="DADOS SANITÁRIOS">
+            <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
+                <OpenModal value="Criar" />
+                <OpenModal value="Atualizar" />
+                <OpenModal value="Deletar" />
+                <OpenModal value="Upload CSV" />
+                <div style={{ display: 'flex' }}>
+                    <div style={{ display: 'flex' }}>
+                        <Autocomplete
+                            id="disease_select"
+                            options={diseases}
+                            autoComplete
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Doença" />}
+                            sx={{ width: 150 }}
+                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
+                            /* onChange={async (option) => {
+                                console.log('diseases');
+                                const op = option.currentTarget.getAttribute('data-option-index');
+                                console.log('option: ', op);
+
+                                if (op !== diseaseOption) {
+                                    setDesease(op);
+                                    console.log('diseaseOption: ', diseaseOption);
+                                }
+                            }} */
+                        />
+                    </div>
+                    <div style={{ display: 'flex' }}>
+                        <Autocomplete
+                            id="state_select"
+                            options={brStates}
+                            autoComplete
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Estado" />}
+                            sx={{ width: 150 }}
+                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
+                            /* onChange={async (option) => {
+                                console.log('states');
+                                const op = option.currentTarget.getAttribute('data-option-index');
+                                console.log('option: ', op);
+
+                                if (op !== stateOption) {
+                                    setState(op);
+                                    console.log('stateOption: ', stateOption);
+                                }
+                            }} */
+                        />
+                    </div>
+                    <Button variant="contained" color="primary">
+                        Buscar
+                    </Button>
+                </div>
+            </div>
+            <div style={{ display: 'flex' }}>
+                <SearchTable />
+            </div>
+        </MainCard>
+    );
+}
 
 export default Admin;

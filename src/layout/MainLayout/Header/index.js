@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -6,17 +6,36 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 
 // project imports
 import LogoSection from '../LogoSection';
-import SearchSection from './SearchSection';
+// import SearchSection from './SearchSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 
 // assets
-import { IconMenu2 } from '@tabler/icons';
+import { IconMap2, IconDashboard } from '@tabler/icons';
+// import { IconMenu2 } from '@tabler/icons';
+
+// route
+import { useNavigate } from 'react-router-dom';
 
 // ==============================|| MAIN NAVBAR / HEADER ||============================== //
 
-const Header = ({ handleLeftDrawerToggle }) => {
+const Header = () => {
     const theme = useTheme();
+
+    const navigate = useNavigate();
+    function routeChange(route) {
+        const mapPath = '/map';
+        const dashboardPath = '/';
+        if (route === 'map') {
+            navigate(mapPath);
+            console.log('MAP: ', route);
+        } else if (route === 'dashboard') {
+            navigate(dashboardPath);
+            console.log('DASHBOARD: ', route);
+        } else {
+            console.log('DEU RUIM: ', route);
+        }
+    }
 
     return (
         <>
@@ -33,18 +52,18 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
                     <LogoSection />
                 </Box>
-                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                {/* <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
                         variant="rounded"
                         sx={{
                             ...theme.typography.commonAvatar,
                             ...theme.typography.mediumAvatar,
                             transition: 'all .2s ease-in-out',
-                            background: theme.palette.secondary.light,
-                            color: theme.palette.secondary.dark,
+                            background: theme.palette.primary[200],
+                            color: theme.palette.primary[800],
                             '&:hover': {
-                                background: theme.palette.secondary.dark,
-                                color: theme.palette.secondary.light
+                                background: theme.palette.primary[800],
+                                color: theme.palette.primary[200]
                             }
                         }}
                         onClick={handleLeftDrawerToggle}
@@ -52,11 +71,59 @@ const Header = ({ handleLeftDrawerToggle }) => {
                     >
                         <IconMenu2 stroke={1.5} size="1.3rem" />
                     </Avatar>
+                </ButtonBase> */}
+            </Box>
+            <Box
+                sx={{
+                    width: 42,
+                    display: 'flex',
+                    [theme.breakpoints.down('md')]: {
+                        width: 'auto'
+                    }
+                }}
+            >
+                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                    <Avatar
+                        variant="rounded"
+                        sx={{
+                            ...theme.typography.commonAvatar,
+                            ...theme.typography.mediumAvatar,
+                            background: theme.palette.primary[200],
+                            color: theme.palette.primary[800],
+                            '&:hover': {
+                                background: theme.palette.primary[800],
+                                color: theme.palette.primary[200]
+                            }
+                        }}
+                        onClick={() => routeChange('map')}
+                        color="inherit"
+                    >
+                        <IconMap2 stroke={1.5} size="1.3rem" />
+                    </Avatar>
                 </ButtonBase>
             </Box>
+            <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                <Avatar
+                    variant="rounded"
+                    sx={{
+                        ...theme.typography.commonAvatar,
+                        ...theme.typography.mediumAvatar,
+                        background: theme.palette.primary[200],
+                        color: theme.palette.primary[800],
+                        '&:hover': {
+                            background: theme.palette.primary[800],
+                            color: theme.palette.primary[200]
+                        }
+                    }}
+                    onClick={() => routeChange('dashboard')}
+                    color="inherit"
+                >
+                    <IconDashboard stroke={1.5} size="1.3rem" />
+                </Avatar>
+            </ButtonBase>
 
             {/* header search */}
-            <SearchSection />
+            {/* <SearchSection /> */}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />
 
@@ -68,7 +135,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
 };
 
 Header.propTypes = {
-    handleLeftDrawerToggle: PropTypes.func
+    // handleLeftDrawerToggle: PropTypes.func
 };
 
 export default Header;
