@@ -11,6 +11,8 @@ import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
+// import CoreUIChart from './CoreUIChart';
+import AdvancedChart from './AdvancedChart';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -52,6 +54,8 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
             </Grid>
+            {/* <CoreUIChart /> */}
+            <AdvancedChart />
         </Grid>
     );
 };
