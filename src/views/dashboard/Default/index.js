@@ -46,6 +46,7 @@ const Dashboard = () => {
     const [citiesState, setCities] = useState([]);
 
     const [isLoading, setLoading] = useState(true);
+    const [values, setValues] = useState(0);
 
     const [advancedHeader, setHeader] = useState('Brasil');
 
@@ -53,6 +54,13 @@ const Dashboard = () => {
 
     useEffect(() => {
         setLoading(false);
+        setValues({
+            name: 'febreamarela',
+            total: 20,
+            variacao: 10,
+            percentual: 5,
+            estado: 'SP'
+        });
     }, []);
 
     useEffect(() => {
@@ -73,6 +81,62 @@ const Dashboard = () => {
 
     return (
         <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+                <div style={{ display: 'flex', padding: 10 }}>
+                    <Autocomplete
+                        id="disease_select"
+                        options={diseases}
+                        getOptionLabel={(option) => option.label}
+                        autoComplete
+                        includeInputInList
+                        renderInput={(params) => <TextField {...params} label="Doença" />}
+                        sx={{ width: 200 }}
+                        value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
+                        onChange={async (option) => {
+                            console.log('diseases');
+                            console.log(option);
+                            const op = option.currentTarget.getAttribute('data-option-index');
+                            console.log('option: ', op);
+
+                            if (op !== diseaseOption) {
+                                setDisease(op);
+                                console.log('diseaseOption: ', diseaseOption);
+                            }
+                        }}
+                    />
+                </div>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={gridSpacing}>
+                    <Grid item lg={4} md={6} sm={6} xs={12}>
+                        <EarningCard isLoading={isLoading} values={values} />
+                    </Grid>
+                    <Grid item lg={4} md={6} sm={6} xs={12}>
+                        <TotalOrderLineChartCard isLoading={isLoading} values={values} />
+                    </Grid>
+                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                        <Grid container spacing={gridSpacing}>
+                            <Grid item sm={6} xs={12} md={6} lg={12}>
+                                <TotalIncomeDarkCard isLoading={isLoading} values={values} />
+                            </Grid>
+                            <Grid item sm={6} xs={12} md={6} lg={12}>
+                                <TotalIncomeLightCard isLoading={isLoading} values={values} />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={12}>
+                <Grid container spacing={gridSpacing}>
+                    {/* <Grid item xs={12} md={8}>
+                        <TotalGrowthBarChart isLoading={isLoading} values={values} />
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <PopularCard isLoading={isLoading} values={values} />
+                    </Grid> */}
+                </Grid>
+            </Grid>
+            {/* <CoreUIChart /> */}
             <Grid item xs={12}>
                 <MainCard>
                     <Grid item xs={12}>
