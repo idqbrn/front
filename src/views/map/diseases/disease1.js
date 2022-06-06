@@ -1,5 +1,5 @@
 const diseases = [
-    { value: 0, label: 'Covid' },
+    { value: 0, label: 'botulismo' },
     { value: 1, label: 'Dengue' }
 ];
 
