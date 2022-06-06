@@ -17,7 +17,8 @@ import OpenModal from './modals/OpenModal';
 import JsonLatLng from '../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../map/LocalLatLng/vecCityState';
 import stateToInitial from '../map/LocalLatLng/stateToInitial';
-import response from './response-test';
+// import response from './response-test';
+import url from '../utilities/backendUrl';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
@@ -47,7 +48,7 @@ function Admin() {
 
         const config = {
             method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/admin/search/' + `${disease.value}` + '/' + `${stateInitial}`,
+            url: url + '/admin/search/' + `${disease.value}` + '/' + `${stateInitial}`,
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config).then((response) => {
@@ -70,7 +71,7 @@ function Admin() {
         // GET request using axios inside useEffect React hook
         const config = {
             method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            url: url + '/diseasesName',
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config).then((response) => {
@@ -228,7 +229,7 @@ function Admin() {
                                 console.log('stateOption: ', stateOption);
                                 console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
 
-                                const cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
+                                cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
 
                                 console.log('cityNum: ', cityNum);
 

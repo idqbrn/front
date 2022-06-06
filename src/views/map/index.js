@@ -12,8 +12,8 @@ import brStates from './brStates';
 import { diseases, disease1 } from './diseases/disease1';
 /* import JsonLatLng from './LocalLatLng/states_latitudes_flat_name.json';
 import { vecNumCityState,  vecPosCityState, CitiesFromState } from './LocalLatLng/vecCityState'; */
-
 import brazilBorders from './LocalLatLng/brazil_borders.json';
+import url from '../utilities/backendUrl';
 
 // ==============================|| MAP PAGE ||============================== //
 
@@ -148,7 +148,7 @@ function Map() {
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log('TAMO NO USEEFFECT');
-        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName').then((response) => {
+        axios.get(url + '/diseasesName').then((response) => {
             console.log(response.data);
             const nameDiseases = [];
             for (let i = 0; i < response.data.length; i += 1) {

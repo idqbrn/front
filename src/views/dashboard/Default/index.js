@@ -33,6 +33,7 @@ import JsonLatLng from '../../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../../map/LocalLatLng/vecCityState';
 import { LineAxisOutlined } from '@mui/icons-material';
 // import response from '../../admin/response-test';
+import url from '../../utilities/backendUrl';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -42,6 +43,8 @@ const Dashboard = () => {
     const [stateOption, setState] = useState(0);
 
     const [cityOption, setCity] = useState(0);
+
+    let cityNum = useState(0);
 
     const [citiesState, setCities] = useState([]);
 
@@ -59,7 +62,7 @@ const Dashboard = () => {
         let estado = 'RJ';
         var config = {
             method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/dashboard/total/dengue',
+            url: url + '/dashboard/total/dengue',
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config)
@@ -84,7 +87,7 @@ const Dashboard = () => {
         console.log('TAMO NO USEEFFECT');
         const config = {
             method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            url: url + '/diseasesName',
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config).then((response) => {
@@ -252,14 +255,15 @@ const Dashboard = () => {
                                             console.log('stateOption: ', stateOption);
                                             console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
 
-                                            const cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
+                                            cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
 
                                             console.log('cityNum: ', cityNum);
 
                                             setCity(cityNum);
 
                                             const local = JsonLatLng[cityNum];
-                                            if (local) {
+                                            console.log(local);
+                                            if (local != undefined) {
                                                 console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
                                                 // console.log(`${local.UF}` + ' - ' + `${local.nome}`); console.log(`${stateOption}`); console.log(`${cityOption}`);
                                                 setHeader(`${local.nome}` + ', ' + `${local.UF}`);
@@ -284,7 +288,7 @@ const Dashboard = () => {
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <Typography variant="h4">{`${advancedHeader}`}</Typography>
                                 </div>
-                                <AdvancedChart />
+                                <AdvancedChart state={brStates[stateOption].value} city={JsonLatLng[cityOption]?.nome} />
                             </div>
                         </div>
                     </Grid>

@@ -1,6 +1,10 @@
 import Chart from 'react-apexcharts';
+import axios from 'axios';
+import stateToInitial from '../../map/LocalLatLng/stateToInitial';
+import url from '../../utilities/backendUrl';
 
-export default function AdvancedChart() {
+export default function AdvancedChart(props) {
+    console.log('ENTRAMOS NO ADVANCED-CHART');
     function generateDayWiseTimeSeries(baseval, count, yrange) {
         let i = 0;
         const series = [];
@@ -14,6 +18,36 @@ export default function AdvancedChart() {
         }
         return series;
     }
+
+    function generateCharData() {
+        console.log('Entrams no generateCharData');
+        const series = [];
+
+        console.log(props.state);
+
+        console.log('COE-' + `${props.state}` + '-' + `${props.city}`);
+
+        const config = {
+            method: 'get',
+            url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
+            console.log('response.data');
+            console.log(response.data);
+            for (let i = 0; i < response.data.length; i += 1) {
+                console.log('dentro do for [' + i + ']');
+                series.push([response.data[i].disease_id, response.data[i].total]);
+            }
+            console.log('SERIES (dentro): ' + series);
+            console.log('DATA-TOTAL');
+        });
+        console.log('SERIES (fora): ' + series);
+        return series;
+    }
+    console.log('props.state=' + props.state);
+    console.log('props.city=' + props.city);
+    if (props.state != undefined && props.city != undefined) generateCharData();
 
     const data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 115, {
         min: 30,
