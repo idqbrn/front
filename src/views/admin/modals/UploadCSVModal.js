@@ -239,10 +239,11 @@ export default function NestedModal() {
         let arrays = [];
         const chunkSize = 500;
         let chunk = null;
-        for (let i = 0; i < array.length; i += chunkSize) {
+        for (let i = 0; i < quero.length; i += chunkSize) {
             chunk = quero.slice(i, i + chunkSize);
             arrays.push(chunk);
         }
+        console.log(arrays);
         for (let i = 0; i < arrays.length; i += 1) {
             axios
                 .post('http://localhost:5000/upload', {
