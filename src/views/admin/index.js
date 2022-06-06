@@ -21,7 +21,7 @@ import response from './response-test';
 
 function Admin() {
     const [diseaseOption, setDisease] = useState(diseases[0]);
-    const [stateOption, setState] = useState(brStates[0]);
+    const [stateOption, setState] = useState(0);
 
     const [cityOption, setCity] = useState(0);
 
@@ -149,15 +149,16 @@ function Admin() {
                             renderInput={(params) => <TextField {...params} label="Estado" />}
                             sx={{ width: 200 }}
                             value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === stateOption
+                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.value === stateOption
                             )}
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
                                 setState(op);
                                 setCity(null);
-                                const citySelect = document.getElementById('city_select');
-                                console.log(citySelect);
-                                citySelect.value = 'coe';
+                                // const citySelect = document.getElementById('city_select');
+                                // console.log('citySelect: ');
+                                // console.log(citySelect);
+                                // citySelect.value = 'coe';
                                 console.log(`\ncitySelect.value: ${cityOption}`);
                                 /* if (!cityOption) {
                                     const ev = new Event('input', { bubbles: true, cancelable: false });
@@ -169,7 +170,7 @@ function Admin() {
                                 const local = brStates[op];
                                 console.log('op: ', op);
                                 if (local) {
-                                    setState(local.center);
+                                    setState(op);
 
                                     const cities = [];
 
