@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -71,7 +71,12 @@ function Admin() {
 
     useEffect(() => {
         // GET request using axios inside useEffect React hook
-        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/diseasesName').then((response) => {
+        const config = {
+            method: 'get',
+            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
             console.log(response.data);
             setDiseasesResp(response.data);
             console.log('DATA-TOTAL');
@@ -92,7 +97,7 @@ function Admin() {
                         <Autocomplete
                             id="disease_select"
                             options={diseasesResponse}
-                            getOptionLabel={(option) => option.label}
+                            getOptionLabel={(option) => option}
                             autoComplete
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Doença" />}
