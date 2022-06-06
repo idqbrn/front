@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 // material-ui
 import { Grid, Typography } from '@mui/material';
 import axios from 'axios';
-
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
@@ -32,6 +31,7 @@ import brStates from '../../map/brStates';
 // import OpenModal from '../../admin/modals/OpenModal';
 import JsonLatLng from '../../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../../map/LocalLatLng/vecCityState';
+import { LineAxisOutlined } from '@mui/icons-material';
 // import response from '../../admin/response-test';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
@@ -53,6 +53,22 @@ const Dashboard = () => {
     const [diseasesResponse, setDiseasesResp] = useState([]);
 
     useEffect(() => {
+        let total = 0;
+        let variacao = 0;
+        let percentual = 0;
+        let estado = 'RJ';
+        var config = {
+            method: 'get',
+            url: 'http://localhost:5000/dashboard/total/dengue',
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         setLoading(false);
         setValues({
             name: 'febreamarela',
@@ -61,7 +77,7 @@ const Dashboard = () => {
             percentual: 5,
             estado: 'SP'
         });
-    }, []);
+    }, [diseaseOption]);
 
     useEffect(() => {
         // GET request using axios inside useEffect React hook
