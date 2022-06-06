@@ -71,7 +71,7 @@ const TotalIncomeLightCard = (props) => {
                                         mt: 0.45,
                                         mb: 0.45
                                     }}
-                                    primary={<Typography variant="h4">{props.values.percentual}</Typography>}
+                                    primary={<Typography variant="h4">{props.values?.percentual}</Typography>}
                                     secondary={
                                         <Typography
                                             variant="subtitle2"

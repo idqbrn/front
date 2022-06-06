@@ -117,7 +117,7 @@ const TotalOrderLineChartCard = (props) => {
                                                         color: theme.palette.primary[200]
                                                     }}
                                                 >
-                                                    Estado com maior número de casos para a doença: {props.values.estado}
+                                                    Estado com maior número de casos para a doença: {props.values?.estado}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
