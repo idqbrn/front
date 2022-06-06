@@ -4,7 +4,8 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import { diseases } from '../../map/diseases/disease1';
 import brStates from '../../map/brStates';
@@ -70,12 +71,35 @@ export default function NestedModal() {
 
     const [diseaseOption, setDisease] = useState(diseases[0].value);
 
+    const [diseasesResponse, setDiseasesResp] = useState([]);
+
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log('TAMO NO USEEFFECT');
+        const config = {
+            method: 'get',
+            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
+            console.log(response.data);
+            const nameDiseases = [];
+            for (let i = 0; i < response.data.length; i += 1) {
+                nameDiseases.push(response.data[i].name_id);
+            }
+            setDiseasesResp(nameDiseases);
+            console.log('DATA-TOTAL');
+        });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
     // console.log('Create');
 
     return (
         <div style={{ display: 'flex' }}>
             <Button variant="contained" color="primary" onClick={handleOpen}>
-                Create
+                Adicionar casos
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
                 <Box sx={{ ...style, width: '80%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
@@ -83,17 +107,23 @@ export default function NestedModal() {
                     <p id="parent-modal-description">Insira os dados para a inserção dos casos no banco de dados:</p>
                     <div style={{ flexDirection: 'column', display: 'flex' }}>
                         <Autocomplete
-                            disablePortal
-                            id="autocomplete-diseases"
+                            id="disease_select"
+                            options={diseasesResponse}
+                            getOptionLabel={(option) => option}
                             autoComplete
-                            options={diseases}
-                            sx={{ width: '100%' }}
-                            renderInput={(params) => <TextField {...params} label="Nome da Doença" />}
-                            value={brStates.find((option) => option === diseaseOption)}
+                            includeInputInList
+                            renderInput={(params) => <TextField {...params} label="Doença" />}
+                            sx={{ width: 200 }}
+                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
                             onChange={async (option) => {
-                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
-                                if (op > 0) {
+                                console.log('diseases');
+                                console.log(option);
+                                const op = option.currentTarget.getAttribute('data-option-index');
+                                console.log('option: ', op);
+
+                                if (op !== diseaseOption) {
                                     setDisease(op);
+                                    console.log('diseaseOption: ', diseaseOption);
                                 }
                             }}
                         />

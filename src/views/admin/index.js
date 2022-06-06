@@ -16,57 +16,54 @@ import SearchTable from './table';
 import OpenModal from './modals/OpenModal';
 import JsonLatLng from '../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../map/LocalLatLng/vecCityState';
+import stateToInitial from '../map/LocalLatLng/stateToInitial';
 import response from './response-test';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
 function Admin() {
-    const [diseaseOption, setDisease] = useState(diseases[0]);
+    const [diseaseOption, setDisease] = useState('');
     const [stateOption, setState] = useState(0);
-
     const [cityOption, setCity] = useState(0);
 
     const [citiesState, setCities] = useState([]);
 
     const [diseasesResponse, setDiseasesResp] = useState([]);
 
+    const [tableData, setTableData] = useState([]);
+
     // const [deseaseOption, setDesease] = useState(diseases[0].value);
     // const [stateOption] = useState(brStates[0]);
 
-    const requestTableData = (disease, state, city) => {
+    function requestTableData(disease, state, city) {
+        console.log('requestTableData');
+
         console.log(disease.value);
         console.log(state.value);
         console.log(city.value);
-        const x = {};
-        x.disease = 'Covid';
-        x.state = 'São Paulo';
-        x.city = `São Paulo${response.resposta.length}`;
-        x.cases = 100;
-        response.resposta.push(x);
-        console.log(response.resposta);
-        /* const updateDisease = document.getElementById('disease-select');
-        const diseaseValue = updateDisease?.value;
-        if (updateDisease) {
-            updateDisease.value = '';
-            // updateDisease.value = diseaseValue;
-        } 
-        const updateTable = () => {
-            console.log('updateTable');
-            SearchTable();
-        };
-        document.getElementById('search-button')?.addEventListener('click', updateTable);
-        const diseaseSelect = document.getElementById('disease_select');
-        diseaseSelect.value = diseases[1].label;
-        diseaseSelect.value = diseases[0].label;
 
-         const ev = new Event('change');
-        console.log(diseaseSelect.value);
-        // this.SearchTable.addEventListener("")
-        console.log(diseaseSelect.tdData); */
-    };
+        const stateInitial = stateToInitial[state.value];
+        console.log(stateInitial);
+
+        const config = {
+            method: 'get',
+            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/admin/search/' + `${disease.value}` + '/' + `${stateInitial}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
+            console.log(response);
+            console.log(response.data);
+
+            // for (let i = 0; i < response.data.length; i += 1) {
+            //     tableRows.push(response.data[i].name_id);
+            // }
+            setTableData(response.data);
+            console.log('DATA-TOTAL');
+        });
+    }
 
     SearchTable.propTypes = {
-        resposta: PropTypes.array.isRequired
+        values: PropTypes.any.isRequired
     };
 
     useEffect(() => {
@@ -78,7 +75,11 @@ function Admin() {
         };
         axios(config).then((response) => {
             console.log(response.data);
-            setDiseasesResp(response.data);
+            const nameDiseases = [];
+            for (let i = 0; i < response.data.length; i += 1) {
+                nameDiseases.push(response.data[i].name_id);
+            }
+            setDiseasesResp(nameDiseases);
             console.log('DATA-TOTAL');
         });
 
@@ -89,8 +90,8 @@ function Admin() {
         <MainCard title="DADOS SANITÁRIOS">
             <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
                 <OpenModal value="Criar" />
-                <OpenModal value="Atualizar" />
-                <OpenModal value="Deletar" />
+                {/* <OpenModal value="Atualizar" />
+                <OpenModal value="Deletar" /> */}
                 <OpenModal value="Upload CSV" />
                 <div style={{ display: 'flex' }}>
                     <div style={{ display: 'flex', padding: 10 }}>
@@ -264,7 +265,7 @@ function Admin() {
                 </div>
             </div>
             <div style={{ display: 'flex' }}>
-                <SearchTable id="search-table" resposta={response.resposta} />
+                <SearchTable id="search-table" values={tableData} />
             </div>
         </MainCard>
     );

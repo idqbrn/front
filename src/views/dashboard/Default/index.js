@@ -82,7 +82,12 @@ const Dashboard = () => {
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log('TAMO NO USEEFFECT');
-        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName').then((response) => {
+        const config = {
+            method: 'get',
+            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
             console.log(response.data);
             const nameDiseases = [];
             for (let i = 0; i < response.data.length; i += 1) {
