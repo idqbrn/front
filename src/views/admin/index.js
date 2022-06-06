@@ -7,6 +7,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 // other imports
 import { diseases } from '../map/diseases/disease1';
@@ -21,11 +22,13 @@ import response from './response-test';
 
 function Admin() {
     const [diseaseOption, setDisease] = useState(diseases[0]);
-    const [stateOption, setState] = useState(brStates[0]);
+    const [stateOption, setState] = useState(0);
 
     const [cityOption, setCity] = useState(0);
 
     const [citiesState, setCities] = useState([]);
+
+    const [diseasesResponse, setDiseasesResp] = useState([]);
 
     // const [deseaseOption, setDesease] = useState(diseases[0].value);
     // const [stateOption] = useState(brStates[0]);
@@ -66,6 +69,17 @@ function Admin() {
         resposta: PropTypes.array.isRequired
     };
 
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/diseasesName').then((response) => {
+            console.log(response.data);
+            setDiseasesResp(response.data);
+            console.log('DATA-TOTAL');
+        });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
     return (
         <MainCard title="DADOS SANITÁRIOS">
             <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
@@ -77,7 +91,7 @@ function Admin() {
                     <div style={{ display: 'flex', padding: 10 }}>
                         <Autocomplete
                             id="disease_select"
-                            options={diseases}
+                            options={diseasesResponse}
                             getOptionLabel={(option) => option.label}
                             autoComplete
                             includeInputInList
@@ -149,15 +163,16 @@ function Admin() {
                             renderInput={(params) => <TextField {...params} label="Estado" />}
                             sx={{ width: 200 }}
                             value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === stateOption
+                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.value === stateOption
                             )}
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
                                 setState(op);
                                 setCity(null);
-                                const citySelect = document.getElementById('city_select');
-                                console.log(citySelect);
-                                citySelect.value = 'coe';
+                                // const citySelect = document.getElementById('city_select');
+                                // console.log('citySelect: ');
+                                // console.log(citySelect);
+                                // citySelect.value = 'coe';
                                 console.log(`\ncitySelect.value: ${cityOption}`);
                                 /* if (!cityOption) {
                                     const ev = new Event('input', { bubbles: true, cancelable: false });
@@ -169,7 +184,7 @@ function Admin() {
                                 const local = brStates[op];
                                 console.log('op: ', op);
                                 if (local) {
-                                    setState(local.center);
+                                    setState(op);
 
                                     const cities = [];
 
