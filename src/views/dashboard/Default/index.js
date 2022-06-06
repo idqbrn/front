@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 
 // material-ui
 import { Grid, Typography } from '@mui/material';
+import axios from 'axios';
 
 // project imports
 import EarningCard from './EarningCard';
@@ -48,8 +49,22 @@ const Dashboard = () => {
 
     const [advancedHeader, setHeader] = useState('Brasil');
 
+    const [diseasesResponse, setDiseasesResp] = useState([]);
+
     useEffect(() => {
         setLoading(false);
+    }, []);
+
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log('TAMO NO USEEFFECT');
+        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/diseasesName').then((response) => {
+            console.log(response.data);
+            setDiseasesResp(response.data);
+            console.log('DATA-TOTAL');
+        });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
 
     return (
@@ -251,7 +266,7 @@ const Dashboard = () => {
                         <div style={{ display: 'flex', padding: 5, paddingRight: 5 }}>
                             <Autocomplete
                                 id="disease_select"
-                                options={diseases}
+                                options={diseasesResponse}
                                 getOptionLabel={(option) => option.label}
                                 autoComplete
                                 includeInputInList

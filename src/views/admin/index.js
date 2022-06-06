@@ -7,6 +7,7 @@ import MainCard from 'ui-component/cards/MainCard';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 // other imports
 import { diseases } from '../map/diseases/disease1';
@@ -26,6 +27,8 @@ function Admin() {
     const [cityOption, setCity] = useState(0);
 
     const [citiesState, setCities] = useState([]);
+
+    const [diseasesResponse, setDiseasesResp] = useState([]);
 
     // const [deseaseOption, setDesease] = useState(diseases[0].value);
     // const [stateOption] = useState(brStates[0]);
@@ -66,6 +69,17 @@ function Admin() {
         resposta: PropTypes.array.isRequired
     };
 
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/diseasesName').then((response) => {
+            console.log(response.data);
+            setDiseasesResp(response.data);
+            console.log('DATA-TOTAL');
+        });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
     return (
         <MainCard title="DADOS SANITÁRIOS">
             <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
@@ -77,7 +91,7 @@ function Admin() {
                     <div style={{ display: 'flex', padding: 10 }}>
                         <Autocomplete
                             id="disease_select"
-                            options={diseases}
+                            options={diseasesResponse}
                             getOptionLabel={(option) => option.label}
                             autoComplete
                             includeInputInList

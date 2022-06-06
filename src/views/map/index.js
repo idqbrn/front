@@ -6,6 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MainCard from 'ui-component/cards/MainCard';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import brStates from './brStates';
 import { diseases, disease1 } from './diseases/disease1';
@@ -21,42 +22,10 @@ import brazilBorders from './LocalLatLng/brazil_borders.json';
 } */
 
 function Map() {
-    /* class K extends Component {
-        UNSAFE_componentWillMount() {
-            getData();
-        };
-
-        this.getData() {
-            // create a new XMLHttpRequest
-            const xhr = new XMLHttpRequest();
-
-            // get a callback when the server responds
-            xhr.addEventListener('load', () => {
-                // update the state of the component with the result here
-                console.log(xhr.responseText);
-            });
-            // open the request with the verb and the url
-            xhr.open('GET', 'https://dog.ceo/api/breeds/list/all');
-            // send the request
-            xhr.send();
-        }
-    } */
-
     const containerStyle = {
         width: '100%',
         height: '500px'
     };
-
-    /* const brazilBounds = [
-        {
-            lat: -70.0,
-            lng: -100.0
-        },
-        {
-            lat: 70.0,
-            lng: 100.0
-        }
-    ]; */
 
     const [centerOption, setCenter] = useState(brStates[0].center);
 
@@ -174,6 +143,27 @@ function Map() {
         setMap(null);
     }, []);
 
+    const [heatData, setHeatData] = useState([]);
+
+    function requestDiseasePoints(disease) {
+        console.log('TAMO NO USEEFFECT');
+        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/' + `${disease}`).then((response) => {
+            console.log(response.data);
+            setHeatData(response.data);
+            console.log('DATA-TOTAL');
+            heatmap.setMap(null);
+            heatmap.setData([]);
+            const dataVector = [];
+            for (let i = 0; i < 100; i += 1) {
+                dataVector.setData(new window.google.maps.MVCObject(response.data[i].lat, response.data[i].lng, response.data[i].count));
+            }
+            heatmap.setData(dataVector);
+            heatmap.setOptions({ radius: 10, map, data: dataVector });
+            setHeatmap(heatmap);
+            heatmap.setMap(map);
+        });
+    }
+
     // const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     return isLoaded ? (
@@ -205,6 +195,13 @@ function Map() {
 
                                 heatmap.setMap(map);
                                 console.log('op:', op);
+
+                                console.log('op....: ', option?.currentTarget);
+
+                                const op2 = option?.currentTarget.textContent;
+                                console.log('op2222:   ', op2);
+
+                                requestDiseasePoints(op2);
 
                                 if (!Number.isNaN(op)) {
                                     for (let i = 0; i < 100; i += 1) {
