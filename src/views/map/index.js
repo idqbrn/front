@@ -143,19 +143,45 @@ function Map() {
         setMap(null);
     }, []);
 
+    const [diseasesResponse, setDiseasesResp] = useState([]);
+
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log('TAMO NO USEEFFECT');
+        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName').then((response) => {
+            console.log(response.data);
+            const nameDiseases = [];
+            for (let i = 0; i < response.data.length; i += 1) {
+                nameDiseases.push(response.data[i].name_id);
+            }
+            setDiseasesResp(nameDiseases);
+            console.log('DATA-TOTAL');
+        });
+        console.log('SAIU DO GET');
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
     const [heatData, setHeatData] = useState([]);
 
     function requestDiseasePoints(disease) {
-        console.log('TAMO NO USEEFFECT');
-        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/' + `${disease}`).then((response) => {
+        console.log('requestDiseasePoints');
+        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/disease/' + `${disease}`).then((response) => {
+            console.log(response);
             console.log(response.data);
             setHeatData(response.data);
             console.log('DATA-TOTAL');
             heatmap.setMap(null);
             heatmap.setData([]);
             const dataVector = [];
-            for (let i = 0; i < 100; i += 1) {
-                dataVector.setData(new window.google.maps.MVCObject(response.data[i].lat, response.data[i].lng, response.data[i].count));
+
+            if (response?.data) {
+                for (let i = 0; i < response.data.length; i += 1) {
+                    dataVector.push({
+                        location: new google.maps.LatLng(parseFloat(response.data[i].lat), parseFloat(response.data[i].lng)),
+                        weight: response.data[i].count
+                    });
+                }
             }
             heatmap.setData(dataVector);
             heatmap.setOptions({ radius: 10, map, data: dataVector });
@@ -180,7 +206,7 @@ function Map() {
                     <div style={{ display: 'flex', padding: 8 }}>
                         <Autocomplete
                             id="disease_select"
-                            options={diseases}
+                            options={diseasesResponse}
                             autoComplete
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Doença" />}
@@ -203,6 +229,8 @@ function Map() {
 
                                 requestDiseasePoints(op2);
 
+                                /*
+
                                 if (!Number.isNaN(op)) {
                                     for (let i = 0; i < 100; i += 1) {
                                         fakeData?.push(new window.google.maps.LatLng(disease1[op][i].lat, disease1[op][i].lng));
@@ -210,7 +238,7 @@ function Map() {
                                 }
 
                                 heatmap.setData(fakeData);
-                                heatmap.setOptions({ radius: 10, map, data: fakeData });
+                                heatmap.setOptions({ radius: 10, map, data: fakeData }); */
                                 setHeatmap(heatmap);
                             }}
                         />

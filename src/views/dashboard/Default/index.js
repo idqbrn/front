@@ -58,9 +58,13 @@ const Dashboard = () => {
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log('TAMO NO USEEFFECT');
-        axios.get('https://58fb-2804-14d-5cd1-9d27-9d3c-4768-3552-a0df.sa.ngrok.io/diseasesName').then((response) => {
+        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName').then((response) => {
             console.log(response.data);
-            setDiseasesResp(response.data);
+            const nameDiseases = [];
+            for (let i = 0; i < response.data.length; i += 1) {
+                nameDiseases.push(response.data[i].name_id);
+            }
+            setDiseasesResp(nameDiseases);
             console.log('DATA-TOTAL');
         });
 
@@ -267,7 +271,7 @@ const Dashboard = () => {
                             <Autocomplete
                                 id="disease_select"
                                 options={diseasesResponse}
-                                getOptionLabel={(option) => option.label}
+                                getOptionLabel={(option) => option}
                                 autoComplete
                                 includeInputInList
                                 renderInput={(params) => <TextField {...params} label="Doença" />}
