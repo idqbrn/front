@@ -75,7 +75,7 @@ const TotalIncomeDarkCard = (props) => {
                                     }}
                                     primary={
                                         <Typography variant="h4" sx={{ color: '#fff' }}>
-                                            {props.values.variacao}
+                                            {props.values?.variacao}
                                         </Typography>
                                     }
                                     secondary={
