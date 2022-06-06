@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Papa from 'papaparse';
+import axios from 'axios';
 
 const style = {
     position: 'absolute',
@@ -234,6 +235,25 @@ export default function NestedModal() {
             child = myFunction(files[i]);
             quero = quero.concat(child['diseases_result']);
             lugares = lugares.concat(child['place']);
+        }
+        let arrays = [];
+        const chunkSize = 500;
+        let chunk = null;
+        for (let i = 0; i < array.length; i += chunkSize) {
+            chunk = quero.slice(i, i + chunkSize);
+            arrays.push(chunk);
+        }
+        for (let i = 0; i < arrays.length; i += 1) {
+            axios
+                .post('http://localhost:5000/upload', {
+                    vector: arrays[i]
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
         console.log(lugares);
     };
