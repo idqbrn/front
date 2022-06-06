@@ -2,9 +2,21 @@ import Chart from 'react-apexcharts';
 import axios from 'axios';
 import stateToInitial from '../../map/LocalLatLng/stateToInitial';
 import url from '../../utilities/backendUrl';
+import { useState } from 'react';
 
 export default function AdvancedChart(props) {
     console.log('ENTRAMOS NO ADVANCED-CHART');
+    let data = [];
+    // const [data, setData] = useState([]);
+
+    function maxCases(series) {
+        const max = 0;
+        for (let i = 0; i < series.length; i += 1) {
+            if (series[i].total > max) max = series[i].total;
+        }
+        return max;
+    }
+
     function generateDayWiseTimeSeries(baseval, count, yrange) {
         let i = 0;
         const series = [];
@@ -21,7 +33,7 @@ export default function AdvancedChart(props) {
 
     function generateCharData() {
         console.log('Entrams no generateCharData');
-        const series = [];
+        data = [];
 
         console.log(props.state);
 
@@ -36,23 +48,29 @@ export default function AdvancedChart(props) {
             console.log('response.data');
             console.log(response.data);
             for (let i = 0; i < response.data.length; i += 1) {
-                console.log('dentro do for [' + i + ']');
-                series.push([response.data[i].disease_id, response.data[i].total]);
+                // console.log('dentro do for [' + i + ']');
+                data.push([response.data[i].disease_id, response.data[i].total]);
             }
-            console.log('SERIES (dentro): ' + series);
+            console.log('SERIES (dentro): ' + data);
             console.log('DATA-TOTAL');
         });
-        console.log('SERIES (fora): ' + series);
-        return series;
+        console.log('SERIES (fora): ' + data);
+        return data;
     }
+
     console.log('props.state=' + props.state);
     console.log('props.city=' + props.city);
-    if (props.state != undefined && props.city != undefined) generateCharData();
 
-    const data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 115, {
-        min: 30,
-        max: 90
-    });
+    if (props.state != undefined && props.city != undefined) {
+        console.log('beforeSetData IF');
+        data = generateCharData();
+    } else {
+        console.log('beforeSetData Else');
+        data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 115, {
+            min: 0,
+            max: maxCases(data)
+        });
+    }
 
     const options1 = {
         chart: {
