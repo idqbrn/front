@@ -128,8 +128,8 @@ const Header = () => {
             <Box sx={{ flexGrow: 1 }} />
 
             {/* notification & profile */}
-            <NotificationSection />
-            <ProfileSection />
+            {/* <NotificationSection /> */}
+            {/* <ProfileSection /> */}
         </>
     );
 };
