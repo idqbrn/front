@@ -34,6 +34,7 @@ import { /* vecNumCityState, */ vecPosCityState } from '../../map/LocalLatLng/ve
 import { LineAxisOutlined } from '@mui/icons-material';
 // import response from '../../admin/response-test';
 import url from '../../utilities/backendUrl';
+import DiseasesInfoTable from './DiseasesInfoTable';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -124,6 +125,23 @@ const Dashboard = () => {
 
     return (
         <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+                <MainCard>
+                    <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', width: '80' }}>
+                            <div style={{ display: 'flex', padding: 10, width: '80' }}>
+                                <Typography variant="h2">Doenças Catalogadas</Typography>
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <DiseasesInfoTable />
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <DiseasesInfoTable />
+                            </div>
+                        </div>
+                    </div>
+                </MainCard>
+            </Grid>
             <Grid item xs={12}>
                 <MainCard>
                     <Grid item xs={12}>
