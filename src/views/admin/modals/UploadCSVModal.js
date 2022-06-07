@@ -227,7 +227,7 @@ export default function NestedModal() {
         ];
         return { place: places, diseases_result: value_return };
     };
-    const submitbutton = () => {
+    const submitbutton = async () => {
         let quero = [];
         let lugares = [];
         let child;
@@ -243,9 +243,8 @@ export default function NestedModal() {
             chunk = quero.slice(i, i + chunkSize);
             arrays.push(chunk);
         }
-        console.log(arrays);
         for (let i = 0; i < arrays.length; i += 1) {
-            axios
+            const resu = await axios
                 .post('http://localhost:5000/upload', {
                     vector: arrays[i]
                 })
@@ -255,6 +254,7 @@ export default function NestedModal() {
                 .catch(function (error) {
                     console.log(error);
                 });
+            console.log(i);
         }
         console.log(lugares);
     };
