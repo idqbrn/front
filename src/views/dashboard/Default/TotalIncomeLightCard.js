@@ -10,6 +10,7 @@ import TotalIncomeCard from 'ui-component/cards/Skeleton/TotalIncomeCard';
 
 // assets
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
+import { propsToClassKey } from '@mui/styles';
 
 // styles
 const CardWrapper = styled(MainCard)(({ theme }) => ({
@@ -39,12 +40,12 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ==============================|| DASHBOARD - TOTAL INCOME LIGHT CARD ||============================== //
 
-const TotalIncomeLightCard = ({ isLoading }) => {
+const TotalIncomeLightCard = (props) => {
     const theme = useTheme();
 
     return (
         <>
-            {isLoading ? (
+            {props.isLoading ? (
                 <TotalIncomeCard />
             ) : (
                 <CardWrapper border={false} content={false}>
@@ -70,7 +71,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                                         mt: 0.45,
                                         mb: 0.45
                                     }}
-                                    primary={<Typography variant="h4">300</Typography>}
+                                    primary={<Typography variant="h4">{props.values?.percentual}</Typography>}
                                     secondary={
                                         <Typography
                                             variant="subtitle2"
@@ -79,7 +80,7 @@ const TotalIncomeLightCard = ({ isLoading }) => {
                                                 mt: 0.5
                                             }}
                                         >
-                                            Dengue
+                                            Variação percentual
                                         </Typography>
                                     }
                                 />

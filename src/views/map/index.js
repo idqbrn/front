@@ -6,6 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import MainCard from 'ui-component/cards/MainCard';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import brStates from './brStates';
 import { diseases, disease1 } from './diseases/disease1';
@@ -25,17 +26,6 @@ function Map() {
         width: '100%',
         height: '500px'
     };
-
-    const brazilBounds = [
-        {
-            lat: -70.0,
-            lng: -100.0
-        },
-        {
-            lat: 70.0,
-            lng: 100.0
-        }
-    ];
 
     const [centerOption, setCenter] = useState(brStates[0].center);
 
@@ -90,7 +80,7 @@ function Map() {
         map.panTo(brStates[0].center);
         map.setMapTypeId('hybrid');
         map.setZoom(zoomMap);
-        map.setOptions({ streetViewControl: false, zoom: 1, bounds: brazilBounds });
+        map.setOptions({ streetViewControl: false, zoom: 1 });
         setMap(map);
 
         heatmap = new window.google.maps.visualization.HeatmapLayer();
@@ -145,11 +135,60 @@ function Map() {
                 map.fitBounds(place.geometry.viewport);
             }
         });
+
+        // Set the diseases options
     });
 
     const onUnmount = React.useCallback(() => {
         setMap(null);
     }, []);
+
+    const [diseasesResponse, setDiseasesResp] = useState([]);
+
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log('TAMO NO USEEFFECT');
+        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName').then((response) => {
+            console.log(response.data);
+            const nameDiseases = [];
+            for (let i = 0; i < response.data.length; i += 1) {
+                nameDiseases.push(response.data[i].name_id);
+            }
+            setDiseasesResp(nameDiseases);
+            console.log('DATA-TOTAL');
+        });
+        console.log('SAIU DO GET');
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, []);
+
+    const [heatData, setHeatData] = useState([]);
+
+    function requestDiseasePoints(disease) {
+        console.log('requestDiseasePoints');
+        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/disease/' + `${disease}`).then((response) => {
+            console.log(response);
+            console.log(response.data);
+            setHeatData(response.data);
+            console.log('DATA-TOTAL');
+            heatmap.setMap(null);
+            heatmap.setData([]);
+            const dataVector = [];
+
+            if (response?.data) {
+                for (let i = 0; i < response.data.length; i += 1) {
+                    dataVector.push({
+                        location: new google.maps.LatLng(parseFloat(response.data[i].lat), parseFloat(response.data[i].lng)),
+                        weight: response.data[i].count
+                    });
+                }
+            }
+            heatmap.setData(dataVector);
+            heatmap.setOptions({ radius: 10, map, data: dataVector });
+            setHeatmap(heatmap);
+            heatmap.setMap(map);
+        });
+    }
 
     // const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -167,7 +206,7 @@ function Map() {
                     <div style={{ display: 'flex', padding: 8 }}>
                         <Autocomplete
                             id="disease_select"
-                            options={diseases}
+                            options={diseasesResponse}
                             autoComplete
                             includeInputInList
                             renderInput={(params) => <TextField {...params} label="Doença" />}
@@ -183,6 +222,15 @@ function Map() {
                                 heatmap.setMap(map);
                                 console.log('op:', op);
 
+                                console.log('op....: ', option?.currentTarget);
+
+                                const op2 = option?.currentTarget.textContent;
+                                console.log('op2222:   ', op2);
+
+                                requestDiseasePoints(op2);
+
+                                /*
+
                                 if (!Number.isNaN(op)) {
                                     for (let i = 0; i < 100; i += 1) {
                                         fakeData?.push(new window.google.maps.LatLng(disease1[op][i].lat, disease1[op][i].lng));
@@ -190,7 +238,7 @@ function Map() {
                                 }
 
                                 heatmap.setData(fakeData);
-                                heatmap.setOptions({ radius: 10, map, data: fakeData });
+                                heatmap.setOptions({ radius: 10, map, data: fakeData }); */
                                 setHeatmap(heatmap);
                             }}
                         />

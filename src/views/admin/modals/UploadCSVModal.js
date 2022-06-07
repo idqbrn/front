@@ -4,6 +4,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Papa from 'papaparse';
+import axios from 'axios';
 
 const style = {
     position: 'absolute',
@@ -226,7 +227,7 @@ export default function NestedModal() {
         ];
         return { place: places, diseases_result: value_return };
     };
-    const submitbutton = () => {
+    const submitbutton = async () => {
         let quero = [];
         let lugares = [];
         let child;
@@ -235,12 +236,29 @@ export default function NestedModal() {
             quero = quero.concat(child['diseases_result']);
             lugares = lugares.concat(child['place']);
         }
-        console.log(quero);
-        // send quero and lugares to backend
+        let arrays = [];
+        const chunkSize = 500;
+        let chunk = null;
+        for (let i = 0; i < quero.length; i += chunkSize) {
+            chunk = quero.slice(i, i + chunkSize);
+            arrays.push(chunk);
+        }
+        for (let i = 0; i < arrays.length; i += 1) {
+            const resu = await axios
+                .post('http://localhost:5000/upload', {
+                    vector: arrays[i]
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            console.log(i);
+        }
+        console.log(lugares);
     };
-
-    console.log('UploadCSVModal');
-
+    // console.log('UploadCSVModal');
     return (
         <div style={{ display: 'flex' }}>
             <Button variant="contained" color="primary" onClick={handleOpen}>
