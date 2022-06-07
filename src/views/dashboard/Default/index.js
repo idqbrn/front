@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-concat */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 // material-ui
 import { Grid, Typography } from '@mui/material';
@@ -13,7 +13,7 @@ import TotalIncomeLightCard from './TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
 // import CoreUIChart from './CoreUIChart';
-import AdvancedChart from './AdvancedChart';
+import DoubleChart from './DoubleChart';
 
 // material-ui
 import TextField from '@mui/material/TextField';
@@ -38,7 +38,9 @@ import url from '../../utilities/backendUrl';
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-    const [diseaseOption, setDisease] = useState(diseases[0]);
+    const ref = useRef();
+
+    const [diseaseOption, setDisease] = useState(null);
 
     const [stateOption, setState] = useState(0);
 
@@ -49,37 +51,48 @@ const Dashboard = () => {
     const [citiesState, setCities] = useState([]);
 
     const [isLoading, setLoading] = useState(true);
-    const [values, setValues] = useState(0);
+    const [values, setValues] = useState({});
 
     const [advancedHeader, setHeader] = useState('Brasil');
 
     const [diseasesResponse, setDiseasesResp] = useState([]);
 
+    const [total, setTotal] = useState(0);
+
     useEffect(() => {
-        let total = 0;
-        let variacao = 0;
-        let percentual = 0;
-        let estado = 'RJ';
-        var config = {
-            method: 'get',
-            url: url + '/dashboard/total/dengue',
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        };
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                console.log(error);
+        if (diseaseOption != undefined) {
+            let variacao = 0;
+            let percentual = 0;
+            let estado = 'RJ';
+            const diseaseLabel = diseasesResponse[diseaseOption];
+            console.log('DISEASEOPTION=' + `${diseaseLabel}`);
+
+            console.log(url + '/dashboard/total/' + `${diseaseLabel}`);
+
+            let config = {
+                method: 'get',
+                url: url + '/dashboard/total/' + `${diseaseLabel}`,
+                headers: { 'Access-Control-Allow-Origin': '*' }
+            };
+            axios(config)
+                .then((response) => {
+                    console.log(response.data);
+                    setTotal(response.data[0].sum);
+                    console.log('total=' + `${total}`);
+                    // setDiseasesResp(nameDiseases);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            setLoading(false);
+            setValues({
+                disease: diseaseLabel,
+                total: total,
+                variacao: 10,
+                percentual: 5,
+                estado: 'SP'
             });
-        setLoading(false);
-        setValues({
-            name: 'febreamarela',
-            total: 20,
-            variacao: 10,
-            percentual: 5,
-            estado: 'SP'
-        });
+        }
     }, [diseaseOption]);
 
     useEffect(() => {
@@ -288,7 +301,7 @@ const Dashboard = () => {
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <Typography variant="h4">{`${advancedHeader}`}</Typography>
                                 </div>
-                                <AdvancedChart state={brStates[stateOption].value} city={JsonLatLng[cityOption]?.nome} />
+                                <DoubleChart state={brStates[stateOption].value} city={JsonLatLng[cityOption]?.nome} />
                             </div>
                         </div>
                     </Grid>
@@ -304,7 +317,6 @@ const Dashboard = () => {
                             <Autocomplete
                                 id="disease_select"
                                 options={diseasesResponse}
-                                getOptionLabel={(option) => option}
                                 autoComplete
                                 includeInputInList
                                 renderInput={(params) => <TextField {...params} label="Doença" />}
@@ -329,7 +341,7 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <EarningCard isLoading={isLoading} values={values} />
+                        <EarningCard isLoading={isLoading} values={values} setValues={setValues} ref={ref} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalOrderLineChartCard isLoading={isLoading} values={values} />

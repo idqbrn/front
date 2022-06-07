@@ -4,7 +4,7 @@ import stateToInitial from '../../map/LocalLatLng/stateToInitial';
 import url from '../../utilities/backendUrl';
 import { useState } from 'react';
 
-export default function AdvancedChart(props) {
+export default function DoubleChart(props) {
     console.log('ENTRAMOS NO ADVANCED-CHART');
     let data = [];
     // const [data, setData] = useState([]);
@@ -66,9 +66,9 @@ export default function AdvancedChart(props) {
         data = generateCharData();
     } else {
         console.log('beforeSetData Else');
-        data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 115, {
+        data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 3, {
             min: 0,
-            max: maxCases(data)
+            max: 0
         });
     }
 
@@ -97,7 +97,7 @@ export default function AdvancedChart(props) {
             }
         },
         dataLabels: {
-            enabled: false
+            enabled: true
         },
         fill: {
             gradient: {
@@ -121,7 +121,11 @@ export default function AdvancedChart(props) {
             theme: 'dark'
         },
         xaxis: {
-            type: 'datetime'
+            type: 'category',
+            tickPlacement: 'on',
+            title: {
+                text: 'Doenças'
+            }
         },
         yaxis: {
             min: 0,
@@ -150,8 +154,8 @@ export default function AdvancedChart(props) {
                     opacity: 0.4
                 },
                 xaxis: {
-                    min: new Date('27 Jul 2017 10:00:00').getTime(),
-                    max: new Date('14 Aug 2017 10:00:00').getTime()
+                    min: 10,
+                    max: 100
                 }
             }
         },
@@ -171,10 +175,11 @@ export default function AdvancedChart(props) {
             size: 0
         },
         xaxis: {
-            type: 'datetime',
+            type: 'category',
             tooltip: {
                 enabled: false
-            }
+            },
+            tickPlacement: 'on'
         },
         yaxis: {
             tickAmount: 2

@@ -148,7 +148,12 @@ function Map() {
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log('TAMO NO USEEFFECT');
-        axios.get(url + '/diseasesName').then((response) => {
+        var config = {
+            method: 'get',
+            url: url + '/diseasesName',
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
             console.log(response.data);
             const nameDiseases = [];
             for (let i = 0; i < response.data.length; i += 1) {
@@ -166,7 +171,12 @@ function Map() {
 
     function requestDiseasePoints(disease) {
         console.log('requestDiseasePoints');
-        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/disease/' + `${disease}`).then((response) => {
+        var config = {
+            method: 'get',
+            url: url + '/disease/' + `${disease}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
             console.log(response);
             console.log(response.data);
             setHeatData(response.data);
