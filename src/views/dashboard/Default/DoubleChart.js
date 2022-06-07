@@ -47,6 +47,7 @@ export default function DoubleChart(props) {
         axios(config).then((response) => {
             console.log('response.data');
             console.log(response.data);
+            console.log(response.data.length);
             for (let i = 0; i < response.data.length; i += 1) {
                 // console.log('dentro do for [' + i + ']');
                 data.push([response.data[i].disease_id, response.data[i].total]);

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -18,6 +19,7 @@ import ChartDataYear from './chart-data/total-order-year-line-chart';
 // assets
 import LocalMallOutlinedIcon from '@mui/icons-material/LocalMallOutlined';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import url from '../../utilities/backendUrl';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
     backgroundColor: theme.palette.primary.dark,
@@ -71,6 +73,34 @@ const TotalOrderLineChartCard = (props) => {
         setTimeValue(newValue);
     };
 
+    const [total, setTotal] = useState(0);
+    const [state, setState] = useState('');
+    const [city, setCity] = useState('');
+
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log(url + '/dashboard/max/' + `${props.values.disease}`);
+        const config = {
+            method: 'get',
+            url: url + '/dashboard/max/' + `${props.values.disease}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config)
+            .then((response) => {
+                console.log(response.data[0]);
+                setTotal(response.data[0].total);
+                setState(response.data[0].state);
+                setCity(response.data[0].city);
+                console.log('SUMMMMMMMMMMM: ' + `${response.data[0].total}`);
+                // setDiseasesResp(nameDiseases);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, [props.values]);
+
     return (
         <>
             {props.isLoading ? (
@@ -93,7 +123,7 @@ const TotalOrderLineChartCard = (props) => {
                                                     </Typography>
                                                 ) : (
                                                     <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                        4000
+                                                        {total}
                                                     </Typography>
                                                 )}
                                             </Grid>
@@ -117,7 +147,7 @@ const TotalOrderLineChartCard = (props) => {
                                                         color: theme.palette.primary[200]
                                                     }}
                                                 >
-                                                    Estado com maior número de casos para a doença: {props.values?.estado}
+                                                    {city} - {state} é o local com o maior número de casos de {props.values?.disease}
                                                 </Typography>
                                             </Grid>
                                         </Grid>

@@ -194,7 +194,7 @@ function Map() {
                 }
             }
             heatmap.setData(dataVector);
-            heatmap.setOptions({ radius: 10, map, data: dataVector });
+            heatmap.setOptions({ radius: 20, map, data: dataVector });
             setHeatmap(heatmap);
             heatmap.setMap(map);
         });
