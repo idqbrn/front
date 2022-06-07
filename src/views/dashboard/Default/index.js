@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-concat */
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import { Grid, Typography } from '@mui/material';
@@ -38,8 +38,6 @@ import url from '../../utilities/backendUrl';
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-    const ref = useRef();
-
     const [diseaseOption, setDisease] = useState(null);
 
     const [stateOption, setState] = useState(0);
@@ -68,6 +66,14 @@ const Dashboard = () => {
             console.log('DISEASEOPTION=' + `${diseaseLabel}`);
 
             console.log(url + '/dashboard/total/' + `${diseaseLabel}`);
+
+            setValues({
+                disease: diseaseLabel,
+                total: 0,
+                variacao: 10,
+                percentual: 5,
+                estado: 'SP'
+            });
 
             let config = {
                 method: 'get',
@@ -341,7 +347,7 @@ const Dashboard = () => {
             <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <EarningCard isLoading={isLoading} values={values} setValues={setValues} ref={ref} />
+                        <EarningCard isLoading={isLoading} values={values} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalOrderLineChartCard isLoading={isLoading} values={values} />

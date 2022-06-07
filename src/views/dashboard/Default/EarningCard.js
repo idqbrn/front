@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // material-ui
@@ -58,7 +58,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = forwardRef(function (props, ref) {
+function EarningCard(props) {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -71,42 +71,35 @@ const EarningCard = forwardRef(function (props, ref) {
         setAnchorEl(null);
     };
 
+    const [total, setTotal] = useState(0);
+
     console.log('EarningCard : ' + `${props.values.total}`);
 
     // useEffect(() => {
     //     total = props.values.total;
     // }, [props]);
 
-    // useEffect(() => {
-    //     // GET request using axios inside useEffect React hook
-    //     console.log('TAMO NO EARNINGCARD');
-    //     console.log(url + '/dashboard/total/' + `${props.values.disease}`);
-    //     const config = {
-    //         method: 'get',
-    //         url: url + '/dashboard/total/' + `${props.values.disease}`,
-    //         headers: { 'Access-Control-Allow-Origin': '*' }
-    //     };
-    //     axios(config).then((response) => {
-    //         console.log(response.data);
-    //         // const nameDiseases = [];
-    //         // for (let i = 0; i < response.data.length; i += 1) {
-    //         //     nameDiseases.push(response.data[i].name_id);
-    //         // }
-    //         console.log('SUMMMMMMMMMMM: ' + `${response.data.sum}`);
-    //         // setDiseasesResp(nameDiseases);
-    //     });
-
-    //     // empty dependency array means this effect will only run once (like componentDidMount in classes)
-    // }, [props.values]);
-
-    function changeValues() {
-        return function () {
-            setValues( (prev) => {... prev, "total": props.values.values.total});
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log(url + '/dashboard/total/' + `${props.values.disease}`);
+        const config = {
+            method: 'get',
+            url: url + '/dashboard/total/' + `${props.values.disease}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
         };
-    }
-    useImperativeHandle(ref, () => ({
-        setValues: () => changeValues()()
-    }));
+        axios(config)
+            .then((response) => {
+                console.log(response.data);
+                setTotal(response.data[0].sum);
+                console.log('SUMMMMMMMMMMM: ' + `${response.data[0].sum}`);
+                // setDiseasesResp(nameDiseases);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, [props.values]);
 
     return (
         <>
@@ -156,7 +149,7 @@ const EarningCard = forwardRef(function (props, ref) {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            {props.values.total}
+                                            {total}
                                         </Typography>
                                     </Grid>
                                     <Grid item></Grid>
@@ -179,7 +172,7 @@ const EarningCard = forwardRef(function (props, ref) {
             )}
         </>
     );
-});
+}
 
 EarningCard.propTypes = {
     isLoading: PropTypes.bool
