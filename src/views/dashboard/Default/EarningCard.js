@@ -73,12 +73,6 @@ function EarningCard(props) {
 
     const [total, setTotal] = useState(0);
 
-    console.log('EarningCard : ' + `${props.values.total}`);
-
-    // useEffect(() => {
-    //     total = props.values.total;
-    // }, [props]);
-
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log(url + '/dashboard/total/' + `${props.values.disease}`);

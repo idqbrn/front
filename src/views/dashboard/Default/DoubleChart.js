@@ -7,6 +7,8 @@ import { useState } from 'react';
 export default function DoubleChart(props) {
     console.log('ENTRAMOS NO ADVANCED-CHART');
     let data = [];
+    let options1 = null;
+    let options2 = null;
     // const [data, setData] = useState([]);
 
     function maxCases(series) {
@@ -32,8 +34,7 @@ export default function DoubleChart(props) {
     }
 
     function generateCharData() {
-        console.log('Entrams no generateCharData');
-        data = [];
+        // data = [];
 
         console.log(props.state);
 
@@ -41,6 +42,7 @@ export default function DoubleChart(props) {
 
         const config = {
             method: 'get',
+            // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
             url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
@@ -50,9 +52,10 @@ export default function DoubleChart(props) {
             console.log(response.data.length);
             for (let i = 0; i < response.data.length; i += 1) {
                 // console.log('dentro do for [' + i + ']');
-                data.push([response.data[i].disease_id, response.data[i].total]);
+                data.push({ x: response.data[i].disease_id, y: response.data[i].total });
             }
-            console.log('SERIES (dentro): ' + data);
+            console.log('SERIES (dentro): ');
+            console.log(data);
             console.log('DATA-TOTAL');
         });
         console.log('SERIES (fora): ' + data);
@@ -73,7 +76,7 @@ export default function DoubleChart(props) {
         });
     }
 
-    const options1 = {
+    options1 = {
         chart: {
             id: 'chart2',
             type: 'area',
@@ -138,7 +141,7 @@ export default function DoubleChart(props) {
 
     // chart1.render();
 
-    const options2 = {
+    options2 = {
         chart: {
             id: 'chart1',
             height: 130,

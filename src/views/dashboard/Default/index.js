@@ -207,9 +207,7 @@ const Dashboard = () => {
                                         renderInput={(params) => <TextField {...params} label="Estado" />}
                                         sx={{ width: 200 }}
                                         value={brStates.find(
-                                            (option) =>
-                                                brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.value ===
-                                                stateOption
+                                            (option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === stateOption
                                         )}
                                         onChange={async (option) => {
                                             const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
@@ -261,9 +259,7 @@ const Dashboard = () => {
                                         isOptionEqualToValue={(option, value) => option === value}
                                         sx={{ width: 200 }}
                                         value={brStates.find(
-                                            (option) =>
-                                                brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.value ===
-                                                cityOption
+                                            (option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === cityOption
                                         )}
                                         onChange={async (option) => {
                                             const op = option.nativeEvent.path[0].getAttribute('data-option-index');
@@ -307,7 +303,7 @@ const Dashboard = () => {
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <Typography variant="h4">{`${advancedHeader}`}</Typography>
                                 </div>
-                                <DoubleChart state={brStates[stateOption].value} city={JsonLatLng[cityOption]?.nome} />
+                                <DoubleChart state={brStates[stateOption]?.value} city={JsonLatLng[cityOption]?.nome} />
                             </div>
                         </div>
                     </Grid>
@@ -345,14 +341,14 @@ const Dashboard = () => {
                 </MainCard>
             </Grid>
             <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
+                <Grid container spacing={gridSpacing} style={{ justifyContent: 'center' }}>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <EarningCard isLoading={isLoading} values={values} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalOrderLineChartCard isLoading={isLoading} values={values} />
                     </Grid>
-                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                    {/* <Grid item lg={4} md={12} sm={12} xs={12}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item sm={6} xs={12} md={6} lg={12}>
                                 <TotalIncomeDarkCard isLoading={isLoading} values={values} />
@@ -361,10 +357,10 @@ const Dashboard = () => {
                                 <TotalIncomeLightCard isLoading={isLoading} values={values} />
                             </Grid>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={8}>
                         <TotalGrowthBarChart isLoading={isLoading} />
@@ -373,7 +369,7 @@ const Dashboard = () => {
                         <PopularCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid> */}
             {/* <CoreUIChart /> */}
         </Grid>
     );
