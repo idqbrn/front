@@ -1,6 +1,24 @@
 import Chart from 'react-apexcharts';
+import axios from 'axios';
+import stateToInitial from '../../map/LocalLatLng/stateToInitial';
+import url from '../../utilities/backendUrl';
+import { useState } from 'react';
 
-export default function AdvancedChart() {
+export default function DoubleChart(props) {
+    console.log('ENTRAMOS NO ADVANCED-CHART');
+    let data = [];
+    let options1 = null;
+    let options2 = null;
+    // const [data, setData] = useState([]);
+
+    function maxCases(series) {
+        const max = 0;
+        for (let i = 0; i < series.length; i += 1) {
+            if (series[i].total > max) max = series[i].total;
+        }
+        return max;
+    }
+
     function generateDayWiseTimeSeries(baseval, count, yrange) {
         let i = 0;
         const series = [];
@@ -15,12 +33,50 @@ export default function AdvancedChart() {
         return series;
     }
 
-    const data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 115, {
-        min: 30,
-        max: 90
-    });
+    function generateCharData() {
+        // data = [];
 
-    const options1 = {
+        console.log(props.state);
+
+        console.log('COE-' + `${props.state}` + '-' + `${props.city}`);
+
+        const config = {
+            method: 'get',
+            // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
+            url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
+            console.log('response.data');
+            console.log(response.data);
+            console.log(response.data.length);
+            for (let i = 0; i < response.data.length; i += 1) {
+                // console.log('dentro do for [' + i + ']');
+                data.push({ x: response.data[i].disease_id, y: response.data[i].total });
+            }
+            console.log('SERIES (dentro): ');
+            console.log(data);
+            console.log('DATA-TOTAL');
+        });
+        console.log('SERIES (fora): ' + data);
+        return data;
+    }
+
+    console.log('props.state=' + props.state);
+    console.log('props.city=' + props.city);
+
+    if (props.state != undefined && props.city != undefined) {
+        console.log('beforeSetData IF');
+        data = generateCharData();
+    } else {
+        console.log('beforeSetData Else');
+        data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 3, {
+            min: 0,
+            max: 0
+        });
+    }
+
+    options1 = {
         chart: {
             id: 'chart2',
             type: 'area',
@@ -45,7 +101,7 @@ export default function AdvancedChart() {
             }
         },
         dataLabels: {
-            enabled: false
+            enabled: true
         },
         fill: {
             gradient: {
@@ -69,7 +125,11 @@ export default function AdvancedChart() {
             theme: 'dark'
         },
         xaxis: {
-            type: 'datetime'
+            type: 'category',
+            tickPlacement: 'on',
+            title: {
+                text: 'Doenças'
+            }
         },
         yaxis: {
             min: 0,
@@ -81,7 +141,7 @@ export default function AdvancedChart() {
 
     // chart1.render();
 
-    const options2 = {
+    options2 = {
         chart: {
             id: 'chart1',
             height: 130,
@@ -98,8 +158,8 @@ export default function AdvancedChart() {
                     opacity: 0.4
                 },
                 xaxis: {
-                    min: new Date('27 Jul 2017 10:00:00').getTime(),
-                    max: new Date('14 Aug 2017 10:00:00').getTime()
+                    min: 10,
+                    max: 100
                 }
             }
         },
@@ -119,10 +179,11 @@ export default function AdvancedChart() {
             size: 0
         },
         xaxis: {
-            type: 'datetime',
+            type: 'category',
             tooltip: {
                 enabled: false
-            }
+            },
+            tickPlacement: 'on'
         },
         yaxis: {
             tickAmount: 2

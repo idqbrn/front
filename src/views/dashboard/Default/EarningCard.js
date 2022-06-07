@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // material-ui
 import { styled, useTheme } from '@mui/material/styles';
@@ -8,6 +9,7 @@ import { Avatar, Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
 // project imports
 import MainCard from 'ui-component/cards/MainCard';
 import SkeletonEarningCard from 'ui-component/cards/Skeleton/EarningCard';
+import url from '../../utilities/backendUrl';
 
 // assets
 import EarningIcon from 'assets/images/icons/earning.svg';
@@ -56,7 +58,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = (props) => {
+function EarningCard(props) {
     const theme = useTheme();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -68,6 +70,30 @@ const EarningCard = (props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        // GET request using axios inside useEffect React hook
+        console.log(url + '/dashboard/total/' + `${props.values.disease}`);
+        const config = {
+            method: 'get',
+            url: url + '/dashboard/total/' + `${props.values.disease}`,
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config)
+            .then((response) => {
+                console.log(response.data);
+                setTotal(response.data[0].sum);
+                console.log('SUMMMMMMMMMMM: ' + `${response.data[0].sum}`);
+                // setDiseasesResp(nameDiseases);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        // empty dependency array means this effect will only run once (like componentDidMount in classes)
+    }, [props.values]);
 
     return (
         <>
@@ -117,7 +143,7 @@ const EarningCard = (props) => {
                                 <Grid container alignItems="center">
                                     <Grid item>
                                         <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                            {props.values?.total}
+                                            {total}
                                         </Typography>
                                     </Grid>
                                     <Grid item></Grid>
@@ -140,7 +166,7 @@ const EarningCard = (props) => {
             )}
         </>
     );
-};
+}
 
 EarningCard.propTypes = {
     isLoading: PropTypes.bool

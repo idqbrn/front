@@ -31,7 +31,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }
 }));
 
-export default function SearchTable() {
+export default function SearchTable(props) {
     /* SearchTable.propTypes = {
         // resposta: PropTypes.array.isRequired
     }; */
@@ -68,14 +68,14 @@ export default function SearchTable() {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <ThData />
                 <TableBody>
-                    {response.resposta.map((row) => (
-                        <StyledTableRow key={(row.disease, row.state, row.city)}>
+                    {props.values.map((row) => (
+                        <StyledTableRow key={(row.disease_id, row.state, row.city)}>
                             <StyledTableCell component="th" scope="row">
-                                {row.disease}
+                                {row.disease_id}
                             </StyledTableCell>
                             <StyledTableCell align="right">{row.state}</StyledTableCell>
                             <StyledTableCell align="right">{row.city}</StyledTableCell>
-                            <StyledTableCell align="right">{row.cases}</StyledTableCell>
+                            <StyledTableCell align="right">{row.total}</StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>

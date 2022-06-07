@@ -13,7 +13,7 @@ import TotalIncomeLightCard from './TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
 // import CoreUIChart from './CoreUIChart';
-import AdvancedChart from './AdvancedChart';
+import DoubleChart from './DoubleChart';
 
 // material-ui
 import TextField from '@mui/material/TextField';
@@ -33,56 +33,83 @@ import JsonLatLng from '../../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../../map/LocalLatLng/vecCityState';
 import { LineAxisOutlined } from '@mui/icons-material';
 // import response from '../../admin/response-test';
+import url from '../../utilities/backendUrl';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
 const Dashboard = () => {
-    const [diseaseOption, setDisease] = useState(diseases[0]);
+    const [diseaseOption, setDisease] = useState(null);
 
     const [stateOption, setState] = useState(0);
 
     const [cityOption, setCity] = useState(0);
 
+    let cityNum = useState(0);
+
     const [citiesState, setCities] = useState([]);
 
     const [isLoading, setLoading] = useState(true);
-    const [values, setValues] = useState(0);
+    const [values, setValues] = useState({});
 
     const [advancedHeader, setHeader] = useState('Brasil');
 
     const [diseasesResponse, setDiseasesResp] = useState([]);
 
+    const [total, setTotal] = useState(0);
+
     useEffect(() => {
-        let total = 0;
-        let variacao = 0;
-        let percentual = 0;
-        let estado = 'RJ';
-        var config = {
-            method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/dashboard/total/dengue',
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        };
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                console.log(error);
+        if (diseaseOption != undefined) {
+            let variacao = 0;
+            let percentual = 0;
+            let estado = 'RJ';
+            const diseaseLabel = diseasesResponse[diseaseOption];
+            console.log('DISEASEOPTION=' + `${diseaseLabel}`);
+
+            console.log(url + '/dashboard/total/' + `${diseaseLabel}`);
+
+            setValues({
+                disease: diseaseLabel,
+                total: 0,
+                variacao: 10,
+                percentual: 5,
+                estado: 'SP'
             });
-        setLoading(false);
-        setValues({
-            name: 'febreamarela',
-            total: 20,
-            variacao: 10,
-            percentual: 5,
-            estado: 'SP'
-        });
+
+            let config = {
+                method: 'get',
+                url: url + '/dashboard/total/' + `${diseaseLabel}`,
+                headers: { 'Access-Control-Allow-Origin': '*' }
+            };
+            axios(config)
+                .then((response) => {
+                    console.log(response.data);
+                    setTotal(response.data[0].sum);
+                    console.log('total=' + `${total}`);
+                    // setDiseasesResp(nameDiseases);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            setLoading(false);
+            setValues({
+                disease: diseaseLabel,
+                total: total,
+                variacao: 10,
+                percentual: 5,
+                estado: 'SP'
+            });
+        }
     }, [diseaseOption]);
 
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log('TAMO NO USEEFFECT');
-        axios.get('https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName').then((response) => {
+        const config = {
+            method: 'get',
+            url: url + '/diseasesName',
+            headers: { 'Access-Control-Allow-Origin': '*' }
+        };
+        axios(config).then((response) => {
             console.log(response.data);
             const nameDiseases = [];
             for (let i = 0; i < response.data.length; i += 1) {
@@ -180,9 +207,7 @@ const Dashboard = () => {
                                         renderInput={(params) => <TextField {...params} label="Estado" />}
                                         sx={{ width: 200 }}
                                         value={brStates.find(
-                                            (option) =>
-                                                brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.value ===
-                                                stateOption
+                                            (option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === stateOption
                                         )}
                                         onChange={async (option) => {
                                             const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
@@ -234,9 +259,7 @@ const Dashboard = () => {
                                         isOptionEqualToValue={(option, value) => option === value}
                                         sx={{ width: 200 }}
                                         value={brStates.find(
-                                            (option) =>
-                                                brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.value ===
-                                                cityOption
+                                            (option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === cityOption
                                         )}
                                         onChange={async (option) => {
                                             const op = option.nativeEvent.path[0].getAttribute('data-option-index');
@@ -247,14 +270,15 @@ const Dashboard = () => {
                                             console.log('stateOption: ', stateOption);
                                             console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
 
-                                            const cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
+                                            cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
 
                                             console.log('cityNum: ', cityNum);
 
                                             setCity(cityNum);
 
                                             const local = JsonLatLng[cityNum];
-                                            if (local) {
+                                            console.log(local);
+                                            if (local != undefined) {
                                                 console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
                                                 // console.log(`${local.UF}` + ' - ' + `${local.nome}`); console.log(`${stateOption}`); console.log(`${cityOption}`);
                                                 setHeader(`${local.nome}` + ', ' + `${local.UF}`);
@@ -279,7 +303,7 @@ const Dashboard = () => {
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                                     <Typography variant="h4">{`${advancedHeader}`}</Typography>
                                 </div>
-                                <AdvancedChart />
+                                <DoubleChart state={brStates[stateOption]?.value} city={JsonLatLng[cityOption]?.nome} />
                             </div>
                         </div>
                     </Grid>
@@ -295,7 +319,6 @@ const Dashboard = () => {
                             <Autocomplete
                                 id="disease_select"
                                 options={diseasesResponse}
-                                getOptionLabel={(option) => option}
                                 autoComplete
                                 includeInputInList
                                 renderInput={(params) => <TextField {...params} label="Doença" />}
@@ -318,14 +341,14 @@ const Dashboard = () => {
                 </MainCard>
             </Grid>
             <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
+                <Grid container spacing={gridSpacing} style={{ justifyContent: 'center' }}>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <EarningCard isLoading={isLoading} values={values} />
                     </Grid>
                     <Grid item lg={4} md={6} sm={6} xs={12}>
                         <TotalOrderLineChartCard isLoading={isLoading} values={values} />
                     </Grid>
-                    <Grid item lg={4} md={12} sm={12} xs={12}>
+                    {/* <Grid item lg={4} md={12} sm={12} xs={12}>
                         <Grid container spacing={gridSpacing}>
                             <Grid item sm={6} xs={12} md={6} lg={12}>
                                 <TotalIncomeDarkCard isLoading={isLoading} values={values} />
@@ -334,10 +357,10 @@ const Dashboard = () => {
                                 <TotalIncomeLightCard isLoading={isLoading} values={values} />
                             </Grid>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} md={8}>
                         <TotalGrowthBarChart isLoading={isLoading} />
@@ -346,7 +369,7 @@ const Dashboard = () => {
                         <PopularCard isLoading={isLoading} />
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid> */}
             {/* <CoreUIChart /> */}
         </Grid>
     );
