@@ -11,13 +11,13 @@ export default function DoubleChart(props) {
     let options2 = null;
     // const [data, setData] = useState([]);
 
-    function maxCases(series) {
-        const max = 0;
-        for (let i = 0; i < series.length; i += 1) {
-            if (series[i].total > max) max = series[i].total;
-        }
-        return max;
-    }
+    // function maxCases(series) {
+    //     const max = 0;
+    //     for (let i = 0; i < series.length; i += 1) {
+    //         if (series[i].total > max) max = series[i].total;
+    //     }
+    //     return max;
+    // }
 
     function generateDayWiseTimeSeries(baseval, count, yrange) {
         let i = 0;

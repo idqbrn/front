@@ -10,6 +10,7 @@ import axios from 'axios';
 import { diseases } from '../../map/diseases/disease1';
 import brStates from '../../map/brStates';
 import { vecPosCityState, CitiesFromState } from '../../map/LocalLatLng/vecCityState';
+import url from '../../utilities/backendUrl';
 
 const style = {
     position: 'absolute',
@@ -78,7 +79,7 @@ export default function NestedModal() {
         console.log('TAMO NO USEEFFECT');
         const config = {
             method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            url: url + '/diseasesName',
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config).then((response) => {

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Papa from 'papaparse';
 import axios from 'axios';
+import url from '../../utilities/backendUrl';
 
 const style = {
     position: 'absolute',
@@ -245,7 +246,7 @@ export default function NestedModal() {
         }
         for (let i = 0; i < arrays.length; i += 1) {
             axios
-                .post('http://localhost:5000/upload', {
+                .post(url + '/upload', {
                     vector: arrays[i]
                 })
                 .then(function (response) {

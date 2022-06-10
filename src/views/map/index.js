@@ -203,7 +203,7 @@ function Map() {
     // const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     return isLoaded ? (
-        <MainCard title="Map">
+        <MainCard>
             <div>
                 <div style={{ flexDirection: 'row', display: 'flex' }}>
                     <div style={{ display: 'flex', padding: 8 }}>

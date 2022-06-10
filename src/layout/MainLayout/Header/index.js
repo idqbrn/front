@@ -37,6 +37,9 @@ const Header = () => {
         }
     }
 
+    const buttonLabelMap = 'Mapa';
+    const buttonLabelDashboard = 'Dashboard';
+
     return (
         <>
             {/* logo & toggler button */}
@@ -75,7 +78,7 @@ const Header = () => {
             </Box>
             <Box
                 sx={{
-                    width: 42,
+                    width: 100,
                     display: 'flex',
                     [theme.breakpoints.down('md')]: {
                         width: 'auto'
@@ -93,12 +96,14 @@ const Header = () => {
                             '&:hover': {
                                 background: theme.palette.primary[800],
                                 color: theme.palette.primary[200]
-                            }
+                            },
+                            width: '90px'
                         }}
                         onClick={() => routeChange('map')}
                         color="inherit"
                     >
                         <IconMap2 stroke={1.5} size="1.3rem" />
+                        {buttonLabelMap}
                     </Avatar>
                 </ButtonBase>
             </Box>
@@ -113,12 +118,14 @@ const Header = () => {
                         '&:hover': {
                             background: theme.palette.primary[800],
                             color: theme.palette.primary[200]
-                        }
+                        },
+                        width: '130px'
                     }}
                     onClick={() => routeChange('dashboard')}
                     color="inherit"
                 >
                     <IconDashboard stroke={1.5} size="1.3rem" />
+                    {buttonLabelDashboard}
                 </Avatar>
             </ButtonBase>
 
