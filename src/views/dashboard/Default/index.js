@@ -231,7 +231,7 @@ const Dashboard = () => {
                                         )}
                                         onChange={async (option) => {
                                             const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
-                                            setState(op);
+                                            // setState(op);
                                             setCity(null);
                                             // const citySelect = document.getElementById('city_select');
                                             // console.log('citySelect: ');
