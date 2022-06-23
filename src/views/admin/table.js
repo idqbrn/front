@@ -7,8 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-// import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
 
+// import PropTypes from 'prop-types';
+import EditCellModal from './modals/EditCellModal';
 import response from './response-test';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -31,6 +33,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }
 }));
 
+function EditModal(values) {
+    const row = values.values;
+    return EditCellModal(row);
+}
+
 export default function SearchTable(props) {
     /* SearchTable.propTypes = {
         // resposta: PropTypes.array.isRequired
@@ -39,10 +46,11 @@ export default function SearchTable(props) {
     const ThData = () => (
         <TableHead>
             <TableRow>
-                <StyledTableCell>Doença</StyledTableCell>
-                <StyledTableCell align="right">Estado</StyledTableCell>
-                <StyledTableCell align="right">Cidade</StyledTableCell>
-                <StyledTableCell align="right">Total de casos</StyledTableCell>
+                <StyledTableCell align="center">Doença</StyledTableCell>
+                <StyledTableCell align="center">Estado</StyledTableCell>
+                <StyledTableCell align="center">Cidade</StyledTableCell>
+                <StyledTableCell align="center">Total de casos</StyledTableCell>
+                <StyledTableCell align="center">Edição</StyledTableCell>
             </TableRow>
         </TableHead>
     );
@@ -70,12 +78,15 @@ export default function SearchTable(props) {
                 <TableBody>
                     {props.values.map((row) => (
                         <StyledTableRow key={(row.disease_id, row.state, row.city)}>
-                            <StyledTableCell component="th" scope="row">
+                            <StyledTableCell align="center" component="th" scope="row">
                                 {row.disease_id}
                             </StyledTableCell>
-                            <StyledTableCell align="right">{row.state}</StyledTableCell>
-                            <StyledTableCell align="right">{row.city}</StyledTableCell>
-                            <StyledTableCell align="right">{row.total}</StyledTableCell>
+                            <StyledTableCell align="center">{row.state}</StyledTableCell>
+                            <StyledTableCell align="center">{row.city}</StyledTableCell>
+                            <StyledTableCell align="center">{row.total}</StyledTableCell>
+                            <StyledTableCell align="center">
+                                <EditModal values={row} align="center" />
+                            </StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
