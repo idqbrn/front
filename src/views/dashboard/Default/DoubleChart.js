@@ -9,6 +9,7 @@ export default function DoubleChart(props) {
     let data = [];
     let options1 = null;
     let options2 = null;
+
     // const [data, setData] = useState([]);
 
     // function maxCases(series) {
@@ -34,17 +35,12 @@ export default function DoubleChart(props) {
     }
 
     function generateCharData() {
-        // data = [];
-
-        console.log(props.state);
-
         console.log('COE-' + `${props.state}` + '-' + `${props.city}`);
 
         const config = {
             method: 'get',
-            // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
-            url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
-            headers: { 'Access-Control-Allow-Origin': '*' }
+            url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`
+            // headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config).then((response) => {
             console.log('response.data');

@@ -58,14 +58,20 @@ export default function NestedModal(row) {
 
     function sendChange() {
         if (open) {
-            axios
-                .put(url + '/updateCase', {
+            let config = {
+                method: 'put',
+                // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
+                url: `${url}` + '/updateCase',
+                headers: { 'Access-Control-Allow-Origin': '*' },
+                data: {
                     disease: row.disease_id,
                     state: row.state,
                     city: row.city,
                     total: inputRef.current.value
-                })
-                .then(function (response) {
+                }
+            };
+            axios(config)
+                .then((response) => {
                     console.log(response);
                 })
                 .catch(function (error) {
