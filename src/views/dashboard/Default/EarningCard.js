@@ -21,16 +21,17 @@ import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfOutlined';
 import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveOutlined';
 
 const CardWrapper = styled(MainCard)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.dark,
+    backgroundColor: theme.palette.primary[800],
     color: '#fff',
     overflow: 'hidden',
     position: 'relative',
     '&:after': {
         content: '""',
         position: 'absolute',
-        width: 210,
-        height: 210,
-        background: theme.palette.secondary[800],
+        // width: 210,
+        // height: 210,
+        opacity: 0.5,
+        background: theme.palette.secondary.light,
         borderRadius: '50%',
         top: -85,
         right: -95,
@@ -42,9 +43,9 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
     '&:before': {
         content: '""',
         position: 'absolute',
-        width: 210,
-        height: 210,
-        background: theme.palette.secondary[800],
+        // width: 210,
+        // height: 210,
+        background: theme.palette.secondary.light,
         borderRadius: '50%',
         top: -125,
         right: -15,
@@ -85,7 +86,7 @@ function EarningCard(props) {
             .then((response) => {
                 console.log(response.data);
                 setTotal(response.data[0].sum);
-                console.log('SUMMMMMMMMMMM: ' + `${response.data[0].sum}`);
+                // console.log('SUMMMMMMMMMMM: ' + `${response.data[0].sum}`);
                 // setDiseasesResp(nameDiseases);
             })
             .catch(function (error) {
@@ -103,7 +104,7 @@ function EarningCard(props) {
                 <CardWrapper border={false} content={false}>
                     <Box sx={{ p: 2.25 }}>
                         <Grid container direction="column">
-                            <Grid item>
+                            {/* <Grid item>
                                 <Grid container justifyContent="space-between">
                                     <Grid item></Grid>
                                     <Grid item>
@@ -138,7 +139,7 @@ function EarningCard(props) {
                                         </Menu>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
                             <Grid item>
                                 <Grid container alignItems="center">
                                     <Grid item>

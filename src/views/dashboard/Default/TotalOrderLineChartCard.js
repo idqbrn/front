@@ -91,7 +91,7 @@ const TotalOrderLineChartCard = (props) => {
                 setTotal(response.data[0].total);
                 setState(response.data[0].state);
                 setCity(response.data[0].city);
-                console.log('SUMMMMMMMMMMM: ' + `${response.data[0].total}`);
+                // console.log('SUMMMMMMMMMMM: ' + `${response.data[0].total}`);
                 // setDiseasesResp(nameDiseases);
             })
             .catch(function (error) {
@@ -136,7 +136,7 @@ const TotalOrderLineChartCard = (props) => {
                                                         color: theme.palette.primary.dark
                                                     }}
                                                 >
-                                                    <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(1, 1, 1, 45deg)' }} />
+                                                    <ArrowDownwardIcon fontSize="inherit" sx={{ transform: 'rotate3d(0, 0, 1, 225deg)' }} />
                                                 </Avatar>
                                             </Grid>
                                             <Grid item xs={12}>
@@ -144,10 +144,10 @@ const TotalOrderLineChartCard = (props) => {
                                                     sx={{
                                                         fontSize: '1rem',
                                                         fontWeight: 500,
-                                                        color: theme.palette.primary[200]
+                                                        color: theme.palette.secondary[200]
                                                     }}
                                                 >
-                                                    {city} - {state} é o local com o maior número de casos de {props.values?.disease}
+                                                    {city} - {state} é a cidade com mais casos de {props.values?.disease}
                                                 </Typography>
                                             </Grid>
                                         </Grid>

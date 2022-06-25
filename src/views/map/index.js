@@ -37,7 +37,7 @@ function Map() {
 
     const [diseaseOption, setDesease] = useState(diseases[0].value);
 
-    const [zoomMap] = useState(1);
+    let zoomMap = 1;
 
     const [libraries] = useState(['visualization', 'places']);
 

@@ -11,7 +11,6 @@ import Button from '@mui/material/Button';
 
 // import PropTypes from 'prop-types';
 import EditCellModal from './modals/EditCellModal';
-import response from './response-test';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -48,45 +47,31 @@ export default function SearchTable(props) {
             <TableRow>
                 <StyledTableCell align="center">Doença</StyledTableCell>
                 <StyledTableCell align="center">Estado</StyledTableCell>
-                <StyledTableCell align="center">Cidade</StyledTableCell>
+                {props.values[0]?.city != '' ? <StyledTableCell align="center">Cidade</StyledTableCell> : <></>}
                 <StyledTableCell align="center">Total de casos</StyledTableCell>
-                <StyledTableCell align="center">Edição</StyledTableCell>
+                {props.values[0]?.city != '' ? <StyledTableCell align="center">Edição</StyledTableCell> : <></>}
             </TableRow>
         </TableHead>
     );
-    // get table row data
-    /* const tdData = () => {
-        // console.log(props?.resposta);
-        <TableBody>
-            {response.resposta.map((row) => (
-                <StyledTableRow key={(row.disease, row.state, row.city)}>
-                    <StyledTableCell component="th" scope="row">
-                        {row.disease}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.state}</StyledTableCell>
-                    <StyledTableCell align="right">{row.city}</StyledTableCell>
-                    <StyledTableCell align="right">{row.cases}</StyledTableCell>
-                </StyledTableRow>
-            ))}
-        </TableBody>;
-    }; */
 
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <ThData />
                 <TableBody>
-                    {props.values.map((row) => (
-                        <StyledTableRow key={(row.disease_id, row.state, row.city)}>
-                            <StyledTableCell align="center" component="th" scope="row">
-                                {row.disease_id}
-                            </StyledTableCell>
+                    {props.values.map((row, index) => (
+                        <StyledTableRow key={index}>
+                            <StyledTableCell align="center">{row.disease_id}</StyledTableCell>
                             <StyledTableCell align="center">{row.state}</StyledTableCell>
-                            <StyledTableCell align="center">{row.city}</StyledTableCell>
+                            {props.values[0]?.city != '' ? <StyledTableCell align="center">{row.city}</StyledTableCell> : <></>}
                             <StyledTableCell align="center">{row.total}</StyledTableCell>
-                            <StyledTableCell align="center">
-                                <EditModal values={row} align="center" />
-                            </StyledTableCell>
+                            {props.values[0]?.city != '' ? (
+                                <StyledTableCell align="center">
+                                    <EditModal values={row} align="center" />
+                                </StyledTableCell>
+                            ) : (
+                                <></>
+                            )}
                         </StyledTableRow>
                     ))}
                 </TableBody>

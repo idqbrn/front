@@ -23,7 +23,7 @@ export default function DiseasesInfoTable() {
     console.log('ENTREI NA DISEASES INFO TABLE');
 
     useEffect(() => {
-        console.log(url + '/disease/info');
+        console.log(url + '/diseaseInfo');
         // GET request using axios inside useEffect React hook
         const config = {
             method: 'get',
@@ -45,7 +45,7 @@ export default function DiseasesInfoTable() {
             <Grid container>
                 <Grid container spacing={2}>
                     <Grid item xs="auto" sm container>
-                        {data?.map((disease) => (
+                        {data?.map((disease, index) => (
                             <Card
                                 sx={{
                                     p: 1,
@@ -54,6 +54,7 @@ export default function DiseasesInfoTable() {
                                     flexGrow: 1,
                                     backgroundColor: (theme) => (theme.palette.mode === 'dark' ? '#1A2027' : '#9fa')
                                 }}
+                                key={index}
                             >
                                 <Grid item xs container direction="column">
                                     <Grid item xs padding={1}>

@@ -1,13 +1,19 @@
-import { Chart, ApexCharts } from 'react-apexcharts';
+import Chart from 'react-apexcharts';
 import axios from 'axios';
 import stateToInitial from '../../map/LocalLatLng/stateToInitial';
 import url from '../../utilities/backendUrl';
 import { useState } from 'react';
 import MainCard from 'ui-component/cards/MainCard';
 import { Grid } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
 export default function DiseaseChart(props) {
-    if (props.disease == undefined) return <></>;
+    const theme = useTheme();
+
+    if (props.disease == undefined) {
+        console.log('DISEASE_CHART -> props.disease = undefined');
+        return <></>;
+    }
 
     console.log('ENTRAMOS NO ADVANCED-CHART');
     let data = [];
@@ -52,22 +58,21 @@ export default function DiseaseChart(props) {
             console.log(response.data.length);
             for (let i = 0; i < response.data.length; i += 1) {
                 // console.log('dentro do for [' + i + ']');
-                data.push({ x: response.data[i].state, y: parseInt(response.data[i].sum) });
+                data.push({ x: response.data[i].state, y: response.data[i].sum });
             }
             console.log('SERIES (dentro): ');
             console.log(data);
-            console.log('DATA-TOTAL');
         });
         console.log('SERIES (fora): ' + data);
-        ApexCharts?.exec('double-chart-id', 'updateOptions', {
-            ...options,
-            series: [
-                {
-                    name: 'Casos',
-                    data: data
-                }
-            ]
-        });
+        // ApexCharts?.exec('disease-chart-id', 'updateOptions', {
+        //     ...options,
+        //     series: [
+        //         {
+        //             name: 'Casos',
+        //             data: data
+        //         }
+        //     ]
+        // });
         return data;
     }
 
@@ -76,20 +81,21 @@ export default function DiseaseChart(props) {
     if (props.disease != undefined) {
         console.log('beforeSetData IF');
         data = generateCharData();
-    } else {
-        console.log('beforeSetData Else');
-        data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 3, {
-            min: 0,
-            max: 0
-        });
     }
+    // else {
+    //     console.log('beforeSetData Else');
+    //     data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 3, {
+    //         min: 0,
+    //         max: 0
+    //     });
+    // }
 
     options = {
         chart: {
-            id: 'double-chart-id',
+            id: 'disease-chart-id',
             type: 'bar',
-            height: 230,
-            foreColor: '#ccc',
+            // height: 230,
+            foreColor: theme.palette.primary[800],
             toolbar: {
                 autoSelected: 'pan',
                 show: false
@@ -100,12 +106,12 @@ export default function DiseaseChart(props) {
                 horizontal: true
             }
         },
-        colors: ['#00BAEA'],
+        colors: [theme.palette.primary.dark],
         stroke: {
             width: 3
         },
         grid: {
-            borderColor: '#555',
+            borderColor: theme.palette.primary[800],
             clipMarkers: false,
             yaxis: {
                 lines: {
@@ -131,6 +137,7 @@ export default function DiseaseChart(props) {
         // },
         series: [
             {
+                name: 'Total de casos',
                 data
             }
         ],
@@ -147,8 +154,20 @@ export default function DiseaseChart(props) {
         yaxis: {
             min: 0,
             tickAmount: 4
+        },
+        noData: {
+            text: 'Carregando...',
+            align: 'center',
+            verticalAlign: 'middle',
+            offsetX: 0,
+            offsetY: 0,
+            style: {
+                color: theme.palette.primary[800],
+                fontSize: '20px',
+                fontFamily: 'Helvetica'
+            }
         }
     };
 
-    return <Chart options={options} series={options.series} height="100%" width="100%" style={{ backgroundColor: 'green' }} />;
+    return true ? <Chart options={options} series={options.series} height="100%" width="100%" type="bar" /> : <></>;
 }

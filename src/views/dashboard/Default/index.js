@@ -33,8 +33,7 @@ import brStates from '../../map/brStates';
 // import OpenModal from '../../admin/modals/OpenModal';
 import JsonLatLng from '../../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../../map/LocalLatLng/vecCityState';
-import { LineAxisOutlined } from '@mui/icons-material';
-// import response from '../../admin/response-test';
+// import { LineAxisOutlined } from '@mui/icons-material';
 import url from '../../utilities/backendUrl';
 import DiseasesInfoTable from './DiseasesInfoTable';
 
@@ -62,9 +61,9 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (diseaseOption != undefined) {
-            let variacao = 0;
-            let percentual = 0;
-            let estado = 'RJ';
+            // let variacao = 0;
+            // let percentual = 0;
+            // let estado = 'RJ';
             const diseaseLabel = diseasesResponse[diseaseOption];
             console.log('DISEASEOPTION=' + `${diseaseLabel}`);
 
@@ -102,7 +101,8 @@ const Dashboard = () => {
                 estado: 'SP'
             });
         }
-    }, [diseaseOption, diseasesResponse, total]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [diseaseOption, diseasesResponse]);
 
     useEffect(() => {
         // GET request using axios inside useEffect React hook
@@ -123,7 +123,7 @@ const Dashboard = () => {
         });
 
         // empty dependency array means this effect will only run once (like componentDidMount in classes)
-    }, [diseasesResponse, total]);
+    }, []);
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -358,27 +358,31 @@ const Dashboard = () => {
                             />
                         </div>
                     </div>
+                    <div>
+                        {diseasesResponse[diseaseOption] != undefined ? (
+                            <Grid container style={{ display: 'flex', flexDirection: 'row' }}>
+                                <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
+                                    <Grid item style={{ display: 'flex' }}>
+                                        <EarningCard isLoading={isLoading} values={values} />
+                                    </Grid>
+                                    <Grid item style={{ display: 'flex' }}>
+                                        <TotalOrderLineChartCard isLoading={isLoading} values={values} />
+                                    </Grid>
+                                </Grid>
+                                <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
+                                    {/* <Grid item width="auto" style={{ display: 'flex' }}>
+                                    <EarningCard isLoading={isLoading} values={values} />
+                                </Grid> */}
+                                    <Grid item style={{ display: 'flex', height: '100%', width: '100%' }}>
+                                        <DiseaseChart disease={diseasesResponse[diseaseOption]} />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                 </MainCard>
-            </Grid>
-            <Grid item>
-                <Grid container style={{ display: 'flex', flexDirection: 'row' }}>
-                    <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
-                        <Grid item style={{ display: 'flex' }}>
-                            <EarningCard isLoading={isLoading} values={values} />
-                        </Grid>
-                        <Grid item style={{ display: 'flex' }}>
-                            <TotalOrderLineChartCard isLoading={isLoading} values={values} />
-                        </Grid>
-                    </Grid>
-                    <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
-                        {/* <Grid item width="auto" style={{ display: 'flex' }}>
-                            <EarningCard isLoading={isLoading} values={values} />
-                        </Grid> */}
-                        <Grid item style={{ display: 'flex', height: '100%', width: '100%' }}>
-                            <DiseaseChart disease={diseasesResponse[diseaseOption]} />
-                        </Grid>
-                    </Grid>
-                </Grid>
             </Grid>
             {/* <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
