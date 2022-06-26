@@ -24,10 +24,6 @@ const AdminRoutes = {
             element: <DashboardDefault />
         },
         {
-            path: '/dashboard/default',
-            element: <DashboardDefault />
-        },
-        {
             path: '/admin/map',
             element: <Map />
         },
