@@ -94,9 +94,7 @@ const FirebaseLogin = ({ ...others }) => {
             >
                 {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
                     <form noValidate onSubmit={handleSubmit} {...others}>
-                        {touched.submit & (values.email == 'admin@eb.mil.br') & (values.password == '123456')
-                            ? navigate('/admin/crud')
-                            : null}
+                        {touched.submit & (values.email == 'admin@eb.mil.br') & (values.password == '123456') ? navigate('/admin') : null}
                         <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
                             <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
                             <OutlinedInput
