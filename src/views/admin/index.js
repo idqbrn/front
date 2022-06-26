@@ -185,6 +185,7 @@ function Admin() {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
                                 setState(op);
                                 setCity(null);
+                                setCities([]);
                                 // const citySelect = document.getElementById('city_select');
                                 // console.log('citySelect: ');
                                 // console.log(citySelect);
@@ -211,7 +212,6 @@ function Admin() {
                                     setCities(cities);
                                 } else {
                                     setState(null);
-                                    setCities([]);
                                     citiesState.push('');
                                 }
                             }}

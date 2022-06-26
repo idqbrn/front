@@ -29,7 +29,7 @@ const AdminHeader = () => {
         const mapPath = '/admin/map';
         const dashboardPath = '/admin/dashboard';
         const adminPath = '/admin';
-        const diseaseAdminPath = '/admin';
+        const diseaseAdminPath = '/admin/disease';
 
         if (route === 'map') {
             navigate(mapPath);
@@ -51,12 +51,14 @@ const AdminHeader = () => {
     const buttonLabelCasesAdmin = 'Casos - Admin';
     const buttonLabelDiseaseAdmin = 'Doenças - Admin';
 
+    const logoSectionWidth = 350;
+
     return (
         <>
             {/* logo & toggler button */}
             <Box
                 sx={{
-                    width: 228,
+                    width: logoSectionWidth,
                     display: 'flex',
                     [theme.breakpoints.down('md')]: {
                         width: 'auto'
@@ -64,7 +66,7 @@ const AdminHeader = () => {
                 }}
             >
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-                    <LogoSection />
+                    <LogoSection isAdmin={true} />
                 </Box>
                 {/* <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
@@ -86,6 +88,72 @@ const AdminHeader = () => {
                         <IconMenu2 stroke={1.5} size="1.3rem" />
                     </Avatar>
                 </ButtonBase> */}
+            </Box>
+
+            {/* Button Casos Admin */}
+            <Box
+                sx={{
+                    width: 170,
+                    display: 'flex',
+                    [theme.breakpoints.down('md')]: {
+                        width: 'auto'
+                    }
+                }}
+            >
+                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                    <Avatar
+                        variant="rounded"
+                        sx={{
+                            ...theme.typography.commonAvatar,
+                            ...theme.typography.mediumAvatar,
+                            background: theme.palette.primary[200],
+                            color: theme.palette.primary[800],
+                            '&:hover': {
+                                background: theme.palette.primary[800],
+                                color: theme.palette.primary[200]
+                            },
+                            width: '160px'
+                        }}
+                        onClick={() => routeChange('admin')}
+                        color="inherit"
+                    >
+                        <AdminPanelSettingsIcon stroke={1.5} size="1.3rem" />
+                        {buttonLabelCasesAdmin}
+                    </Avatar>
+                </ButtonBase>
+            </Box>
+
+            {/* Button Doenças Admin */}
+            <Box
+                sx={{
+                    width: 190,
+                    display: 'flex',
+                    [theme.breakpoints.down('md')]: {
+                        width: 'auto'
+                    }
+                }}
+            >
+                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
+                    <Avatar
+                        variant="rounded"
+                        sx={{
+                            ...theme.typography.commonAvatar,
+                            ...theme.typography.mediumAvatar,
+                            background: theme.palette.primary[200],
+                            color: theme.palette.primary[800],
+                            '&:hover': {
+                                background: theme.palette.primary[800],
+                                color: theme.palette.primary[200]
+                            },
+                            width: '180px'
+                        }}
+                        onClick={() => routeChange('diseaseAdmin')}
+                        color="inherit"
+                    >
+                        <CoronavirusIcon stroke={1.5} size="1.3rem" />
+                        {buttonLabelDiseaseAdmin}
+                    </Avatar>
+                </ButtonBase>
             </Box>
 
             {/* Button Mapa */}
@@ -150,72 +218,6 @@ const AdminHeader = () => {
                     >
                         <IconDashboard stroke={1.5} size="1.3rem" />
                         {buttonLabelDashboard}
-                    </Avatar>
-                </ButtonBase>
-            </Box>
-
-            {/* Button Casos Admin */}
-            <Box
-                sx={{
-                    width: 170,
-                    display: 'flex',
-                    [theme.breakpoints.down('md')]: {
-                        width: 'auto'
-                    }
-                }}
-            >
-                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
-                    <Avatar
-                        variant="rounded"
-                        sx={{
-                            ...theme.typography.commonAvatar,
-                            ...theme.typography.mediumAvatar,
-                            background: theme.palette.primary[200],
-                            color: theme.palette.primary[800],
-                            '&:hover': {
-                                background: theme.palette.primary[800],
-                                color: theme.palette.primary[200]
-                            },
-                            width: '160px'
-                        }}
-                        onClick={() => routeChange('admin')}
-                        color="inherit"
-                    >
-                        <AdminPanelSettingsIcon stroke={1.5} size="1.3rem" />
-                        {buttonLabelCasesAdmin}
-                    </Avatar>
-                </ButtonBase>
-            </Box>
-
-            {/* Button Doenças Admin */}
-            <Box
-                sx={{
-                    width: 200,
-                    display: 'flex',
-                    [theme.breakpoints.down('md')]: {
-                        width: 'auto'
-                    }
-                }}
-            >
-                <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
-                    <Avatar
-                        variant="rounded"
-                        sx={{
-                            ...theme.typography.commonAvatar,
-                            ...theme.typography.mediumAvatar,
-                            background: theme.palette.primary[200],
-                            color: theme.palette.primary[800],
-                            '&:hover': {
-                                background: theme.palette.primary[800],
-                                color: theme.palette.primary[200]
-                            },
-                            width: '180px'
-                        }}
-                        onClick={() => routeChange('diseaseAdmin')}
-                        color="inherit"
-                    >
-                        <CoronavirusIcon stroke={1.5} size="1.3rem" />
-                        {buttonLabelDiseaseAdmin}
                     </Avatar>
                 </ButtonBase>
             </Box>

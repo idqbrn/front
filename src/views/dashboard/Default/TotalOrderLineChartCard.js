@@ -68,11 +68,6 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 const TotalOrderLineChartCard = (props) => {
     const theme = useTheme();
 
-    const [timeValue, setTimeValue] = useState(false);
-    const handleChangeTime = (event, newValue) => {
-        setTimeValue(newValue);
-    };
-
     const [total, setTotal] = useState(0);
     const [state, setState] = useState('');
     const [city, setCity] = useState('');
@@ -117,15 +112,9 @@ const TotalOrderLineChartCard = (props) => {
                                     <Grid item xs={6}>
                                         <Grid container alignItems="center">
                                             <Grid item>
-                                                {timeValue ? (
-                                                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                        5000
-                                                    </Typography>
-                                                ) : (
-                                                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
-                                                        {total}
-                                                    </Typography>
-                                                )}
+                                                <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>
+                                                    {total}
+                                                </Typography>
                                             </Grid>
                                             <Grid item>
                                                 <Avatar

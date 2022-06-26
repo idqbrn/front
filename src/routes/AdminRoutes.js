@@ -11,6 +11,7 @@ const Map = Loadable(lazy(() => import('views/map')));
 
 // admin routing
 const Admin = Loadable(lazy(() => import('views/admin')));
+const DiseaseAdmin = Loadable(lazy(() => import('views/disease-admin')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -33,6 +34,10 @@ const AdminRoutes = {
         {
             path: '/admin',
             element: <Admin />
+        },
+        {
+            path: '/admin/disease',
+            element: <DiseaseAdmin />
         }
     ]
 };

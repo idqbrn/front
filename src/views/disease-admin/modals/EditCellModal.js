@@ -31,42 +31,21 @@ export default function NestedModal(row) {
         setOpen(false);
     };
 
-    // useEffect(() => {
-    //     // GET request using axios inside useEffect React hook
-    //     console.log('TAMO NO USEEFFECT');
-    //     const config = {
-    //         method: 'get',
-    //         url: url + '/diseasesName',
-    //         headers: { 'Access-Control-Allow-Origin': '*' }
-    //     };
-    //     axios(config).then((response) => {
-    //         console.log(response.data);
-    //         const nameDiseases = [];
-    //         for (let i = 0; i < response.data.length; i += 1) {
-    //             nameDiseases.push(response.data[i].name_id);
-    //         }
-    //         setDiseasesResp(nameDiseases);
-    //         console.log('DATA-TOTAL');
-    //     });
-
-    //     // empty dependency array means this effect will only run once (like componentDidMount in classes)
-    // }, []);
-
-    // console.log('Create');
-
-    const inputRef = useRef('');
+    const inputRefDescription = useRef('');
+    const inputRefTreatments = useRef('');
+    const inputRefVector = useRef('');
 
     function sendChange() {
         if (open) {
             let config = {
                 method: 'put',
-                url: `${url}` + '/updateCase',
+                url: `${url}` + '/updateDisease',
                 headers: { 'Access-Control-Allow-Origin': '*' },
                 data: {
-                    disease: row.disease_id,
-                    state: row.state,
-                    city: row.city,
-                    total: inputRef.current.value
+                    name_id: row.name_id,
+                    description: inputRefDescription.current.value,
+                    treatments: inputRefTreatments.current.value,
+                    vector: inputRefVector.current.value
                 }
             };
             axios(config)
@@ -80,26 +59,41 @@ export default function NestedModal(row) {
     }
 
     return (
-        <div style={{ display: 'flex' }}>
+        <>
             <Button width="100%" variant="contained" color="primary" onClick={handleOpen}>
                 Editar
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
                 <Box sx={{ ...style, width: '40%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
-                    <h2 id="parent-modal-title">Alterar Casos</h2>
-                    <p id="parent-modal-description">Insira o novo valor para o número de casos para as dadas informações:</p>
-                    <div>Doença: {row.disease_id}</div>
-                    <div>Estado: {row.state}</div>
-                    <div>Cidade: {row.city}</div>
-                    <div>Casos a serem atualizados: {row.total}</div>
+                    <h2 id="parent-modal-title">Alterar Doença</h2>
+                    <p id="parent-modal-description">Insira as novas informações para a doença escolhida:</p>
+                    <div>Doença: {row.name_id}</div>
+                    <TextField
+                        id="new-description"
+                        inputRef={inputRefDescription}
+                        label="Descrição"
+                        multiline
+                        rows={2}
+                        type="text"
+                        defaultValue={row?.description}
+                    />
+                    <TextField
+                        id="new-treatment"
+                        inputRef={inputRefTreatments}
+                        label="Tratamento"
+                        multiline
+                        type="text"
+                        defaultValue={row?.treatments}
+                    />
+                    <TextField
+                        id="new-vector"
+                        inputRef={inputRefVector}
+                        label="Vetores de transmissão"
+                        multiline
+                        type="text"
+                        defaultValue={row?.vector}
+                    />
                     <div style={{ flexDirection: 'column', display: 'flex' }}>
-                        <TextField
-                            id="new-cases-total"
-                            inputRef={inputRef}
-                            label="Novo total de casos"
-                            type="number"
-                            defaultValue={row?.total}
-                        />
                         <Button
                             variant="contained"
                             component="span"
@@ -112,6 +106,6 @@ export default function NestedModal(row) {
                     </div>
                 </Box>
             </Modal>
-        </div>
+        </>
     );
 }

@@ -9,9 +9,9 @@ import Logo from 'ui-component/Logo';
 
 // ==============================|| MAIN LOGO ||============================== //
 
-const LogoSection = () => (
-    <ButtonBase disableRipple component={Link} to={config.defaultPath}>
-        <Logo />
+const LogoSection = (props) => (
+    <ButtonBase disableRipple component={Link} to={props.isAdmin == true ? '/admin' : config.defaultPath}>
+        <Logo isAdmin={props.isAdmin} />
     </ButtonBase>
 );
 

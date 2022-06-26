@@ -18,29 +18,6 @@ export default function DiseaseChart(props) {
     console.log('ENTRAMOS NO ADVANCED-CHART');
     let data = [];
     let options = null;
-    // const [data, setData] = useState([]);
-
-    // function maxCases(series) {
-    //     const max = 0;
-    //     for (let i = 0; i < series.length; i += 1) {
-    //         if (series[i].total > max) max = series[i].total;
-    //     }
-    //     return max;
-    // }
-
-    // function generateDayWiseTimeSeries(baseval, count, yrange) {
-    //     let i = 0;
-    //     const series = [];
-    //     while (i < count) {
-    //         const x = baseval;
-    //         const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-    //         series.push([x, y]);
-    //         baseval += 86400000;
-    //         i += 1;
-    //     }
-    //     return series;
-    // }
 
     function generateCharData() {
         // data = [];
@@ -48,7 +25,6 @@ export default function DiseaseChart(props) {
 
         const config = {
             method: 'get',
-            // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
             url: `${url}` + '/diseaseStatesSum/' + `${props.disease}`,
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
@@ -64,15 +40,6 @@ export default function DiseaseChart(props) {
             console.log(data);
         });
         console.log('SERIES (fora): ' + data);
-        // ApexCharts?.exec('disease-chart-id', 'updateOptions', {
-        //     ...options,
-        //     series: [
-        //         {
-        //             name: 'Casos',
-        //             data: data
-        //         }
-        //     ]
-        // });
         return data;
     }
 
@@ -82,13 +49,6 @@ export default function DiseaseChart(props) {
         console.log('beforeSetData IF');
         data = generateCharData();
     }
-    // else {
-    //     console.log('beforeSetData Else');
-    //     data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 3, {
-    //         min: 0,
-    //         max: 0
-    //     });
-    // }
 
     options = {
         chart: {

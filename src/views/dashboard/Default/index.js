@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react';
 import { ApexCharts } from 'react-apexcharts';
 
 // material-ui
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, Divider } from '@mui/material';
 import axios from 'axios';
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-import TotalIncomeDarkCard from './TotalIncomeDarkCard';
-import TotalIncomeLightCard from './TotalIncomeLightCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+// import TotalIncomeDarkCard from './TotalIncomeDarkCard';
+// import TotalIncomeLightCard from './TotalIncomeLightCard';
+// import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
 // import CoreUIChart from './CoreUIChart';
 import DoubleChart from './DoubleChart';
@@ -358,7 +358,16 @@ const Dashboard = () => {
                             />
                         </div>
                     </div>
-                    <div>
+                    <Divider />
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignContent: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '5px'
+                        }}
+                    >
                         {diseasesResponse[diseaseOption] != undefined ? (
                             <Grid container style={{ display: 'flex', flexDirection: 'row' }}>
                                 <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
