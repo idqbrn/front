@@ -1,6 +1,6 @@
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import logo from '../assets/images/logo.jpg';
+import logo from '../assets/images/logo.png';
 import { Typography } from '@mui/material';
 
 /**

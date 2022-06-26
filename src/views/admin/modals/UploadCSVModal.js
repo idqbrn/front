@@ -282,6 +282,7 @@ export default function NestedModal() {
                 .catch(function (error) {
                     console.log(error);
                 });
+            console.log(i);
         }
         console.log(lugares);
     };
