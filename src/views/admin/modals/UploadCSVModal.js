@@ -1,10 +1,11 @@
-import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Input from '@mui/material/Input';
 import Papa from 'papaparse';
 import axios from 'axios';
+import url from '../../utilities/backendUrl';
 
 const style = {
     position: 'absolute',
@@ -21,7 +22,7 @@ const style = {
 };
 
 function ChildModal() {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -50,8 +51,8 @@ function ChildModal() {
 }
 
 export default function NestedModal() {
-    const [open, setOpen] = React.useState(false);
-    const [files, setFiles] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [files, setFiles] = useState(false);
 
     const handleOpen = () => {
         setOpen(true);
@@ -59,13 +60,22 @@ export default function NestedModal() {
     const handleClose = () => {
         setOpen(false);
     };
+    console.log('files v');
+    console.log(files);
+    console.log('files ^');
     const changeHandler = (event) => {
         // Passing file data (event.target.files[0]) to parse using Papa.parse
+        console.log('event');
+        console.log(event);
+        console.log(event.target);
+        console.log(event.target.files[0]);
         Papa.parse(event.target.files[0], {
             header: true,
             skipEmptyLines: true,
-            complete: function (results) {
+            complete: (results) => {
+                console.log('Results.data:');
                 console.log(results.data);
+                console.log('depois do results.data');
                 setFiles(results.data);
             }
         });
@@ -231,24 +241,42 @@ export default function NestedModal() {
         let quero = [];
         let lugares = [];
         let child;
+
+        console.log('before for(files.length)');
         for (let i = 0; i < files.length; i++) {
             child = myFunction(files[i]);
             quero = quero.concat(child['diseases_result']);
             lugares = lugares.concat(child['place']);
         }
+
+        console.log('quero');
+        console.log(quero);
+
         let arrays = [];
         const chunkSize = 500;
         let chunk = null;
+        let config = null;
+
+        console.log('before for(arrays.length)1');
         for (let i = 0; i < quero.length; i += chunkSize) {
             chunk = quero.slice(i, i + chunkSize);
             arrays.push(chunk);
         }
+
+        console.log('before for(arrays.length)2');
         for (let i = 0; i < arrays.length; i += 1) {
-            const resu = await axios
-                .post('http://localhost:5000/upload', {
+            console.log('printando arrays[' + i + ']');
+            console.log(arrays[i]);
+            config = {
+                method: 'post',
+                url: `${url}` + '/upload',
+                headers: { 'Access-Control-Allow-Origin': '*' },
+                data: {
                     vector: arrays[i]
-                })
-                .then(function (response) {
+                }
+            };
+            const resu = await axios(config)
+                .then((response) => {
                     console.log(response);
                 })
                 .catch(function (error) {

@@ -4,12 +4,14 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import { diseases } from '../../map/diseases/disease1';
 import brStates from '../../map/brStates';
 import { vecPosCityState, CitiesFromState } from '../../map/LocalLatLng/vecCityState';
+import JsonLatLng from '../../map/LocalLatLng/states_latitudes_flat_name.json';
+import url from '../../utilities/backendUrl';
 
 const style = {
     position: 'absolute',
@@ -73,12 +75,17 @@ export default function NestedModal() {
 
     const [diseasesResponse, setDiseasesResp] = useState([]);
 
+    const inputRefDisease = useRef('');
+    const inputRefState = useRef('');
+    const inputRefCity = useRef('');
+    const inputRefTotal = useRef('');
+
     useEffect(() => {
         // GET request using axios inside useEffect React hook
         console.log('TAMO NO USEEFFECT');
         const config = {
             method: 'get',
-            url: 'https://4d7c-200-20-225-239.sa.ngrok.io/diseasesName',
+            url: url + '/diseasesName',
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
         axios(config).then((response) => {
@@ -94,7 +101,45 @@ export default function NestedModal() {
         // empty dependency array means this effect will only run once (like componentDidMount in classes)
     }, []);
 
+    function insertCase() {
+        const disease_id = document.getElementById('disease-select');
+        console.log(disease_id);
+        console.log(inputRefDisease.current);
+        const state = document.getElementById('state-select');
+        console.log(state);
+        const city = document.getElementById('city-select');
+        console.log(city);
+        const total = inputRefTotal.current.value;
+        console.log(total);
+
+        if (!open) return;
+
+        const place_id = 333333;
+        console.log('place-id:');
+        console.log(place_id);
+        const config = {
+            method: 'post',
+            url: `${url}` + '/insertCase',
+            headers: { 'Access-Control-Allow-Origin': '*' },
+            data: {
+                disease_id: disease_id,
+                place_id: place_id, //{ disease_id.charCodeAt() + state.charCodeAt() + city.charCodeAt() },
+                total: total,
+                user_id: 1
+            }
+        };
+        axios(config)
+            .then((response) => {
+                console.log(response);
+                setConfirmOpen(true);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     // console.log('Create');
+    let cityNum = useState(0);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -109,9 +154,9 @@ export default function NestedModal() {
                         <Autocomplete
                             id="disease_select"
                             options={diseasesResponse}
-                            getOptionLabel={(option) => option}
                             autoComplete
                             includeInputInList
+                            ref={inputRefDisease}
                             renderInput={(params) => <TextField {...params} label="Doença" />}
                             sx={{ width: 200 }}
                             value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
@@ -128,48 +173,85 @@ export default function NestedModal() {
                             }}
                         />
                         <Autocomplete
-                            disablePortal
-                            id="autocomplete-states"
+                            id="state_select"
+                            options={brStates}
                             autoComplete
                             includeInputInList
-                            options={brStates}
-                            sx={{ width: '100%' }}
+                            ref={inputRefState}
                             renderInput={(params) => <TextField {...params} label="Estado" />}
-                            value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === stateOption
-                            )}
+                            sx={{ width: 200 }}
+                            value={brStates.find((option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === stateOption)}
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
-                                setState(op);
-                                if (op > 0) {
-                                    const cities = CitiesFromState(stateOption);
+                                // setState(op);
+                                setCity(null);
+                                console.log(`\ncitySelect.value: ${cityOption}`);
+                                const local = vecPosCityState[op];
+                                console.log('op: ', op);
+                                if (!isNaN(local)) {
+                                    setState(op);
+                                    const localLabel = JsonLatLng[local];
+                                    console.log('localLabel: ' + localLabel.UF);
+
+                                    const cities = [];
+                                    for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i += 1) cities.push(JsonLatLng[i].nome);
+
+                                    // console.log('cities: ', cities);
                                     setCities(cities);
+                                } else {
+                                    setState(null);
+                                    setCities([]);
+                                    // citiesState.push('');
                                 }
                             }}
                         />
                         <Autocomplete
-                            disablePortal
-                            id="autocomplete-cities"
+                            id="city_select"
+                            options={citiesState}
                             autoComplete
                             includeInputInList
-                            options={citiesState}
-                            sx={{ width: '100%' }}
+                            ref={inputRefCity}
                             renderInput={(params) => <TextField {...params} label="Cidade" />}
-                            value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
-                            )}
+                            isOptionEqualToValue={(option, value) => option === value}
+                            sx={{ width: 200 }}
+                            value={brStates.find((option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === cityOption)}
                             onChange={async (option) => {
-                                const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
-                                if (op >= 0) {
-                                    const cityNum = op + vecPosCityState[stateOption];
+                                const op = option.nativeEvent.path[0].getAttribute('data-option-index');
 
-                                    setCity(cityNum);
+                                // console.log('CITYoption: ', option);
+                                console.log('value: ', document.getElementById('city_select').value);
+                                console.log('op: ', op);
+                                console.log('stateOption: ', stateOption);
+                                console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
+
+                                cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
+
+                                console.log('cityNum: ', cityNum);
+
+                                setCity(cityNum);
+
+                                const local = JsonLatLng[cityNum];
+                                console.log(local);
+                                if (local != undefined) {
+                                    console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
+                                    // console.log(`${local.UF}` + ' - ' + `${local.nome}`); console.log(`${stateOption}`); console.log(`${cityOption}`);
+                                } else {
+                                    setCity(NaN);
+                                    const state = vecPosCityState[stateOption];
+                                    if (!isNaN(state)) {
+                                        setState(op);
+                                        const stateLabel = JsonLatLng[state];
+                                    }
                                 }
+
+                                // if (brStates[stateOption].zoom > brStates[0].zoom) map.setZoom(local.zoom);
+                                // console.log('heatmap.getData()=');
+                                // console.log(heatmap.getData());
                             }}
                         />
-                        <TextField id="input-quantidade" label="Quantidade" type="number" />
+                        <TextField id="input-quantidade" inputRef={inputRefTotal} label="Quantidade" type="number" />
 
-                        <Button variant="contained" component="span">
+                        <Button variant="contained" component="span" onClick={insertCase}>
                             Adicionar
                         </Button>
                     </div>

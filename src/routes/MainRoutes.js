@@ -18,7 +18,6 @@ const AuthLogin3 = Loadable(lazy(() => import('views/pages/authentication/authen
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/sample-page')));
 const Map = Loadable(lazy(() => import('views/map')));
-const Admin = Loadable(lazy(() => import('views/admin')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -61,14 +60,6 @@ const MainRoutes = {
         {
             path: '/map',
             element: <Map />
-        },
-        {
-            path: '/admin',
-            element: <AuthLogin3 />
-        },
-        {
-            path: '/admin/crud',
-            element: <Admin />
         }
     ]
 };

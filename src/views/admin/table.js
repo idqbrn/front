@@ -7,9 +7,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-// import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
 
-import response from './response-test';
+// import PropTypes from 'prop-types';
+import EditCellModal from './modals/EditCellModal';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -31,6 +32,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }
 }));
 
+function EditModal(values) {
+    const row = values.values;
+    return EditCellModal(row);
+}
+
 export default function SearchTable(props) {
     /* SearchTable.propTypes = {
         // resposta: PropTypes.array.isRequired
@@ -39,43 +45,33 @@ export default function SearchTable(props) {
     const ThData = () => (
         <TableHead>
             <TableRow>
-                <StyledTableCell>Doença</StyledTableCell>
-                <StyledTableCell align="right">Estado</StyledTableCell>
-                <StyledTableCell align="right">Cidade</StyledTableCell>
-                <StyledTableCell align="right">Total de casos</StyledTableCell>
+                <StyledTableCell align="center">Doença</StyledTableCell>
+                <StyledTableCell align="center">Estado</StyledTableCell>
+                {props.values[0]?.city != '' ? <StyledTableCell align="center">Cidade</StyledTableCell> : <></>}
+                <StyledTableCell align="center">Total de casos</StyledTableCell>
+                {props.values[0]?.city != '' ? <StyledTableCell align="center">Edição</StyledTableCell> : <></>}
             </TableRow>
         </TableHead>
     );
-    // get table row data
-    /* const tdData = () => {
-        // console.log(props?.resposta);
-        <TableBody>
-            {response.resposta.map((row) => (
-                <StyledTableRow key={(row.disease, row.state, row.city)}>
-                    <StyledTableCell component="th" scope="row">
-                        {row.disease}
-                    </StyledTableCell>
-                    <StyledTableCell align="right">{row.state}</StyledTableCell>
-                    <StyledTableCell align="right">{row.city}</StyledTableCell>
-                    <StyledTableCell align="right">{row.cases}</StyledTableCell>
-                </StyledTableRow>
-            ))}
-        </TableBody>;
-    }; */
 
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <ThData />
                 <TableBody>
-                    {props.values.map((row) => (
-                        <StyledTableRow key={(row.disease_id, row.state, row.city)}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.disease_id}
-                            </StyledTableCell>
-                            <StyledTableCell align="right">{row.state}</StyledTableCell>
-                            <StyledTableCell align="right">{row.city}</StyledTableCell>
-                            <StyledTableCell align="right">{row.total}</StyledTableCell>
+                    {props.values.map((row, index) => (
+                        <StyledTableRow key={index}>
+                            <StyledTableCell align="center">{row.disease_id}</StyledTableCell>
+                            <StyledTableCell align="center">{row.state}</StyledTableCell>
+                            {props.values[0]?.city != '' ? <StyledTableCell align="center">{row.city}</StyledTableCell> : <></>}
+                            <StyledTableCell align="center">{row.total}</StyledTableCell>
+                            {props.values[0]?.city != '' ? (
+                                <StyledTableCell align="center">
+                                    <EditModal values={row} align="center" />
+                                </StyledTableCell>
+                            ) : (
+                                <></>
+                            )}
                         </StyledTableRow>
                     ))}
                 </TableBody>

@@ -1,3 +1,3 @@
-const url = 'https://d57f-189-94-175-33.sa.ngrok.io';
+const url = 'http://localhost:5000';
 
 export default url;

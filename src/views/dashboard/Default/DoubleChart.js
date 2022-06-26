@@ -5,44 +5,41 @@ import url from '../../utilities/backendUrl';
 import { useState } from 'react';
 
 export default function DoubleChart(props) {
-    console.log('ENTRAMOS NO ADVANCED-CHART');
     let data = [];
     let options1 = null;
     let options2 = null;
+    let noDataText = 'Selecione um Estado e uma Cidade';
+
     // const [data, setData] = useState([]);
 
-    function maxCases(series) {
-        const max = 0;
-        for (let i = 0; i < series.length; i += 1) {
-            if (series[i].total > max) max = series[i].total;
-        }
-        return max;
-    }
+    // function maxCases(series) {
+    //     const max = 0;
+    //     for (let i = 0; i < series.length; i += 1) {
+    //         if (series[i].total > max) max = series[i].total;
+    //     }
+    //     return max;
+    // }
 
-    function generateDayWiseTimeSeries(baseval, count, yrange) {
-        let i = 0;
-        const series = [];
-        while (i < count) {
-            const x = baseval;
-            const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
+    // function generateDayWiseTimeSeries(baseval, count, yrange) {
+    //     let i = 0;
+    //     const series = [];
+    //     while (i < count) {
+    //         const x = baseval;
+    //         const y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
 
-            series.push([x, y]);
-            baseval += 86400000;
-            i += 1;
-        }
-        return series;
-    }
+    //         series.push([x, y]);
+    //         baseval += 86400000;
+    //         i += 1;
+    //     }
+    //     return series;
+    // }
 
     function generateCharData() {
-        // data = [];
-
-        console.log(props.state);
-
+        noDataText = 'Carregando...';
         console.log('COE-' + `${props.state}` + '-' + `${props.city}`);
 
         const config = {
             method: 'get',
-            // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
             url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
             headers: { 'Access-Control-Allow-Origin': '*' }
         };
@@ -56,7 +53,6 @@ export default function DoubleChart(props) {
             }
             console.log('SERIES (dentro): ');
             console.log(data);
-            console.log('DATA-TOTAL');
         });
         console.log('SERIES (fora): ' + data);
         return data;
@@ -65,15 +61,9 @@ export default function DoubleChart(props) {
     console.log('props.state=' + props.state);
     console.log('props.city=' + props.city);
 
-    if (props.state != undefined && props.city != undefined) {
+    if (props.state != 'BR' && props.state != undefined && props.city != undefined) {
         console.log('beforeSetData IF');
         data = generateCharData();
-    } else {
-        console.log('beforeSetData Else');
-        data = generateDayWiseTimeSeries(new Date('22 Apr 2017').getTime(), 3, {
-            min: 0,
-            max: 0
-        });
     }
 
     options1 = {
@@ -118,6 +108,7 @@ export default function DoubleChart(props) {
         },
         series: [
             {
+                name: 'Total de Casos',
                 data
             }
         ],
@@ -134,6 +125,18 @@ export default function DoubleChart(props) {
         yaxis: {
             min: 0,
             tickAmount: 4
+        },
+        noData: {
+            text: noDataText,
+            align: 'center',
+            verticalAlign: 'middle',
+            offsetX: 0,
+            offsetY: 0,
+            style: {
+                color: '#000000',
+                fontSize: '20px',
+                fontFamily: 'Helvetica'
+            }
         }
     };
 
@@ -156,11 +159,12 @@ export default function DoubleChart(props) {
                 fill: {
                     color: '#fff',
                     opacity: 0.4
-                },
-                xaxis: {
-                    min: 10,
-                    max: 100
                 }
+                // ,
+                // xaxis: {
+                //     min: 10,
+                //     max: 100
+                // }
             }
         },
         colors: ['#FF0080'],

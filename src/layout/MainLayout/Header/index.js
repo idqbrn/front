@@ -6,9 +6,6 @@ import { Avatar, Box, ButtonBase } from '@mui/material';
 
 // project imports
 import LogoSection from '../LogoSection';
-// import SearchSection from './SearchSection';
-import ProfileSection from './ProfileSection';
-import NotificationSection from './NotificationSection';
 
 // assets
 import { IconMap2, IconDashboard } from '@tabler/icons';
@@ -37,6 +34,9 @@ const Header = () => {
         }
     }
 
+    const buttonLabelMap = 'Mapa';
+    const buttonLabelDashboard = 'Dashboard';
+
     return (
         <>
             {/* logo & toggler button */}
@@ -50,7 +50,7 @@ const Header = () => {
                 }}
             >
                 <Box component="span" sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1 }}>
-                    <LogoSection />
+                    <LogoSection isAdmin={false} />
                 </Box>
                 {/* <ButtonBase sx={{ borderRadius: '12px', overflow: 'hidden' }}>
                     <Avatar
@@ -75,7 +75,7 @@ const Header = () => {
             </Box>
             <Box
                 sx={{
-                    width: 42,
+                    width: 100,
                     display: 'flex',
                     [theme.breakpoints.down('md')]: {
                         width: 'auto'
@@ -93,12 +93,14 @@ const Header = () => {
                             '&:hover': {
                                 background: theme.palette.primary[800],
                                 color: theme.palette.primary[200]
-                            }
+                            },
+                            width: '90px'
                         }}
                         onClick={() => routeChange('map')}
                         color="inherit"
                     >
                         <IconMap2 stroke={1.5} size="1.3rem" />
+                        {buttonLabelMap}
                     </Avatar>
                 </ButtonBase>
             </Box>
@@ -113,12 +115,14 @@ const Header = () => {
                         '&:hover': {
                             background: theme.palette.primary[800],
                             color: theme.palette.primary[200]
-                        }
+                        },
+                        width: '130px'
                     }}
                     onClick={() => routeChange('dashboard')}
                     color="inherit"
                 >
                     <IconDashboard stroke={1.5} size="1.3rem" />
+                    {buttonLabelDashboard}
                 </Avatar>
             </ButtonBase>
 
@@ -126,7 +130,6 @@ const Header = () => {
             {/* <SearchSection /> */}
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 1 }} />
-
             {/* notification & profile */}
             {/* <NotificationSection /> */}
             {/* <ProfileSection /> */}

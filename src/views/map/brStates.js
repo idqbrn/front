@@ -6,6 +6,7 @@ const brStates = [
     { value: 'AM', label: 'Amazonas', center: { lat: -3.416843, lng: -65.856064 }, zoom: 5 },
     { value: 'BA', label: 'Bahia', center: { lat: -15.4624, lng: -39.65303 }, zoom: 6 },
     { value: 'CE', label: 'Ceará', center: { lat: -5.32116, lng: -39.336788 }, zoom: 6 },
+    { value: 'DF', label: 'Distrito Federal', center: { lat: -15.78103, lng: -47.79609 }, zoom: 7 },
     { value: 'ES', label: 'Espírito Santo', center: { lat: -20.33844, lng: -40.31506 }, zoom: 6 },
     { value: 'GO', label: 'Goiás', center: { lat: -15.93905, lng: -50.14024 }, zoom: 6 },
     { value: 'MA', label: 'Maranhão', center: { lat: -4.45619, lng: -47.52858 }, zoom: 6 },
@@ -25,8 +26,7 @@ const brStates = [
     { value: 'SC', label: 'Santa Catarina', center: { lat: -27.244699, lng: -50.492081 }, zoom: 6 },
     { value: 'SP', label: 'São Paulo', center: { lat: -23.55052, lng: -46.633308 }, zoom: 6 },
     { value: 'SE', label: 'Sergipe', center: { lat: -10.02791, lng: -37.56199 }, zoom: 6 },
-    { value: 'TO', label: 'Tocantins', center: { lat: -21.17524, lng: -43.02155 }, zoom: 6 },
-    { value: 'DF', label: 'Distrito Federal', center: { lat: -15.78103, lng: -47.79609 }, zoom: 7 }
+    { value: 'TO', label: 'Tocantins', center: { lat: -21.17524, lng: -43.02155 }, zoom: 6 }
 ];
 
 export default brStates;

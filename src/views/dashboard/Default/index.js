@@ -1,19 +1,21 @@
 /* eslint-disable no-useless-concat */
 import { useEffect, useState } from 'react';
+import { ApexCharts } from 'react-apexcharts';
 
 // material-ui
-import { Grid, Typography } from '@mui/material';
+import { Grid, Typography, Divider } from '@mui/material';
 import axios from 'axios';
 // project imports
 import EarningCard from './EarningCard';
 import PopularCard from './PopularCard';
 import TotalOrderLineChartCard from './TotalOrderLineChartCard';
-import TotalIncomeDarkCard from './TotalIncomeDarkCard';
-import TotalIncomeLightCard from './TotalIncomeLightCard';
-import TotalGrowthBarChart from './TotalGrowthBarChart';
+// import TotalIncomeDarkCard from './TotalIncomeDarkCard';
+// import TotalIncomeLightCard from './TotalIncomeLightCard';
+// import TotalGrowthBarChart from './TotalGrowthBarChart';
 import { gridSpacing } from 'store/constant';
 // import CoreUIChart from './CoreUIChart';
 import DoubleChart from './DoubleChart';
+import DiseaseChart from './DiseaseChart';
 
 // material-ui
 import TextField from '@mui/material/TextField';
@@ -31,9 +33,9 @@ import brStates from '../../map/brStates';
 // import OpenModal from '../../admin/modals/OpenModal';
 import JsonLatLng from '../../map/LocalLatLng/states_latitudes_flat_name.json';
 import { /* vecNumCityState, */ vecPosCityState } from '../../map/LocalLatLng/vecCityState';
-import { LineAxisOutlined } from '@mui/icons-material';
-// import response from '../../admin/response-test';
+// import { LineAxisOutlined } from '@mui/icons-material';
 import url from '../../utilities/backendUrl';
+import DiseasesInfoTable from './DiseasesInfoTable';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -59,9 +61,9 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (diseaseOption != undefined) {
-            let variacao = 0;
-            let percentual = 0;
-            let estado = 'RJ';
+            // let variacao = 0;
+            // let percentual = 0;
+            // let estado = 'RJ';
             const diseaseLabel = diseasesResponse[diseaseOption];
             console.log('DISEASEOPTION=' + `${diseaseLabel}`);
 
@@ -99,7 +101,8 @@ const Dashboard = () => {
                 estado: 'SP'
             });
         }
-    }, [diseaseOption]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [diseaseOption, diseasesResponse]);
 
     useEffect(() => {
         // GET request using axios inside useEffect React hook
@@ -124,6 +127,23 @@ const Dashboard = () => {
 
     return (
         <Grid container spacing={gridSpacing}>
+            <Grid item xs={12}>
+                <MainCard>
+                    <div style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', width: '80' }}>
+                            <div style={{ display: 'flex', padding: 2, width: '80' }}>
+                                <Typography variant="h2">Doenças Catalogadas</Typography>
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <DiseasesInfoTable />
+                            </div>
+                            {/* <div style={{ display: 'flex' }}>
+                                <DiseasesInfoTable />
+                            </div> */}
+                        </div>
+                    </div>
+                </MainCard>
+            </Grid>
             <Grid item xs={12}>
                 <MainCard>
                     <Grid item xs={12}>
@@ -211,7 +231,7 @@ const Dashboard = () => {
                                         )}
                                         onChange={async (option) => {
                                             const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
-                                            setState(op);
+                                            // setState(op);
                                             setCity(null);
                                             // const citySelect = document.getElementById('city_select');
                                             // console.log('citySelect: ');
@@ -338,27 +358,40 @@ const Dashboard = () => {
                             />
                         </div>
                     </div>
+                    <Divider />
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignContent: 'center',
+                            justifyContent: 'center',
+                            borderRadius: '5px'
+                        }}
+                    >
+                        {diseasesResponse[diseaseOption] != undefined ? (
+                            <Grid container style={{ display: 'flex', flexDirection: 'row' }}>
+                                <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
+                                    <Grid item style={{ display: 'flex' }}>
+                                        <EarningCard isLoading={isLoading} values={values} />
+                                    </Grid>
+                                    <Grid item style={{ display: 'flex' }}>
+                                        <TotalOrderLineChartCard isLoading={isLoading} values={values} />
+                                    </Grid>
+                                </Grid>
+                                <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
+                                    {/* <Grid item width="auto" style={{ display: 'flex' }}>
+                                    <EarningCard isLoading={isLoading} values={values} />
+                                </Grid> */}
+                                    <Grid item style={{ display: 'flex', height: '100%', width: '100%' }}>
+                                        <DiseaseChart disease={diseasesResponse[diseaseOption]} />
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
                 </MainCard>
-            </Grid>
-            <Grid item xs={12}>
-                <Grid container spacing={gridSpacing} style={{ justifyContent: 'center' }}>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <EarningCard isLoading={isLoading} values={values} />
-                    </Grid>
-                    <Grid item lg={4} md={6} sm={6} xs={12}>
-                        <TotalOrderLineChartCard isLoading={isLoading} values={values} />
-                    </Grid>
-                    {/* <Grid item lg={4} md={12} sm={12} xs={12}>
-                        <Grid container spacing={gridSpacing}>
-                            <Grid item sm={6} xs={12} md={6} lg={12}>
-                                <TotalIncomeDarkCard isLoading={isLoading} values={values} />
-                            </Grid>
-                            <Grid item sm={6} xs={12} md={6} lg={12}>
-                                <TotalIncomeLightCard isLoading={isLoading} values={values} />
-                            </Grid>
-                        </Grid>
-                    </Grid> */}
-                </Grid>
             </Grid>
             {/* <Grid item xs={12}>
                 <Grid container spacing={gridSpacing}>
