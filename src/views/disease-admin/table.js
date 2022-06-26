@@ -60,7 +60,7 @@ export default function DiseaseTable(props) {
 
     const TbHead = () => (
         <TableHead>
-            <TableRow>
+            <StyledTableRow>
                 <StyledTableCell align="center">Doença</StyledTableCell>
                 {/* <StyledTableCell align="center">Estado</StyledTableCell>
                 {props.values[0]?.city != '' ? <StyledTableCell align="center">Cidade</StyledTableCell> : <></>}
@@ -78,7 +78,7 @@ export default function DiseaseTable(props) {
                 <StyledTableCell align="center" width="50">
                     Edição
                 </StyledTableCell>
-            </TableRow>
+            </StyledTableRow>
         </TableHead>
     );
 
@@ -130,24 +130,24 @@ export default function DiseaseTable(props) {
                                                 <TableCell align="right">{Math.round(historyRow.amount * row.price * 100) / 100}</TableCell>
                                             </TableRow>
                                         ))} */}
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
+                                        <StyledTableRow>
+                                            <StyledTableCell component="th" scope="row" width="200px">
                                                 Descrição
-                                            </TableCell>
-                                            <TableCell>{row.description}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
+                                            </StyledTableCell>
+                                            <StyledTableCell>{row.description}</StyledTableCell>
+                                        </StyledTableRow>
+                                        <StyledTableRow>
+                                            <StyledTableCell component="th" scope="row">
                                                 Tratamento
-                                            </TableCell>
-                                            <TableCell>{row.treatments}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell component="th" scope="row">
+                                            </StyledTableCell>
+                                            <StyledTableCell>{row.treatments}</StyledTableCell>
+                                        </StyledTableRow>
+                                        <StyledTableRow>
+                                            <StyledTableCell component="th" scope="row">
                                                 Vetores
-                                            </TableCell>
-                                            <TableCell>{row.vector}</TableCell>
-                                        </TableRow>
+                                            </StyledTableCell>
+                                            <StyledTableCell>{row.vector}</StyledTableCell>
+                                        </StyledTableRow>
                                     </TableBody>
                                 </Table>
                             </Box>

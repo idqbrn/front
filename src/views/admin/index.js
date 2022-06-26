@@ -24,7 +24,7 @@ import url from '../utilities/backendUrl';
 function Admin() {
     const [diseaseOption, setDisease] = useState('');
     const [stateOption, setState] = useState(0);
-    const [cityOption, setCity] = useState(0);
+    // const [cityOption, setCity] = useState(0);
 
     const [citiesState, setCities] = useState([]);
 
@@ -35,12 +35,12 @@ function Admin() {
     // const [deseaseOption, setDesease] = useState(diseases[0].value);
     // const [stateOption] = useState(brStates[0]);
 
-    function requestTableData(disease, state, city) {
+    function requestTableData(disease, state) {
         console.log('requestTableData');
 
         console.log(disease.value);
         console.log(state.value);
-        console.log(city.value);
+        // console.log(city.value);
 
         if (state.value != undefined && state.value != null && state.value != '') {
             const stateInitial = stateToInitial[state.value];
@@ -60,7 +60,6 @@ function Admin() {
         } else {
             const config = {
                 method: 'get',
-                // url: `${url}` + '/dashboard/chart/' + `${props.state}` + '/' + `${props.city}`,
                 url: `${url}` + '/admin/diseaseStatesSum/' + `${disease.value}`,
                 headers: { 'Access-Control-Allow-Origin': '*' }
             };
@@ -184,13 +183,14 @@ function Admin() {
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
                                 setState(op);
-                                setCity(null);
-                                setCities([]);
+                                // setCity(null);
+                                // setCities([]);
+
                                 // const citySelect = document.getElementById('city_select');
                                 // console.log('citySelect: ');
                                 // console.log(citySelect);
                                 // citySelect.value = 'coe';
-                                console.log(`\ncitySelect.value: ${cityOption}`);
+                                // console.log(`\ncitySelect.value: ${cityOption}`);
                                 /* if (!cityOption) {
                                     const ev = new Event('input', { bubbles: true, cancelable: false });
                                     ev.simulated = true;
@@ -209,15 +209,15 @@ function Admin() {
                                     for (let i = vecPosCityState[op]; i < vecPosCityState[op + 1]; i++) cities.push(JsonLatLng[i].nome);
 
                                     // console.log('cities: ', cities);
-                                    setCities(cities);
+                                    // setCities(cities);
                                 } else {
                                     setState(null);
-                                    citiesState.push('');
+                                    // citiesState.push('');
                                 }
                             }}
                         />
                     </div>
-                    <div style={{ display: 'flex', padding: 10 }}>
+                    {/* <div style={{ display: 'flex', padding: 10 }}>
                         <Autocomplete
                             id="city_select"
                             options={citiesState}
@@ -257,14 +257,14 @@ function Admin() {
                                 // console.log(heatmap.getData());
                             }}
                         />
-                    </div>
+                    </div> */}
 
                     <Button
                         onClick={() => {
                             const disease = document.getElementById('disease_select');
                             const state = document.getElementById('state_select');
-                            const city = document.getElementById('city_select');
-                            requestTableData(disease, state, city);
+                            // const city = document.getElementById('city_select');
+                            requestTableData(disease, state);
                         }}
                         variant="contained"
                         color="primary"
