@@ -102,28 +102,26 @@ export default function NestedModal() {
     }, []);
 
     function insertCase() {
-        const disease_id = document.getElementById('disease-select');
+        const disease_id = document.getElementById('disease_select').value;
         console.log(disease_id);
         console.log(inputRefDisease.current);
-        const state = document.getElementById('state-select');
+        const state = document.getElementById('state_select').value;
         console.log(state);
-        const city = document.getElementById('city-select');
+        const city = document.getElementById('city_select').value;
         console.log(city);
         const total = inputRefTotal.current.value;
         console.log(total);
 
         if (!open) return;
 
-        const place_id = 333333;
-        console.log('place-id:');
-        console.log(place_id);
         const config = {
             method: 'post',
             url: `${url}` + '/insertCase',
             headers: { 'Access-Control-Allow-Origin': '*' },
             data: {
                 disease_id: disease_id,
-                place_id: place_id, //{ disease_id.charCodeAt() + state.charCodeAt() + city.charCodeAt() },
+                state: state,
+                city: city,
                 total: total,
                 user_id: 1
             }
@@ -131,7 +129,7 @@ export default function NestedModal() {
         axios(config)
             .then((response) => {
                 console.log(response);
-                setConfirmOpen(true);
+                // setConfirmOpen(true);
             })
             .catch(function (error) {
                 console.log(error);
@@ -147,7 +145,7 @@ export default function NestedModal() {
                 Adicionar casos
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
-                <Box sx={{ ...style, width: '80%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
+                <Box sx={{ ...style, width: '30%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
                     <h2 id="parent-modal-title">Create</h2>
                     <p id="parent-modal-description">Insira os dados para a inserção dos casos no banco de dados:</p>
                     <div style={{ flexDirection: 'column', display: 'flex' }}>
@@ -158,7 +156,7 @@ export default function NestedModal() {
                             includeInputInList
                             ref={inputRefDisease}
                             renderInput={(params) => <TextField {...params} label="Doença" />}
-                            sx={{ width: 200 }}
+                            // sx={{ width: 200 }}
                             value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === diseaseOption)}
                             onChange={async (option) => {
                                 console.log('diseases');
@@ -179,7 +177,7 @@ export default function NestedModal() {
                             includeInputInList
                             ref={inputRefState}
                             renderInput={(params) => <TextField {...params} label="Estado" />}
-                            sx={{ width: 200 }}
+                            // sx={{ width: 200 }}
                             value={brStates.find((option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === stateOption)}
                             onChange={async (option) => {
                                 const op = parseInt(option.nativeEvent.path[0].getAttribute('data-option-index'), 10);
@@ -213,7 +211,7 @@ export default function NestedModal() {
                             ref={inputRefCity}
                             renderInput={(params) => <TextField {...params} label="Cidade" />}
                             isOptionEqualToValue={(option, value) => option === value}
-                            sx={{ width: 200 }}
+                            // sx={{ width: 200 }}
                             value={brStates.find((option) => option.nativeEvent?.path[0].getAttribute('data-option-index') === cityOption)}
                             onChange={async (option) => {
                                 const op = option.nativeEvent.path[0].getAttribute('data-option-index');
