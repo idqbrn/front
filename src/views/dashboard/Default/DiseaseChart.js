@@ -63,7 +63,7 @@ export default function DiseaseChart(props) {
         },
         plotOptions: {
             bar: {
-                horizontal: true
+                horizontal: false
             }
         },
         colors: [theme.palette.primary.dark],
@@ -129,5 +129,5 @@ export default function DiseaseChart(props) {
         }
     };
 
-    return true ? <Chart options={options} series={options.series} height="100%" width="100%" type="bar" /> : <></>;
+    return true ? <Chart options={options} series={options.series} height="500" width="1200" type="bar" /> : <></>;
 }

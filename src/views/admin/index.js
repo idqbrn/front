@@ -100,7 +100,7 @@ function Admin() {
             <div style={{ display: 'flex', paddingBottom: 10, justifyContent: 'space-between' }}>
                 <OpenModal value="Criar" />
                 {/* <OpenModal value="Atualizar" />
-                <OpenModal value="Deletar" /> */}
+                    <OpenModal value="Deletar" /> */}
                 <OpenModal value="Upload CSV" />
                 <div style={{ display: 'flex' }}>
                     <div style={{ display: 'flex', padding: 10 }}>
@@ -127,47 +127,47 @@ function Admin() {
                         />
                     </div>
                     {/* <div style={{ display: 'flex' }}>
-                        <Autocomplete
-                            id="state_select"
-                            options={brStates}
-                            autoComplete
-                            includeInputInList
-                            renderInput={(params) => <TextField {...params} label="Estado" />}
-                            sx={{ width: 150 }}
-                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
-                             onChange={async (option) => {
-                                console.log('states');
-                                const op = option.currentTarget.getAttribute('data-option-index');
-                                console.log('option: ', op);
+                            <Autocomplete
+                                id="state_select"
+                                options={brStates}
+                                autoComplete
+                                includeInputInList
+                                renderInput={(params) => <TextField {...params} label="Estado" />}
+                                sx={{ width: 150 }}
+                                value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
+                                onChange={async (option) => {
+                                    console.log('states');
+                                    const op = option.currentTarget.getAttribute('data-option-index');
+                                    console.log('option: ', op);
 
-                                if (op !== stateOption) {
-                                    setState(op);
-                                    console.log('stateOption: ', stateOption);
-                                }
-                            }} 
-                        />
-                        </div> */}
+                                    if (op !== stateOption) {
+                                        setState(op);
+                                        console.log('stateOption: ', stateOption);
+                                    }
+                                }} 
+                            />
+                            </div> */}
                     {/* <div style={{ display: 'flex' }}>
-                        <Autocomplete
-                            id="city_select"
-                            options={brStates}
-                            autoComplete
-                            includeInputInList
-                            renderInput={(params) => <TextField {...params} label="Cidade" />}
-                            sx={{ width: 150 }}
-                            value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
-                             onChange={async (option) => {
-                                console.log('states');
-                                const op = option.currentTarget.getAttribute('data-option-index');
-                                console.log('option: ', op);
+                            <Autocomplete
+                                id="city_select"
+                                options={brStates}
+                                autoComplete
+                                includeInputInList
+                                renderInput={(params) => <TextField {...params} label="Cidade" />}
+                                sx={{ width: 150 }}
+                                value={diseases.find((option) => option.currentTarget?.getAttribute('data-option-index') === stateOption)}
+                                onChange={async (option) => {
+                                    console.log('states');
+                                    const op = option.currentTarget.getAttribute('data-option-index');
+                                    console.log('option: ', op);
 
-                                if (op !== stateOption) {
-                                    setState(op);
-                                    console.log('stateOption: ', stateOption);
-                                }
-                            }} 
-                        />
-                        </div> */}
+                                    if (op !== stateOption) {
+                                        setState(op);
+                                        console.log('stateOption: ', stateOption);
+                                    }
+                                }} 
+                            />
+                            </div> */}
 
                     <div style={{ display: 'flex', padding: 10 }}>
                         <Autocomplete
@@ -192,12 +192,12 @@ function Admin() {
                                 // citySelect.value = 'coe';
                                 // console.log(`\ncitySelect.value: ${cityOption}`);
                                 /* if (!cityOption) {
-                                    const ev = new Event('input', { bubbles: true, cancelable: false });
-                                    ev.simulated = true;
-                                    const searchTable = document.getElementById('search-table');
-                                    // searchTable.value = 'Something new';
-                                    searchTable?.dispatchEvent(ev);
-                                } */
+                                        const ev = new Event('input', { bubbles: true, cancelable: false });
+                                        ev.simulated = true;
+                                        const searchTable = document.getElementById('search-table');
+                                        // searchTable.value = 'Something new';
+                                        searchTable?.dispatchEvent(ev);
+                                    } */
                                 const local = brStates[op];
                                 console.log('op: ', op);
                                 if (local) {
@@ -218,46 +218,46 @@ function Admin() {
                         />
                     </div>
                     {/* <div style={{ display: 'flex', padding: 10 }}>
-                        <Autocomplete
-                            id="city_select"
-                            options={citiesState}
-                            autoComplete
-                            includeInputInList
-                            renderInput={(params) => <TextField {...params} label="Cidade" />}
-                            isOptionEqualToValue={(option, value) => option === value}
-                            sx={{ width: 200 }}
-                            value={brStates.find(
-                                (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
-                            )}
-                            onChange={async (option) => {
-                                const op = option.nativeEvent.path[0].getAttribute('data-option-index');
+                            <Autocomplete
+                                id="city_select"
+                                options={citiesState}
+                                autoComplete
+                                includeInputInList
+                                renderInput={(params) => <TextField {...params} label="Cidade" />}
+                                isOptionEqualToValue={(option, value) => option === value}
+                                sx={{ width: 200 }}
+                                value={brStates.find(
+                                    (option) => brStates[option.nativeEvent?.path[0].getAttribute('data-option-index')]?.center === cityOption
+                                )}
+                                onChange={async (option) => {
+                                    const op = option.nativeEvent.path[0].getAttribute('data-option-index');
 
-                                // console.log('CITYoption: ', option);
-                                console.log('value: ', document.getElementById('city_select').option);
-                                console.log('op: ', op);
-                                console.log('stateOption: ', stateOption);
-                                console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
+                                    // console.log('CITYoption: ', option);
+                                    console.log('value: ', document.getElementById('city_select').option);
+                                    console.log('op: ', op);
+                                    console.log('stateOption: ', stateOption);
+                                    console.log('vecPosCityState[stateOption]: ', vecPosCityState[stateOption]);
 
-                                cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
+                                    cityNum = parseInt(op, 10) + parseInt(vecPosCityState[stateOption], 10);
 
-                                console.log('cityNum: ', cityNum);
+                                    console.log('cityNum: ', cityNum);
 
-                                setCity(cityNum);
+                                    setCity(cityNum);
 
-                                const local = JsonLatLng[cityNum];
-                                if (local) {
-                                    console.log('JsonLatLng.UF: ', local.UF);
-                                    console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
-                                } else {
-                                    setCity(NaN);
-                                }
+                                    const local = JsonLatLng[cityNum];
+                                    if (local) {
+                                        console.log('JsonLatLng.UF: ', local.UF);
+                                        console.log('JsonLatLng[', cityNum, ']: ', JsonLatLng[cityNum]);
+                                    } else {
+                                        setCity(NaN);
+                                    }
 
-                                // if (brStates[stateOption].zoom > brStates[0].zoom) map.setZoom(local.zoom);
-                                // console.log('heatmap.getData()=');
-                                // console.log(heatmap.getData());
-                            }}
-                        />
-                    </div> */}
+                                    // if (brStates[stateOption].zoom > brStates[0].zoom) map.setZoom(local.zoom);
+                                    // console.log('heatmap.getData()=');
+                                    // console.log(heatmap.getData());
+                                }}
+                            />
+                        </div> */}
 
                     <Button
                         onClick={() => {

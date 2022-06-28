@@ -107,7 +107,7 @@ export default function NestedModal() {
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
                 <Box sx={{ ...style, width: '80%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
-                    <h2 id="parent-modal-title">Create</h2>
+                    <h2 id="parent-modal-title">Adicionar Doença</h2>
                     <p id="parent-modal-description">Insira os dados para a inserção dos casos no banco de dados:</p>
 
                     <div style={{ flexDirection: 'column', display: 'flex' }}>

@@ -94,15 +94,15 @@ const TotalOrderLineChartCard = (props) => {
             });
 
         // empty dependency array means this effect will only run once (like componentDidMount in classes)
-    }, [props.values]);
+    }, [props.values.disease]);
 
     return (
         <>
             {props.isLoading ? (
                 <SkeletonTotalOrderCard />
             ) : (
-                <CardWrapper border={false} content={false}>
-                    <Box sx={{ p: 2.25 }}>
+                <CardWrapper border={false} content={false} width="600">
+                    <Box sx={{ p: 2.25, width: '600px' }}>
                         <Grid container direction="column">
                             <Grid item>
                                 <Grid container justifyContent="space-between"></Grid>

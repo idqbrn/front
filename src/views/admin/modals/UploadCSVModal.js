@@ -32,7 +32,7 @@ function ChildModal() {
 
     return (
         <>
-            <Button onClick={handleOpen}>Open Child Modal</Button>
+            {/* <Button onClick={handleOpen}>Open Child Modal</Button> */}
             <Modal
                 hideBackdrop
                 open={open}
@@ -294,7 +294,7 @@ export default function NestedModal() {
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
                 <Box sx={{ ...style, width: 400 }}>
-                    <h2 id="parent-modal-title">UploadCSVModal</h2>
+                    <h2 id="parent-modal-title">Upload de CSV</h2>
                     <p id="parent-modal-description">Faça upload do csv de doenças e locais</p>
                     <Input accept=".csv" id="contained-button-file" type="file" onChange={changeHandler} />
                     <Button variant="contained" component="span" onClick={submitbutton}>

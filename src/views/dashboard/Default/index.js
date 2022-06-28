@@ -370,19 +370,16 @@ const Dashboard = () => {
                     >
                         {diseasesResponse[diseaseOption] != undefined ? (
                             <Grid container style={{ display: 'flex', flexDirection: 'row' }}>
-                                <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
-                                    <Grid item style={{ display: 'flex' }}>
+                                <Grid item style={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+                                    <Grid item style={{ display: 'flex', width: '400' }}>
                                         <EarningCard isLoading={isLoading} values={values} />
                                     </Grid>
-                                    <Grid item style={{ display: 'flex' }}>
+                                    <Grid item style={{ display: 'flex', width: '400' }}>
                                         <TotalOrderLineChartCard isLoading={isLoading} values={values} />
                                     </Grid>
                                 </Grid>
                                 <Grid item style={{ display: 'flex', flexDirection: 'column', width: 'auto' }}>
-                                    {/* <Grid item width="auto" style={{ display: 'flex' }}>
-                                    <EarningCard isLoading={isLoading} values={values} />
-                                </Grid> */}
-                                    <Grid item style={{ display: 'flex', height: '100%', width: '100%' }}>
+                                    <Grid item style={{ display: 'flex', height: '500px', width: '100%' }}>
                                         <DiseaseChart disease={diseasesResponse[diseaseOption]} />
                                     </Grid>
                                 </Grid>
@@ -393,17 +390,6 @@ const Dashboard = () => {
                     </div>
                 </MainCard>
             </Grid>
-            {/* <Grid item xs={12}>
-                <Grid container spacing={gridSpacing}>
-                    <Grid item xs={12} md={8}>
-                        <TotalGrowthBarChart isLoading={isLoading} />
-                    </Grid>
-                    <Grid item xs={12} md={4}>
-                        <PopularCard isLoading={isLoading} />
-                    </Grid>
-                </Grid>
-            </Grid> */}
-            {/* <CoreUIChart /> */}
         </Grid>
     );
 };

@@ -38,7 +38,7 @@ function ChildModal() {
 
     return (
         <>
-            <Button onClick={handleOpen}>Open Child Modal</Button>
+            {/* <Button onClick={handleOpen}>Open Child Modal</Button> */}
             <Modal
                 hideBackdrop
                 open={open}
@@ -47,9 +47,9 @@ function ChildModal() {
                 aria-describedby="child-modal-description"
             >
                 <Box sx={{ ...style, width: 200 }}>
-                    <h2 id="child-modal-title">Text in a child modal</h2>
-                    <p id="child-modal-description">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-                    <Button onClick={handleClose}>Close Child Modal</Button>
+                    <h2 id="child-modal-title">Adicionado</h2>
+                    <p id="child-modal-description">Caso adicionado com êxito.</p>
+                    <Button onClick={handleClose}>Ok</Button>
                 </Box>
             </Modal>
         </>
@@ -71,7 +71,7 @@ export default function NestedModal() {
 
     const [citiesState, setCities] = useState([]);
 
-    const [diseaseOption, setDisease] = useState(diseases[0].value);
+    const [diseaseOption, setDisease] = useState('');
 
     const [diseasesResponse, setDiseasesResp] = useState([]);
 
@@ -79,6 +79,9 @@ export default function NestedModal() {
     const inputRefState = useRef('');
     const inputRefCity = useRef('');
     const inputRefTotal = useRef('');
+
+    let localLabel;
+    let cityNum = useState(0);
 
     useEffect(() => {
         // GET request using axios inside useEffect React hook
@@ -102,11 +105,19 @@ export default function NestedModal() {
     }, []);
 
     function insertCase() {
-        const disease_id = document.getElementById('disease_select').value;
-        console.log(disease_id);
-        console.log(inputRefDisease.current);
-        const state = document.getElementById('state_select').value;
+        // const disease_id = document.getElementById('disease_select');
+        console.log('disease option:');
+        console.log(diseaseOption);
+        // console.log(disease_id);
+        // console.log(inputRefDisease.current);
+
+        const disease_id = diseaseOption;
+        // const state = document.getElementById('state_select').value;
+        // console.log(state);
+        const state = JsonLatLng[cityOption].UF;
         console.log(state);
+        // console.log('JsonLatLng[cityNum] UF');
+
         const city = document.getElementById('city_select').value;
         console.log(city);
         const total = inputRefTotal.current.value;
@@ -137,7 +148,6 @@ export default function NestedModal() {
     }
 
     // console.log('Create');
-    let cityNum = useState(0);
 
     return (
         <div style={{ display: 'flex' }}>
@@ -146,7 +156,7 @@ export default function NestedModal() {
             </Button>
             <Modal open={open} onClose={handleClose} aria-labelledby="parent-modal-title" aria-describedby="parent-modal-description">
                 <Box sx={{ ...style, width: '30%', '& .MuiTextField-root': { m: 1, width: '100%' } }} component="form">
-                    <h2 id="parent-modal-title">Create</h2>
+                    <h2 id="parent-modal-title">Adicionar Caso</h2>
                     <p id="parent-modal-description">Insira os dados para a inserção dos casos no banco de dados:</p>
                     <div style={{ flexDirection: 'column', display: 'flex' }}>
                         <Autocomplete
@@ -165,7 +175,7 @@ export default function NestedModal() {
                                 console.log('option: ', op);
 
                                 if (op !== diseaseOption) {
-                                    setDisease(op);
+                                    setDisease(diseasesResponse[op]);
                                     console.log('diseaseOption: ', diseaseOption);
                                 }
                             }}
@@ -188,7 +198,7 @@ export default function NestedModal() {
                                 console.log('op: ', op);
                                 if (!isNaN(local)) {
                                     setState(op);
-                                    const localLabel = JsonLatLng[local];
+                                    localLabel = JsonLatLng[local];
                                     console.log('localLabel: ' + localLabel.UF);
 
                                     const cities = [];
